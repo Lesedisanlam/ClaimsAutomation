@@ -113,7 +113,7 @@ namespace TestBase
                 int id = 0;
                 try
                 {
-                    OpenDBConnection("SELECT ID FROM ClaimsFunctions WHERE function_name = '" + funcName + "'");
+                    OpenDBConnection("SELECT ID FROM ClaimsFunction WHERE function_name = '" + funcName + "'");
                     reader = command.ExecuteReader();
                     while (reader.Read())
                     {
@@ -275,32 +275,27 @@ namespace TestBase
             }
 
 
-            public static IEnumerable<string[]> GetTestData(string methodName)
+        public static IEnumerable<string[]> GetTestData(string methodName)
+        {
+            var conractRef = String.Empty;
+            var scenarioID = String.Empty;
+            int id = getFuctionID(methodName);
+            OpenDBConnection($"SELECT PolicyNo,ID FROM Claims_Scenarios WHERE FunctionID = {id}");
+            reader = command.ExecuteReader();
+
+            while (reader.Read())
             {
-                var Scenario = String.Empty;
-                var scenarioID = String.Empty;
-                int id = getFuctionID(methodName);
-                try
-                {
 
-                    OpenDBConnection("SELECT PolicyNo,ID FROM Claims_Scenarios WHERE FunctionID = " + id);
-
-                    reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        scenarioID = reader["ID"].ToString();
-                        Scenario = reader["Scenario"].ToString();
-                        break;
-                    }
-                    connection.Close();
-                }
-                catch (Exception)
-                {
-
-                    throw;
-                }
-                yield return new[] { Scenario, scenarioID };
+                scenarioID = reader["ID"].ToString();
+                conractRef = reader["PolicyNo"].ToString();
+                break;
             }
-        }
 
+            connection.Close();
+            yield return new[] { conractRef, scenarioID };
+
+
+        }
     }
+
+}
