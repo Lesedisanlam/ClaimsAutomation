@@ -296,31 +296,56 @@ namespace Claims_Testsuite.Claims
                 IWebElement element1 = _driver.FindElement(By.Name("ffFile"));
                 element1.SendKeys("C:\\Users\\G992107\\Downloads\\UPload file.pdf");
 
-
+                //cxlick on close
                 Delay(4);
-                _driver.FindElement(By.Name("btnSubmit")).Click();
+                _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td/div/center/div[1]/table/tbody/tr[4]/td[2]/span/table/tbody/tr[23]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[1]/table")).Click();
 
-                //click on add 
+               
+                /* Return to the window with handle = 0 */
+                _driver.SwitchTo().Window(_driver.WindowHandles[0]);
+
+
+                //click on completet 
                 Delay(4);
-                _driver.FindElement(By.Name("mmtrs_add")).Click();
+                _driver.FindElement(By.Name("btnComplete")).Click();
+                //Click on Add new
+                Delay(2);
+                _driver.FindElement(By.Name("fcIDNumber")).SendKeys(IdNum);
 
+
+                //Click on search
+                Delay(2);
+                _driver.FindElement(By.Name("fcPersonLkp")).Click();
+
+
+                //Mutimediad pop
+                String test_url_4_title = "SANLAM RM - Safrican Retail";
+
+
+                Assert.AreEqual(2, _driver.WindowHandles.Count);
+                var newWindowHandle2= _driver.WindowHandles[1];
+                Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle2));
+                /* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?); */
+                string expectedNewWindowTitle2 = test_url_4_title;
+                Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle2).Title, expectedNewWindowTitle2);
+
+                //Click on Add new
+                Delay(2);
+                _driver.FindElement(By.Name("")).Click();
 
                 /* Return to the window with handle = 0 */
                 _driver.SwitchTo().Window(_driver.WindowHandles[0]);
 
-                //Click on Add new
-                Delay(2);
-                _driver.FindElement(By.Name("")).Click();
 
 
-                //Click on Add new
-                Delay(2);
-                _driver.FindElement(By.Name("")).Click();
 
 
-                //Click on Add new
-                Delay(2);
-                _driver.FindElement(By.Name("")).Click();
+
+
+
+
+
+
 
 
 
