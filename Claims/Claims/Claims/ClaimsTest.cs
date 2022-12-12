@@ -82,7 +82,7 @@ namespace Claims_Testsuite.Claims
                 Delay(2);
                 //SetproductName();
                 string Claimant = String.Empty, Cause_of_incident = String.Empty, BI_Number = String.Empty, Roleplayer = String.Empty, SubClaimType = String.Empty, ClaimType = String.Empty, 
-                    IdNum = String.Empty, Date_of_incident = String.Empty, Contact_Date = String.Empty, Email_Address = String.Empty, Mobile_Number = String.Empty;
+                    IdNum = String.Empty, Date_of_incident = String.Empty, Contact_Date = String.Empty, Email_Address = String.Empty, Mobile_Number = String.Empty, ClaimDefinition = String.Empty;
 
                 OpenDBConnection("SELECT * FROM SSLP_Data");
                 reader = command.ExecuteReader();
@@ -99,6 +99,7 @@ namespace Claims_Testsuite.Claims
                     Contact_Date = reader["Contact_Date"].ToString().Trim();
                     Email_Address = reader["Email_Address"].ToString().Trim();
                     Mobile_Number = reader["Mobile_Number"].ToString().Trim();
+                    ClaimDefinition = reader["ClaimDefinition"].ToString().Trim();
 
 
                 }
@@ -301,17 +302,19 @@ namespace Claims_Testsuite.Claims
                 element1.SendKeys("C:\\Users\\G992107\\Downloads\\UPload file.pdf");
 
                 //cxlick on close
-                Delay(4);
-                _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td/div/center/div[1]/table/tbody/tr[4]/td[2]/span/table/tbody/tr[23]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[1]/table")).Click();
+                Delay(3);
+                _driver.FindElement(By.Name("btnSubmit")).Click();
 
-               
+                //cxlick on close
+                Delay(3);
+                _driver.FindElement(By.Name("btnClose")).Click();
                 /* Return to the window with handle = 0 */
                 _driver.SwitchTo().Window(_driver.WindowHandles[0]);
 
 
                 //click on completet 
-                Delay(4);
-                _driver.FindElement(By.Name("btnComplete")).Click();
+                Delay(2);
+               _driver.FindElement(By.Name("btnComplete")).Click();
                 //Click on Add new
                 Delay(2);
                 _driver.FindElement(By.Name("fcIDNumber")).SendKeys(IdNum);
@@ -322,7 +325,7 @@ namespace Claims_Testsuite.Claims
                 _driver.FindElement(By.Name("fcPersonLkp")).Click();
 
 
-                Delay(7);
+                Delay(4);
 
                 //Mutimediad pop
                 String test_url_4_title = "SANLAM RM - Safrican Retail - Warpspeed Lookup Window";
@@ -347,19 +350,20 @@ namespace Claims_Testsuite.Claims
 
 
                 //Life assured
-                SelectElement dropDown2 = new SelectElement(_driver.FindElement(By.Name("refActivityLogRefsMainReqClaimType")));
-                dropDown2.SelectByText(ClaimType);
+                SelectElement dropDown2 = new SelectElement(_driver.FindElement(By.Name("fcLifeAssured")));
+                dropDown2.SelectByText(Claimant);
                 Delay(5);
 
 
+             
                 //ClaimType Person
                 SelectElement dropDown1 = new SelectElement(_driver.FindElement(By.Name("fcClaimType")));
-                dropDown1.SelectByText(Claimant);
+                dropDown1.SelectByText(ClaimDefinition);
                 Delay(5);
 
                 //Cause of Incident
                 SelectElement dropDown3= new SelectElement(_driver.FindElement(By.Name("fcIncidentCause")));
-                dropDown3.SelectByText(Claimant);
+                dropDown3.SelectByText(Cause_of_incident);
                 Delay(5);
 
 
@@ -380,16 +384,6 @@ namespace Claims_Testsuite.Claims
                 //Click submit
                 Delay(2);
                 _driver.FindElement(By.Name("btnSubmit")).Click();
-
-
-
-
-
-
-
-
-
-
 
 
 
