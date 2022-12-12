@@ -81,13 +81,14 @@ namespace Claims_Testsuite.Claims
                 policySearch(contractRef);
                 Delay(2);
                 //SetproductName();
-                string Claimant = String.Empty, Cause_of_incident = String.Empty, BI_Number = String.Empty, Roleplayer = String.Empty,
-               SubClaimType = String.Empty, ClaimType = String.Empty, IdNum = String.Empty, Date_of_incident = String.Empty, Contact_Date = String.Empty;
+                string Claimant = String.Empty, Cause_of_incident = String.Empty, BI_Number = String.Empty, Roleplayer = String.Empty, SubClaimType = String.Empty, ClaimType = String.Empty, 
+                    IdNum = String.Empty, Date_of_incident = String.Empty, Contact_Date = String.Empty, Email_Address = String.Empty, Mobile_Number = String.Empty;
 
                 OpenDBConnection("SELECT * FROM SSLP_Data");
                 reader = command.ExecuteReader();
                 while (reader.Read())
                 {
+
                     ClaimType = reader["ClaimType"].ToString().Trim();
                     Claimant = reader["Claimant"].ToString().Trim();
                     Cause_of_incident = reader["Cause_of_incident"].ToString().Trim();
@@ -96,6 +97,9 @@ namespace Claims_Testsuite.Claims
                     IdNum = reader["RolePlayer_idNum"].ToString().Trim();
                     Date_of_incident = reader["Date_of_incident"].ToString().Trim();
                     Contact_Date = reader["Contact_Date"].ToString().Trim();
+                    Email_Address = reader["Email_Address"].ToString().Trim();
+                    Mobile_Number = reader["Mobile_Number"].ToString().Trim();
+
 
                 }
                 connection.Close();
@@ -318,24 +322,64 @@ namespace Claims_Testsuite.Claims
                 _driver.FindElement(By.Name("fcPersonLkp")).Click();
 
 
+                Delay(7);
+
                 //Mutimediad pop
-                String test_url_4_title = "SANLAM RM - Safrican Retail";
+                String test_url_4_title = "SANLAM RM - Safrican Retail - Warpspeed Lookup Window";
 
-
+               
                 Assert.AreEqual(2, _driver.WindowHandles.Count);
-                var newWindowHandle2= _driver.WindowHandles[1];
-                Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle2));
+                var newWindowHandle3 = _driver.WindowHandles[1];
+                Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle1));
                 /* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?); */
-                string expectedNewWindowTitle2 = test_url_4_title;
-                Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle2).Title, expectedNewWindowTitle2);
-
+                string expectedNewWindowTitle4 = test_url_4_title;
+                Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle3).Title, expectedNewWindowTitle4);
                 //Click on Add new
                 Delay(2);
-                _driver.FindElement(By.Name("")).Click();
+                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr/td/center[2]/table[2]/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]")).Click();
 
                 /* Return to the window with handle = 0 */
                 _driver.SwitchTo().Window(_driver.WindowHandles[0]);
 
+                //incednt Date
+                Delay(2);
+                _driver.FindElement(By.Name("fcIncidentDate")).SendKeys(Date_of_incident);
+
+
+                //Life assured
+                SelectElement dropDown2 = new SelectElement(_driver.FindElement(By.Name("refActivityLogRefsMainReqClaimType")));
+                dropDown2.SelectByText(ClaimType);
+                Delay(5);
+
+
+                //ClaimType Person
+                SelectElement dropDown1 = new SelectElement(_driver.FindElement(By.Name("fcClaimType")));
+                dropDown1.SelectByText(Claimant);
+                Delay(5);
+
+                //Cause of Incident
+                SelectElement dropDown3= new SelectElement(_driver.FindElement(By.Name("fcIncidentCause")));
+                dropDown3.SelectByText(Claimant);
+                Delay(5);
+
+
+                //BI-number 
+                Delay(2);
+                _driver.FindElement(By.Name("fcIncidentDate")).SendKeys(BI_Number);
+
+                //BI-number 
+                Delay(2);
+                _driver.FindElement(By.Name("fcEmailAddress")).SendKeys(Email_Address);
+
+                //BI-number 
+                Delay(2);
+                _driver.FindElement(By.Name("fcMobileNumber")).SendKeys(Mobile_Number);
+
+
+
+                //Click submit
+                Delay(2);
+                _driver.FindElement(By.Name("btnSubmit")).Click();
 
 
 
