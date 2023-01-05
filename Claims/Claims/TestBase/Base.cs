@@ -239,6 +239,9 @@ namespace TestBase
                 command.Parameters.AddWithValue("@testDate", testDate);
                 command.Parameters.AddWithValue("@comments", comments);
                 command.ExecuteNonQuery();
+
+
+
             }
 
 
