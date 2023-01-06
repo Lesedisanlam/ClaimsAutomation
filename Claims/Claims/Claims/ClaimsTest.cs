@@ -82,7 +82,7 @@ namespace Claims_Testsuite.Claims
                 Delay(2);
                 //SetproductName();
                 string Claimant = String.Empty, Cause_of_incident = String.Empty, BI_Number = String.Empty, Roleplayer = String.Empty, SubClaimType = String.Empty, ClaimType = String.Empty, 
-                    IdNum = String.Empty, Date_of_incident = String.Empty, Contact_Date = String.Empty, Email_Address = String.Empty, Mobile_Number = String.Empty, ClaimDefinition = String.Empty;
+                    IdNum = String.Empty, Date_of_incident = String.Empty, Contact_Date = String.Empty, Email_Address = String.Empty, Mobile_Number = String.Empty, ClaimDescription = String.Empty;
 
                 OpenDBConnection("SELECT * FROM SSLP_Data");
                 reader = command.ExecuteReader();
@@ -99,15 +99,12 @@ namespace Claims_Testsuite.Claims
                     Contact_Date = reader["Contact_Date"].ToString().Trim();
                     Email_Address = reader["Email_Address"].ToString().Trim();
                     Mobile_Number = reader["Mobile_Number"].ToString().Trim();
-                    ClaimDefinition = reader["ClaimDefinition"].ToString().Trim();
+                    ClaimDescription = reader["ClaimDescription"].ToString().Trim();
 
 
                 }
                 connection.Close();
-                Delay(2);
-
-
-
+                
                 Delay(2);
                 //click on add Digital  Stack
                 _driver.FindElement(By.Name("sv_Main")).Click();
@@ -358,7 +355,7 @@ namespace Claims_Testsuite.Claims
              
                 //ClaimType Person
                 SelectElement dropDown1 = new SelectElement(_driver.FindElement(By.Name("fcClaimType")));
-                dropDown1.SelectByText(ClaimDefinition);
+                dropDown1.SelectByText(ClaimDescription);
                 Delay(5);
 
                 //Cause of Incident
