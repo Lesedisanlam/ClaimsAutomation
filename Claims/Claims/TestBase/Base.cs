@@ -280,7 +280,8 @@ namespace TestBase
             var conractRef = String.Empty;
             var scenarioID = String.Empty;
             int id = getFuctionID(methodName);
-            OpenDBConnection($"SELECT PolicyNo,ID FROM Claims_Scenarios WHERE FunctionID = {id}");
+            OpenDBConnection($"SELECT PolicyNo,ID FROM Claims_Scenarios WHERE FunctionID = {id} AND Created_at > (select dateadd(week, -1, getdate()));");
+            // @$"SELECT PolicyNo,ID FROM Claims_Scenarios WHERE Created_at > (select dateadd(week, -1, getdate()));"
             reader = command.ExecuteReader();
 
             while (reader.Read())
@@ -292,6 +293,7 @@ namespace TestBase
             }
 
             connection.Close();
+            object[] DivideCase = new object[();
             yield return new[] { conractRef, scenarioID };
 
 
