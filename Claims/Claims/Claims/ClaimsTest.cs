@@ -346,6 +346,14 @@ namespace Claims_Testsuite.Claims
                 _driver.FindElement(By.Name("fcIncidentDate")).SendKeys(Date_of_incident);
 
 
+                //incednt Date
+                Delay(2);
+                _driver.FindElement(By.Name("fcFirstContact")).SendKeys(Date_of_incident);
+
+                //click on add 
+                Delay(4);
+                _driver.FindElement(By.Name("fcLifeAssured")).Click();
+
                 //Life assured
                 SelectElement dropDown2 = new SelectElement(_driver.FindElement(By.Name("fcLifeAssured")));
                 dropDown2.SelectByText(Claimant);
