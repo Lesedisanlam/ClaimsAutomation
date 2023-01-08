@@ -221,7 +221,7 @@ namespace Claims_Testsuite.Claims
                 Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle1).Title, expectedNewWindowTitle1);
                
 
-               //add death certuficat 
+               //add death certificate 
                 
                 
                 Delay(2);
@@ -374,7 +374,7 @@ namespace Claims_Testsuite.Claims
 
                 //BI-number 
                 Delay(2);
-                _driver.FindElement(By.Name("fcIncidentDate")).SendKeys(BI_Number);
+                _driver.FindElement(By.Name("fcBINumber")).SendKeys(BI_Number);
 
                 //BI-number 
                 Delay(2);
@@ -390,7 +390,7 @@ namespace Claims_Testsuite.Claims
                 Delay(2);
                 _driver.FindElement(By.Name("btnSubmit")).Click();
 
-
+                //validation of claim
 
 
             }
