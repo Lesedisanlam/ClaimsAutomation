@@ -277,7 +277,6 @@ namespace TestBase
 
             }
 
-
         public static IEnumerable<string[]> GetTestData(string methodName)
         {
             var conractRef = String.Empty;

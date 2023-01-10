@@ -82,7 +82,7 @@ namespace Claims_Testsuite.Claims
                 Delay(2);
                 //SetproductName();
                 string Claimant = String.Empty, Cause_of_incident = String.Empty, BI_Number = String.Empty, Roleplayer = String.Empty, SubClaimType = String.Empty, ClaimType = String.Empty, 
-                    IdNum = String.Empty, Date_of_incident = String.Empty, Contact_Date = String.Empty, Email_Address = String.Empty, Mobile_Number = String.Empty, ClaimDescription = String.Empty;
+                    IdNum = String.Empty, Date_of_incident = String.Empty, Contact_Date = String.Empty, Email_Address = String.Empty, Mobile_Number = String.Empty, ClaimDescription = String.Empty, Gender = String.Empty; 
 
                 OpenDBConnection("SELECT * FROM SSLP_Data");
                 reader = command.ExecuteReader();
@@ -100,6 +100,7 @@ namespace Claims_Testsuite.Claims
                     Email_Address = reader["Email_Address"].ToString().Trim();
                     Mobile_Number = reader["Mobile_Number"].ToString().Trim();
                     ClaimDescription = reader["ClaimDescription"].ToString().Trim();
+                    Gender = reader["Gender"].ToString().Trim();
 
 
                 }
@@ -223,7 +224,7 @@ namespace Claims_Testsuite.Claims
 
                //add death certificate 
                 
-                
+       
                 Delay(2);
                 _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td/div/center/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr/td/div/div/div/div/ul/li/div/span[1]")).Click();
                 //Click on 
@@ -323,7 +324,7 @@ namespace Claims_Testsuite.Claims
 
 
                 Delay(4);
-
+                  
                 //Mutimediad pop
                 String test_url_4_title = "SANLAM RM - Safrican Retail - Warpspeed Lookup Window";
 
@@ -334,10 +335,16 @@ namespace Claims_Testsuite.Claims
                 /* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?); */
                 string expectedNewWindowTitle4 = test_url_4_title;
                 Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle3).Title, expectedNewWindowTitle4);
+
+                var Firstname = _driver.FindElement(By.XPath("//*[@id='lkpResultsTable']/tbody/tr[2]/td[2]")).Text;
+
+                var Surname = _driver.FindElement(By.XPath("//*[@id='lkpResultsTable']/tbody/tr[2]/td[3]")).Text;
+
                 //Click on Add new
                 Delay(2);
                 _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr/td/center[2]/table[2]/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]")).Click();
-
+                
+            
                 /* Return to the window with handle = 0 */
                 _driver.SwitchTo().Window(_driver.WindowHandles[0]);
 
@@ -374,6 +381,19 @@ namespace Claims_Testsuite.Claims
 
                 //BI-number 
                 Delay(2);
+                _driver.FindElement(By.Name("fcFirstName")).SendKeys(Firstname);
+
+                //BI-number 
+                Delay(2);
+                _driver.FindElement(By.Name("fcLastName")).SendKeys(Surname);
+
+                //BI-number 
+                Delay(2);
+                _driver.FindElement(By.Name("fcBINumber")).SendKeys(Gender);
+
+
+                //BI-number 
+                Delay(2);
                 _driver.FindElement(By.Name("fcBINumber")).SendKeys(BI_Number);
 
                 //BI-number 
@@ -396,6 +416,7 @@ namespace Claims_Testsuite.Claims
                 _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[3]/a")).Click();
 
                 //validation of claim
+
 
 
             }
