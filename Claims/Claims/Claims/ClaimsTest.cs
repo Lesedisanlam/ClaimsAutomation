@@ -82,7 +82,7 @@ namespace Claims_Testsuite.Claims
                 Delay(2);
                 //SetproductName();
                 string Claimant = String.Empty, Cause_of_incident = String.Empty, BI_Number = String.Empty, Roleplayer = String.Empty, SubClaimType = String.Empty, ClaimType = String.Empty, 
-                    IdNum = String.Empty, Date_of_incident = String.Empty, Contact_Date = String.Empty, Email_Address = String.Empty, Mobile_Number = String.Empty, ClaimDescription = String.Empty, Gender = String.Empty; 
+                    IdNum = String.Empty, Date_of_incident = String.Empty, Contact_Date = String.Empty, Email_Address = String.Empty, Mobile_Number = String.Empty, ClaimDescription = String.Empty, Gender = String.Empty, Title = String.Empty; 
 
                 OpenDBConnection("SELECT * FROM SSLP_Data");
                 reader = command.ExecuteReader();
@@ -101,6 +101,8 @@ namespace Claims_Testsuite.Claims
                     Mobile_Number = reader["Mobile_Number"].ToString().Trim();
                     ClaimDescription = reader["ClaimDescription"].ToString().Trim();
                     Gender = reader["Gender"].ToString().Trim();
+                    Title = reader["Title"].ToString().Trim();
+                    
 
 
                 }
@@ -277,9 +279,7 @@ namespace Claims_Testsuite.Claims
                 _driver.FindElement(By.Name("btnAdd")).Click();
 
 
-
                 //Add BI-1663
-
 
                 Delay(2);
                 _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td/div/center/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr/td/div/div/div/div/ul/li/div/span[1]")).Click();
@@ -388,9 +388,14 @@ namespace Claims_Testsuite.Claims
                 _driver.FindElement(By.Name("fcLastName")).SendKeys(Surname);
 
                 //BI-number 
-                Delay(2);
-                _driver.FindElement(By.Name("fcBINumber")).SendKeys(Gender);
+                SelectElement dropDown4 = new SelectElement(_driver.FindElement(By.Name("fcGender")));
+                dropDown4.SelectByText(Gender);
+                Delay(5);
 
+                //BI-number 
+                SelectElement dropDown5 = new SelectElement(_driver.FindElement(By.Name("fcTitle")));
+                dropDown5.SelectByText(Title);
+                Delay(5);
 
                 //BI-number 
                 Delay(2);
@@ -417,6 +422,33 @@ namespace Claims_Testsuite.Claims
 
                 //validation of claim
 
+                // Authorise Claim
+
+
+                //Authorisze payment  
+                string Effective_Date = String.Empty, Bank = String.Empty, Branch = String.Empty, Account_Number = String.Empty, Name = String.Empty, Account_Type = String.Empty,
+                   Stop_Date = String.Empty, Cheque_Stale_Months = String.Empty, credit_Card = String.Empty, Expiry_date = String.Empty;
+
+                OpenDBConnection("SELECT * FROM SSLP_Data");
+                reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+
+                    Effective_Date = reader["Effective_Date"].ToString().Trim();
+                    Bank = reader["Bank"].ToString().Trim();
+                    Branch = reader["Branch"].ToString().Trim();
+                    Account_Number = reader["Account_Number"].ToString().Trim();
+                    Name = reader["Name"].ToString().Trim();
+                    Account_Type = reader["Account_Type"].ToString().Trim();
+                    Stop_Date = reader["Date_of_incident"].ToString().Trim();
+                    Cheque_Stale_Months = reader["Cheque_Stale_Months"].ToString().Trim();
+                    credit_Card = reader["credit_Card"].ToString().Trim();
+                    Expiry_date = reader["Expiry_date"].ToString().Trim();
+                  
+                }
+                connection.Close();
+
+                //Bank accont if details
 
 
             }
