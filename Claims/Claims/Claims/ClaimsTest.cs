@@ -310,7 +310,7 @@ namespace Claims_Testsuite.Claims
                 _driver.SwitchTo().Window(_driver.WindowHandles[0]);
 
 
-                //click on completet 
+                //click on complete
                 Delay(2);
                _driver.FindElement(By.Name("btnComplete")).Click();
                 //Click on Add new
@@ -352,14 +352,13 @@ namespace Claims_Testsuite.Claims
                 Delay(2);
                 _driver.FindElement(By.Name("fcIncidentDate")).SendKeys(Date_of_incident);
 
-
                 //incednt Date
                 Delay(2);
                 _driver.FindElement(By.Name("fcFirstContact")).SendKeys(Date_of_incident);
 
                 //click on add 
                 Delay(4);
-                _driver.FindElement(By.Name("fcLifeAssured")).Click();
+                //_driver.FindElement(By.Name("fcLifeAssured")).Click();
 
                 //Life assured
                 SelectElement dropDown2 = new SelectElement(_driver.FindElement(By.Name("fcLifeAssured")));
@@ -377,35 +376,47 @@ namespace Claims_Testsuite.Claims
                 SelectElement dropDown3= new SelectElement(_driver.FindElement(By.Name("fcIncidentCause")));
                 dropDown3.SelectByText(Cause_of_incident);
                 Delay(5);
+                try
+
+                {
+
+                    //Firstname
+                    Delay(2);
+                    _driver.FindElement(By.Name("fcFirstName")).SendKeys(Firstname);
+
+                    //Surname
+                    Delay(2);
+                    _driver.FindElement(By.Name("fcLastName")).SendKeys(Surname);
+
+                    //Gender 
+                    SelectElement dropDown4 = new SelectElement(_driver.FindElement(By.Name("fcGender")));
+                    dropDown4.SelectByText(Gender);
+                    Delay(5);
+
+                    //Title
+                    SelectElement dropDown5 = new SelectElement(_driver.FindElement(By.Name("fcTitle")));
+                    dropDown5.SelectByText(Title);
+                    Delay(5);
+                }
+                catch
+                { 
+                    
 
 
-                //BI-number 
-                Delay(2);
-                _driver.FindElement(By.Name("fcFirstName")).SendKeys(Firstname);
 
-                //BI-number 
-                Delay(2);
-                _driver.FindElement(By.Name("fcLastName")).SendKeys(Surname);
-
-                //BI-number 
-                SelectElement dropDown4 = new SelectElement(_driver.FindElement(By.Name("fcGender")));
-                dropDown4.SelectByText(Gender);
-                Delay(5);
-
-                //BI-number 
-                SelectElement dropDown5 = new SelectElement(_driver.FindElement(By.Name("fcTitle")));
-                dropDown5.SelectByText(Title);
-                Delay(5);
+                
+                }
+                
 
                 //BI-number 
                 Delay(2);
                 _driver.FindElement(By.Name("fcBINumber")).SendKeys(BI_Number);
 
-                //BI-number 
+                //Email_Address
                 Delay(2);
                 _driver.FindElement(By.Name("fcEmailAddress")).SendKeys(Email_Address);
 
-                //BI-number 
+                //Mobile_Number 
                 Delay(2);
                 _driver.FindElement(By.Name("fcMobileNumber")).SendKeys(Mobile_Number);
 
@@ -416,11 +427,43 @@ namespace Claims_Testsuite.Claims
                 _driver.FindElement(By.Name("btnSubmit")).Click();
 
 
+                
+                Delay(3);
+
+
+                //Validate calim status
+                string actualvalue = _driver.FindElement(By.Id("fcClaimStatus1_span")).Text;
+
+                actualvalue.Contains("Authorised Claim");
+
+                _driver.FindElement(By.Name("fcClaimRef1")).Click();
+
+
+                //validation of claim
+
+
+
+
+
+                //Hover on claim options
+                IWebElement policyOptionElement = _driver.FindElement(By.XPath("//*[@id='m0i0o1']"));
+                //Creating object of an Actions class
+                Actions action = new Actions(_driver);
+                //Performing the mouse hover action on the target element.
+                action.MoveToElement(policyOptionElement).Perform();
+                Delay(5);
+                //Click on authorise
+                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[7]/td/div/div[3]/a/img")).Click();
+                Delay(5);
+
+
                 //click on contrct summary
                 Delay(2);
                 _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[3]/a")).Click();
 
-                //validation of claim
+
+
+
 
                 // Authorise Claim
 
@@ -448,7 +491,7 @@ namespace Claims_Testsuite.Claims
                 }
                 connection.Close();
 
-                //Bank accont if details
+                //Bank account if details
 
 
             }
