@@ -360,22 +360,10 @@ namespace Claims_Testsuite.Claims
                 Delay(4);
                 //_driver.FindElement(By.Name("fcLifeAssured")).Click();
 
-                //Life assured
-                SelectElement dropDown2 = new SelectElement(_driver.FindElement(By.Name("fcLifeAssured")));
-                dropDown2.SelectByText(Claimant);
-                Delay(5);
-
+              
 
              
-                //ClaimType Person
-                SelectElement dropDown1 = new SelectElement(_driver.FindElement(By.Name("fcClaimType")));
-                dropDown1.SelectByText(ClaimDescription);
-                Delay(5);
-
-                //Cause of Incident
-                SelectElement dropDown3= new SelectElement(_driver.FindElement(By.Name("fcIncidentCause")));
-                dropDown3.SelectByText(Cause_of_incident);
-                Delay(5);
+            
                 try
 
                 {
@@ -391,12 +379,12 @@ namespace Claims_Testsuite.Claims
                     //Gender 
                     SelectElement dropDown4 = new SelectElement(_driver.FindElement(By.Name("fcGender")));
                     dropDown4.SelectByText(Gender);
-                    Delay(5);
+                    Delay(2);
 
                     //Title
                     SelectElement dropDown5 = new SelectElement(_driver.FindElement(By.Name("fcTitle")));
                     dropDown5.SelectByText(Title);
-                    Delay(5);
+                    Delay(2);
                 }
                 catch
                 { 
@@ -406,7 +394,23 @@ namespace Claims_Testsuite.Claims
 
                 
                 }
-                
+
+
+                //Life assured
+                SelectElement dropDown2 = new SelectElement(_driver.FindElement(By.Name("fcLifeAssured")));
+                dropDown2.SelectByText(Claimant);
+                Delay(2);
+
+
+                //ClaimType Person
+                SelectElement dropDown1 = new SelectElement(_driver.FindElement(By.Name("fcClaimType")));
+                dropDown1.SelectByText(Cause_of_incident);
+                Delay(2);
+
+                //Cause of Incident
+                SelectElement dropDown3 = new SelectElement(_driver.FindElement(By.Name("fcIncidentCause")));
+                dropDown3.SelectByText(ClaimDescription);
+                Delay(2);
 
                 //BI-number 
                 Delay(2);
@@ -430,31 +434,7 @@ namespace Claims_Testsuite.Claims
                 
                 Delay(3);
 
-
-                //Validate calim status
-                string actualvalue = _driver.FindElement(By.Id("fcClaimStatus1_span")).Text;
-
-                actualvalue.Contains("Authorised Claim");
-
-                _driver.FindElement(By.Name("fcClaimRef1")).Click();
-
-
-                //validation of claim
-
-
-
-
-
-                //Hover on claim options
-                IWebElement policyOptionElement = _driver.FindElement(By.XPath("//*[@id='m0i0o1']"));
-                //Creating object of an Actions class
-                Actions action = new Actions(_driver);
-                //Performing the mouse hover action on the target element.
-                action.MoveToElement(policyOptionElement).Perform();
-                Delay(5);
-                //Click on authorise
-                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[7]/td/div/div[3]/a/img")).Click();
-                Delay(5);
+                //process claim
 
 
                 //click on contrct summary
@@ -463,9 +443,69 @@ namespace Claims_Testsuite.Claims
 
 
 
+                //Validate calim status
+                string actualvalue = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/span/em")).Text;
+
+                actualvalue.Contains("New Claim");
 
 
-                // Authorise Claim
+
+
+
+
+                // workflow valdation and checks
+
+
+                Delay(3);
+
+
+
+
+
+
+
+
+
+
+                //click on policy ref 
+                Delay(3);
+                _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[6]/a")).Click();
+
+                
+
+
+                //validation of claim
+
+
+                //Hover on claim options
+                IWebElement ClaimsOptionElement = _driver.FindElement(By.XPath("//*[@id='m0i0o1']"));
+                //Creating object of an Actions class
+                Actions action = new Actions(_driver);
+                //Performing the mouse hover action on the target element.
+                action.MoveToElement(ClaimsOptionElement).Perform();
+                Delay(3);
+
+                //Click on authorise
+                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[7]/td/div/div[3]/a/img")).Click();
+                Delay(5);
+
+
+                // Authorise Claim authorization
+
+                //Validate calim status
+                string actualvalue2 = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[5]/td[2]")).Text;
+
+                actualvalue2.Contains("Authorised Claim");
+
+
+                //Add  payments 
+                //Click on  payment maintence
+                Delay(2);
+                _driver.FindElement(By.Name("hl_AuthPay")).Click();
+
+                Delay(2);
+                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td/table/tbody/tr/td[1]/table")).Click();
+
 
 
                 //Authorisze payment  
@@ -487,11 +527,73 @@ namespace Claims_Testsuite.Claims
                     Cheque_Stale_Months = reader["Cheque_Stale_Months"].ToString().Trim();
                     credit_Card = reader["credit_Card"].ToString().Trim();
                     Expiry_date = reader["Expiry_date"].ToString().Trim();
+
+
                   
                 }
                 connection.Close();
 
                 //Bank account if details
+
+
+
+                //Click next
+
+                Delay(2);
+                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td/table/tbody/tr/td[1]/table")).Click();
+
+                //Click Authorize
+                Delay(2);
+                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[16]/td/table/tbody/tr/td[2]/table")).Click();
+
+
+
+
+                // Authorise Claim validation
+
+                //Validate calim status
+                string ClaimStatus = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/span/em")).Text;
+
+                ClaimStatus.Contains("Payments Created");
+
+                //Process Payment
+
+
+
+                //Hover on claim options
+                IWebElement ClaimOptionElement = _driver.FindElement(By.XPath("//*[@id='m0i0o1']"));
+                //Creating object of an Actions class
+                Actions action2 = new Actions(_driver);
+                //Performing the mouse hover action on the target element.
+                action2.MoveToElement(ClaimOptionElement).Perform();
+                Delay(5);
+
+                //Click on process payment
+                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[10]/td/div/div[3]/a/img")).Click();
+                Delay(5);
+
+
+                //Click on Confirm Payment textbox
+
+                _driver.FindElement(By.Name("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[2]/tbody/tr[2]/td/table/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]/td[5]/input")).Click();
+                Delay(5);
+
+                //Click on process payment button
+                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[2]/tbody/tr[1]/td[3]/table")).Click();
+                Delay(5);
+
+
+
+
+                //Validate claim status
+                string ClaimpaymentStatus = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/span/em")).Text;
+
+                ClaimpaymentStatus.Contains("Claim Payment Raised");
+                  
+
+
+
+             //workflow valdation and checks 
 
 
             }
@@ -500,7 +602,7 @@ namespace Claims_Testsuite.Claims
                 if (ex.Message.Length > 255)
                 {
                     errMsg = ex.Message.Substring(0, 255);
-                }
+                } 
                 else
                 {
                     errMsg = ex.Message;
