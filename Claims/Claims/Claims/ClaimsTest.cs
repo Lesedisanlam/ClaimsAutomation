@@ -314,6 +314,9 @@ namespace Claims_Testsuite.Claims
                 Delay(2);
                _driver.FindElement(By.Name("btnComplete")).Click();
                 //Click on Add new
+
+
+
                 Delay(2);
                 _driver.FindElement(By.Name("fcIDNumber")).SendKeys(IdNum);
 
@@ -362,8 +365,7 @@ namespace Claims_Testsuite.Claims
 
               
 
-             
-            
+
                 try
 
                 {
@@ -456,6 +458,33 @@ namespace Claims_Testsuite.Claims
                 // workflow valdation and checks
 
 
+                Delay(2);
+                _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[3]/a")).Click();
+
+
+
+                //Validate calim status
+                string claimActualValue = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/span/em")).Text;
+
+                claimActualValue.Contains("New Claim");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 Delay(3);
 
 
@@ -534,6 +563,7 @@ namespace Claims_Testsuite.Claims
                 connection.Close();
 
                 //Bank account if details
+
 
 
 
