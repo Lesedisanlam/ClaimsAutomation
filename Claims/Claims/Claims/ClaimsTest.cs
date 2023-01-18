@@ -369,6 +369,10 @@ namespace Claims_Testsuite.Claims
                 try
 
                 {
+                    //Gender 
+                    SelectElement dropDown4 = new SelectElement(_driver.FindElement(By.Name("fcGender")));
+                    dropDown4.SelectByText(Gender);
+                    Delay(2);
 
                     //Firstname
                     Delay(2);
@@ -378,16 +382,13 @@ namespace Claims_Testsuite.Claims
                     Delay(2);
                     _driver.FindElement(By.Name("fcLastName")).SendKeys(Surname);
 
-                    //Gender 
-                    SelectElement dropDown4 = new SelectElement(_driver.FindElement(By.Name("fcGender")));
-                    dropDown4.SelectByText(Gender);
-                    Delay(2);
+                    
 
                     //Title
                     SelectElement dropDown5 = new SelectElement(_driver.FindElement(By.Name("fcTitle")));
                     dropDown5.SelectByText(Title);
-                    Delay(2);
-                }
+
+                    
                 catch
                 { 
                     
@@ -396,6 +397,28 @@ namespace Claims_Testsuite.Claims
 
                 
                 }
+
+
+                IWebElement ele = _driver.FindElement(By.Name("fcEmailAddress")); //find the text field
+
+                if (ele.GetAttribute("value") == "")
+                {
+                   
+                    //Email_Address
+                    Delay(2);
+                    _driver.FindElement(By.Name("fcEmailAddress")).SendKeys(Email_Address);
+
+                    //Mobile_Number 
+                    Delay(2);
+                    _driver.FindElement(By.Name("fcMobileNumber")).SendKeys(Mobile_Number);
+                    Delay(2);
+                }
+                else
+                {
+                    //Store the value
+                    String store = ele.GetAttribute("value");
+                }
+               
 
 
                 //Life assured
@@ -418,13 +441,7 @@ namespace Claims_Testsuite.Claims
                 Delay(2);
                 _driver.FindElement(By.Name("fcBINumber")).SendKeys(BI_Number);
 
-                //Email_Address
-                Delay(2);
-                _driver.FindElement(By.Name("fcEmailAddress")).SendKeys(Email_Address);
-
-                //Mobile_Number 
-                Delay(2);
-                _driver.FindElement(By.Name("fcMobileNumber")).SendKeys(Mobile_Number);
+                
 
                 clickOnMainMenu();
 
@@ -439,14 +456,18 @@ namespace Claims_Testsuite.Claims
                 //process claim
 
 
+
+
+
                 //click on contrct summary
                 Delay(2);
                 _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[3]/a")).Click();
 
 
+                Delay(2);
 
                 //Validate calim status
-                string actualvalue = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/span/em")).Text;
+                string actualvalue = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]")).Text;
 
                 actualvalue.Contains("New Claim");
 
@@ -454,12 +475,13 @@ namespace Claims_Testsuite.Claims
 
 
 
+                Delay(60);
 
                 // workflow valdation and checks
 
 
                 Delay(2);
-                _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[3]/a")).Click();
+                _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]")).Click();
 
 
 
