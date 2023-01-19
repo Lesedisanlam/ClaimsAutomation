@@ -102,9 +102,7 @@ namespace Claims_Testsuite.Claims
                     ClaimDescription = reader["ClaimDescription"].ToString().Trim();
                     Gender = reader["Gender"].ToString().Trim();
                     Title = reader["Title"].ToString().Trim();
-                    
-
-
+                  
                 }
                 connection.Close();
                 
@@ -363,15 +361,15 @@ namespace Claims_Testsuite.Claims
                 Delay(4);
                 //_driver.FindElement(By.Name("fcLifeAssured")).Click();
 
-              
+
 
 
                 try
 
                 {
                     //Gender 
-                    SelectElement dropDown4 = new SelectElement(_driver.FindElement(By.Name("fcGender")));
-                    dropDown4.SelectByText(Gender);
+                    SelectElement userGender = new SelectElement(_driver.FindElement(By.Name("fcGender")));
+                    userGender.SelectByText(Gender);
                     Delay(2);
 
                     //Firstname
@@ -382,20 +380,20 @@ namespace Claims_Testsuite.Claims
                     Delay(2);
                     _driver.FindElement(By.Name("fcLastName")).SendKeys(Surname);
 
-                    
+
 
                     //Title
                     SelectElement dropDown5 = new SelectElement(_driver.FindElement(By.Name("fcTitle")));
                     dropDown5.SelectByText(Title);
 
-                    
+                }
                 catch
-                { 
-                    
+                {
 
 
 
-                
+
+
                 }
 
 
@@ -443,7 +441,7 @@ namespace Claims_Testsuite.Claims
 
                 
 
-                clickOnMainMenu();
+                
 
                 //Click submit
                 Delay(2);
@@ -455,7 +453,7 @@ namespace Claims_Testsuite.Claims
 
                 //process claim
 
-
+                clickOnMainMenu();
 
 
 
@@ -475,54 +473,171 @@ namespace Claims_Testsuite.Claims
 
 
 
-                Delay(60);
+                Delay(90);
+                _driver.Navigate().Refresh();
 
-                // workflow valdation and checks
 
+
+                //go to workflow 
+                Delay(8);
+
+
+
+                //go to workflow 
+                String expectedtext = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[19]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[3]")).Text; 
+
+               if(expectedtext == "Active")
+                {
+                
+                    _driver.FindElement(By.Name("fcReference1")).Click();
+
+
+                }
+            else
+                {
+
+
+                    Delay(90);
+                    _driver.Navigate().Refresh();
+                    _driver.FindElement(By.Name("fcReference1")).Click();
+
+
+                }
+
+                //click on red component
+                Delay(3);
+                _driver.FindElement(By.XPath("/svg/g[1]/g/g[57]/g/a/ellipse[1]")).Click();
+
+
+                //click on pick
+                Delay(3);
+                _driver.FindElement(By.Name("btnPick")).Click();
+
+                //click on Death Certificate tickbox
+                Delay(3);
+                _driver.FindElement(By.Name("refActivityLogRefsMainDeath Certificate")).Click();
+
+
+                //click on Certified Copy of Identity Document tickbox
+                Delay(3);
+                _driver.FindElement(By.Name("refActivityLogRefsMainCertified Copy of Identity Document")).Click();
+
+
+                //click on Marriage Certificate or Proof of Customary Union	 tickbox
+                Delay(3);
+                _driver.FindElement(By.Name("refActivityLogRefsMainMarriage Certificate or Proof of Customary Union")).Click();
+
+
+                //click on Application Form - Claim tickbox
+                Delay(3);
+                _driver.FindElement(By.Name("refActivityLogRefsMainApplication Form - Claim")).Click();
+
+
+
+                //click on Medical Report or Medical Attendance Certificate tickbox
+                Delay(3);
+                _driver.FindElement(By.Name("refActivityLogRefsMainDeath Notification Form(BI - 1663 or DHA - 1663)")).Click();
+
+
+
+
+                //click on Additional Medicals  tickbox
+                Delay(3);
+                _driver.FindElement(By.Name("refActivityLogRefsMainMedical Report or Medical Attendance Certificate")).Click();
+
+                //click on Additional Medicals (eg MRI/Failures/Cancer/Transplant)		 tickbox
+                Delay(3);
+                _driver.FindElement(By.Name("refActivityLogRefsMainAuthority or Executorship Notification")).Click();
+                //click on  complete
+                Delay(3);
+                _driver.FindElement(By.Name("btnComplete")).Click();
+
+
+                //click on pick tickbox
+                Delay(3);
+                _driver.FindElement(By.Name("")).Click();
+
+
+                string Informant_Information = String.Empty, Undertaker_Name = String.Empty, BI_SerialNumber = String.Empty, PlaceOfDeath = String.Empty, Primary_CauseOfDeath = String.Empty, Secondary_CauseOfDeath = String.Empty,
+                  Medical_SAMDC = String.Empty, DoctorName = String.Empty,  Doctor_PracticeNumber = String.Empty, Doctor_ContactNumber = String.Empty, Traditional_Healer = String.Empty;
+
+                OpenDBConnection("SELECT * FROM SSLP_Data");
+                reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+
+                    Informant_Information = reader["Effective_Date"].ToString().Trim();
+                    Undertaker_Name = reader["Bank"].ToString().Trim();
+                    BI_SerialNumber = reader["Branch"].ToString().Trim();
+                    PlaceOfDeath = reader["Account_Number"].ToString().Trim();
+                    Primary_CauseOfDeath = reader["Name"].ToString().Trim();
+                    Secondary_CauseOfDeath = reader["Account_Type"].ToString().Trim();
+                    Medical_SAMDC = reader["Date_of_incident"].ToString().Trim();
+                    DoctorName = reader["Cheque_Stale_Months"].ToString().Trim();
+                    Doctor_PracticeNumber = reader["credit_Card"].ToString().Trim();
+                    Doctor_ContactNumber = reader["Expiry_date"].ToString().Trim();
+                    Traditional_Healer = reader["Expiry_date"].ToString().Trim();
+
+
+                }
+                connection.Close();
+
+
+                //Informant_Information	
+                SelectElement dropDown4 = new SelectElement(_driver.FindElement(By.Name("refActivityLogRefsMainInformantSameClaimant")));
+                dropDown4.SelectByText(Informant_Information);
+                Delay(2);
+
+
+                //BI Certificate Information	
+                //Undertaker Name:	
+                Delay(2);
+                _driver.FindElement(By.Name("refActivityLogRefsMainUndertakerName")).SendKeys(Undertaker_Name);
+
+                //BI_SerialNumber:	
+                Delay(2);
+                _driver.FindElement(By.Name("refActivityLogRefsMainBISerialNumber")).SendKeys(BI_SerialNumber);
+
+                //PlaceOfDeath:	
+                Delay(2);
+                _driver.FindElement(By.Name("refActivityLogRefsMainBIPlaceOfDeath")).SendKeys(PlaceOfDeath);
+
+                //Primary_CauseOfDeath:	
+                SelectElement CauseOfDeath = new SelectElement(_driver.FindElement(By.Name("refActivityLogRefsMainBIPlaceOfDeath")));
+                CauseOfDeath.SelectByText(Primary_CauseOfDeath);
+                Delay(2);
+
+                //Secondary_CauseOfDeath:	
+                Delay(2);
+                _driver.FindElement(By.Name("fcBINumber")).SendKeys(Secondary_CauseOfDeath);
+
+                //Medical_SAMDC:	
+                Delay(2);
+                _driver.FindElement(By.Name("fcBINumber")).SendKeys(Medical_SAMDC);
+
+
+
+
+                //Practitioner Information
+                //DoctorName:
+                Delay(2);
+                _driver.FindElement(By.Name("fcBINumber")).SendKeys(DoctorName);
+
+                //Doctor_PracticeNumber:	
 
                 Delay(2);
-                _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]")).Click();
+                _driver.FindElement(By.Name("fcBINumber")).SendKeys(Doctor_PracticeNumber);
+
+                //Doctor_ContactNumber:	
+                Delay(2);
+                _driver.FindElement(By.Name("fcBINumber")).SendKeys(Doctor_ContactNumber);
+
+                //Traditional_Healer:
+                SelectElement dropDown8 = new SelectElement(_driver.FindElement(By.Name("fcGender")));
+                dropDown8.SelectByText(Traditional_Healer);
+                Delay(2);
 
 
-
-                //Validate calim status
-                string claimActualValue = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/span/em")).Text;
-
-                claimActualValue.Contains("New Claim");
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                Delay(3);
-
-
-
-
-
-
-
-
-
-
-                //click on policy ref 
-                Delay(3);
-                _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[6]/a")).Click();
-
-                
 
 
                 //validation of claim
@@ -585,8 +700,6 @@ namespace Claims_Testsuite.Claims
                 connection.Close();
 
                 //Bank account if details
-
-
 
 
                 //Click next
