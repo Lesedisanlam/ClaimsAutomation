@@ -367,6 +367,8 @@ namespace Claims_Testsuite.Claims
                 try
 
                 {
+
+
                     //Gender 
                     SelectElement userGender = new SelectElement(_driver.FindElement(By.Name("fcGender")));
                     userGender.SelectByText(Gender);
@@ -381,7 +383,6 @@ namespace Claims_Testsuite.Claims
                     _driver.FindElement(By.Name("fcLastName")).SendKeys(Surname);
 
 
-
                     //Title
                     SelectElement dropDown5 = new SelectElement(_driver.FindElement(By.Name("fcTitle")));
                     dropDown5.SelectByText(Title);
@@ -389,9 +390,6 @@ namespace Claims_Testsuite.Claims
                 }
                 catch
                 {
-
-
-
 
 
                 }
@@ -559,24 +557,25 @@ namespace Claims_Testsuite.Claims
 
 
                 string Informant_Information = String.Empty, Undertaker_Name = String.Empty, BI_SerialNumber = String.Empty, PlaceOfDeath = String.Empty, Primary_CauseOfDeath = String.Empty, Secondary_CauseOfDeath = String.Empty,
-                  Medical_SAMDC = String.Empty, DoctorName = String.Empty,  Doctor_PracticeNumber = String.Empty, Doctor_ContactNumber = String.Empty, Traditional_Healer = String.Empty;
+                Medical_SAMDC = String.Empty, DoctorName = String.Empty,  Doctor_PracticeNumber = String.Empty, Doctor_ContactNumber = String.Empty, Traditional_Healer = String.Empty;
 
-                OpenDBConnection("SELECT * FROM SSLP_Data");
+                OpenDBConnection("SELECT * FROM Reference_Values");
                 reader = command.ExecuteReader();
                 while (reader.Read())
                 {
 
-                    Informant_Information = reader["Effective_Date"].ToString().Trim();
-                    Undertaker_Name = reader["Bank"].ToString().Trim();
-                    BI_SerialNumber = reader["Branch"].ToString().Trim();
-                    PlaceOfDeath = reader["Account_Number"].ToString().Trim();
-                    Primary_CauseOfDeath = reader["Name"].ToString().Trim();
-                    Secondary_CauseOfDeath = reader["Account_Type"].ToString().Trim();
-                    Medical_SAMDC = reader["Date_of_incident"].ToString().Trim();
-                    DoctorName = reader["Cheque_Stale_Months"].ToString().Trim();
-                    Doctor_PracticeNumber = reader["credit_Card"].ToString().Trim();
-                    Doctor_ContactNumber = reader["Expiry_date"].ToString().Trim();
-                    Traditional_Healer = reader["Expiry_date"].ToString().Trim();
+
+                    Informant_Information = reader["Informant_Information"].ToString().Trim();
+                    Undertaker_Name = reader["Undertaker_Name"].ToString().Trim();
+                    BI_SerialNumber = reader["BI_SerialNumber"].ToString().Trim();
+                    PlaceOfDeath = reader["PlaceOfDeath"].ToString().Trim();
+                    Primary_CauseOfDeath = reader["Primary_CauseOfDeath"].ToString().Trim();
+                    Secondary_CauseOfDeath = reader["Secondary_CauseOfDeath"].ToString().Trim();
+                    Medical_SAMDC = reader["Medical_SAMDC"].ToString().Trim();
+                    DoctorName = reader["DoctorName"].ToString().Trim();
+                    Doctor_PracticeNumber = reader["Doctor_PracticeNumber"].ToString().Trim();
+                    Doctor_ContactNumber = reader["Doctor_ContactNumber"].ToString().Trim();
+                    Traditional_Healer = reader["Traditional_Healer"].ToString().Trim();
 
 
                 }
