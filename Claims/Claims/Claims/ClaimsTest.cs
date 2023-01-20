@@ -693,7 +693,6 @@ namespace Claims_Testsuite.Claims
                     credit_Card = reader["credit_Card"].ToString().Trim();
                     Expiry_date = reader["Expiry_date"].ToString().Trim();
 
-
                   
                 }
                 connection.Close();
