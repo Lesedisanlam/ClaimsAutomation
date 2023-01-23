@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Claims\ClaimsTest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.18.0" />
     <PackageReference Include="MDF.FrameWork" Version="1.0.0" />
     <PackageReference Include="Microsoft.CodeCoverage" Version="17.3.2" />
