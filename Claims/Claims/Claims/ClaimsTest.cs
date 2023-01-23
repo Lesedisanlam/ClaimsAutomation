@@ -439,7 +439,6 @@ namespace Claims_Testsuite.Claims
 
                 
 
-                
 
                 //Click submit
                 Delay(2);
