@@ -501,12 +501,25 @@ namespace Claims_Testsuite.Claims
 
                 }
 
+                IWebElement iframe = _driver.FindElement(By.XPath("//div[@id='AppArea']//center"));
+
+                //Switch to the frame
+                _driver.SwitchTo().Frame(iframe);
+
+
+                //Now we can click the button
+                _driver.FindElement(By.XPath("//*[@id='a_node23']/a"));
+
+
+
+
+
                 //click on red component
-                IWebElement m = _driver.FindElement(By.Id("a_node23"));
-                // Action class to move and click element
-                Actions a = new Actions(_driver);
-                a.MoveToElement(m).
-                Click().Build().Perform();
+                //IWebElement m = _driver.FindElement(By.XPath("//*[@id='a_node23']/a"));
+                //// Action class to move and click element
+                //Actions a = new Actions(_driver);
+                //a.MoveToElement(m).
+                //Click().Build().Perform();
 
 
                 Delay(3);

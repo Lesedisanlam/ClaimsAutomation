@@ -637,6 +637,10 @@ namespace Claims_Testsuite.Claims
 
 
 
+                //click on contrct summary
+                Delay(2);
+                _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[3]/a")).Click();
+
 
                 //validation of claim
 
