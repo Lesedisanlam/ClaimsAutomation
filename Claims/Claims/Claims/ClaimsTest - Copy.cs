@@ -515,11 +515,12 @@ namespace Claims_Testsuite.Claims
 
 
                 //click on red component
-                //IWebElement m = _driver.FindElement(By.XPath("//*[@id='a_node23']/a"));
-                //// Action class to move and click element
-                //Actions a = new Actions(_driver);
-                //a.MoveToElement(m).
-                //Click().Build().Perform();
+                // identify element, enter text
+                WebElement m = _driver.FindElement(By.XPath("//*[local-name()='svg' and @data-icon='home']/*[localname()='path']"));
+                // Action class to move and click element
+                Actions a = new Actions(_driver);
+                a.MoveToElement(m).
+                Click().Build().Perform();
 
 
                 Delay(3);

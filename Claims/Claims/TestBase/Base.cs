@@ -84,11 +84,10 @@ namespace TestBase
 
                 try
                 {
-                    var cmd = $"UPDATE Cliams_Scenarios SET productName = @product WHERE FunctionID = {currentMethod}";
+                    var cmd = $"UPDATE Cliams_Scenarios SET productName = @product WHERE FunctionI7D = {currentMethod}";
                     OpenDBConnection(cmd);
                     command.Parameters.AddWithValue("@product", product);
                     command.ExecuteNonQuery();
-
 
 
 
