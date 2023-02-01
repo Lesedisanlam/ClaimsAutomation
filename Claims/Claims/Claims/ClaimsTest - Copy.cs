@@ -501,26 +501,27 @@ namespace Claims_Testsuite.Claims
 
                 }
 
+               //click component om yellow element 
+
+
                 IWebElement iframe = _driver.FindElement(By.XPath("//div[@id='AppArea']//center"));
 
-                //Switch to the frame
-                _driver.SwitchTo().Frame(iframe);
-
-
                 //Now we can click the button
-                _driver.FindElement(By.XPath("//*[@id='a_node23']/a"));
+
+                IWebElement mapObject = _driver.FindElement(By.XPath("//*[name()='svg']//*[local-name()='g']//*[local-name()='path' and @class='clNavPaneQuickLinkMenuItem']"));
+                Actions builder = new Actions(_driver);                    
+                builder.ContextClick(mapObject).Perform();
 
 
-
-
-
-                //click on red component
-                // identify element, enter text
-                WebElement m = _driver.FindElement(By.XPath("//*[local-name()='svg' and @data-icon='home']/*[localname()='path']"));
+                //click on red error messagew
+                IWebElement m = _driver.FindElement(By.XPath("//*[local-name()='svg']"));
                 // Action class to move and click element
                 Actions a = new Actions(_driver);
                 a.MoveToElement(m).
                 Click().Build().Perform();
+            
+
+
 
 
                 Delay(3);
@@ -563,7 +564,7 @@ namespace Claims_Testsuite.Claims
                 Delay(3);
                 _driver.FindElement(By.Name("refActivityLogRefsMainMedical Report or Medical Attendance Certificate")).Click();
 
-                //click on Additional Medicals (eg MRI/Failures/Cancer/Transplant)		 tickbox
+                //click on Additional Medicals (eg MRI/Failures/Cancer/Transplant)tickbox
                 Delay(3);
                 _driver.FindElement(By.Name("refActivityLogRefsMainAuthority or Executorship Notification")).Click();
                 //click on  complete
@@ -660,6 +661,19 @@ namespace Claims_Testsuite.Claims
 
 
                 //validation of claim
+
+
+
+                //Claim
+
+
+
+
+
+
+
+
+
 
 
                 //Hover on claim options
@@ -773,8 +787,6 @@ namespace Claims_Testsuite.Claims
 
                 ClaimpaymentStatus.Contains("Claim Payment Raised");
                   
-
-
 
              //workflow valdation and checks 
 
