@@ -47,7 +47,6 @@ namespace TestBase
             public static SqlDataReader reader { get; set; }
 
 
-
             [OneTimeSetUp]
             public void StartBrowser()
             {
