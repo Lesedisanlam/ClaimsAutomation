@@ -508,7 +508,7 @@ namespace Claims_Testsuite.Claims
 
                 //Now we can click the button
 
-                IWebElement mapObject = _driver.FindElement(By.XPath("//*[name()='svg']//*[local-name()='g']//*[local-name()='path' and @class='clNavPaneQuickLinkMenuItem']"));
+                IWebElement mapObject = _driver.FindElement(By.XPath("//*[name()='svg']//*[local-name()='g']//*[local-name()='path']"));
                 Actions builder = new Actions(_driver);                    
                 builder.ContextClick(mapObject).Perform();
 
