@@ -284,7 +284,7 @@ namespace TestBase
             var scenarioID = String.Empty;
             int id = getFuctionID(methodName);
             OpenDBConnection($"SELECT PolicyNo,ID FROM Claims_Scenarios WHERE FunctionID = {id}");
-            reader = command.ExecuteReader();
+            reader = command.ExecuteReader(); 
 
             while (reader.Read())
             {
