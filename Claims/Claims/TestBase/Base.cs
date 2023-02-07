@@ -200,7 +200,7 @@ namespace TestBase
             {
 
 
-                _driver.Url = "http://ilr-tst.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrtst/run.w";
+                _driver.Url = "http://ilr-tst.safrican.co.za/";
 
                 // IAlert alert = _driver.SwitchTo().Alert();
                 //  alert.Dismiss();
