@@ -79,6 +79,12 @@ namespace Claims_Testsuite.Claims
             {
 
                 policySearch(contractRef);
+
+                var Arrears =_driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[2]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td[2]")).Text;
+                var SingleBenefit = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[6]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[9]")).Text;
+
+
+
                 Delay(2);
                 //SetproductName();
                 string Role = String.Empty, Claimant = String.Empty, Cause_of_incident = String.Empty, BI_Number = String.Empty, Roleplayer = String.Empty, SubClaimType = String.Empty, ClaimType = String.Empty,
@@ -175,7 +181,7 @@ namespace Claims_Testsuite.Claims
 
 
                 //Click next
-                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[17]/td/table/tbody/tr/td/table")).Click();
+                _driver.FindElement(By.Name("btncbmin2")).Click();
                 Delay(4);
 
 
@@ -214,7 +220,7 @@ namespace Claims_Testsuite.Claims
                 Delay(2);
 
                 //Click next
-                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[17]/td/table/tbody/tr/td[2]/table")).Click();
+                _driver.FindElement(By.Name("btncbmin5")).Click();
                 Delay(2);
 
                 //Select ARL-BI_Number
@@ -227,11 +233,11 @@ namespace Claims_Testsuite.Claims
 
 
                 //Click Next
-                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[19]/td/table/tbody/tr/td[2]/table")).Click();
+                _driver.FindElement(By.Name("btncbmin9")).Click();
                 Delay(2);
 
                 //Click Finish
-                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[5]/tbody/tr[4]/td[2]/span/table/tbody/tr[9]/td/table/tbody/tr/td[2]/table")).Click();
+                _driver.FindElement(By.Name("btncbmin12")).Click();
                 Delay(4);
 
 
@@ -275,16 +281,13 @@ namespace Claims_Testsuite.Claims
                 _driver.FindElement(By.XPath("//*[@id='m0t0']/tbody/tr[6]/td/div/div[3]/a/img")).Click();
                 Delay(5);
 
-
-
+                
+                //validate payout amount
 
 
                 //Click on authorise
                 _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table/tbody/tr[4]/td[2]/span/table/tbody/tr[16]/td/table/tbody/tr/td/table")).Click();
                 Delay(5);
-
-
-
 
 
 
@@ -294,8 +297,6 @@ namespace Claims_Testsuite.Claims
                 string actualvalue2 = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[5]/td[2]")).Text;
 
                 actualvalue2.Contains("Authorised Claim");
-
-
 
 
 
@@ -314,15 +315,11 @@ namespace Claims_Testsuite.Claims
 
 
 
-
                 //click authrise Next
                 _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[16]/td/table/tbody/tr/td[1]/table")).Click();
 
                 Delay(2);
-
-
-
-
+                
 
                 try
 
@@ -528,27 +525,41 @@ namespace Claims_Testsuite.Claims
 
 
 
-
-                // Status History valdation
-
-
-
                 // movement  valdation
-
+                string movement = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[11]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[1]")).Text;
 
 
                 // Incidents  valdation
+                string Incidents = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]")).Text;
 
 
-                if ((ClaimpaymentStatus) == "Claim Payment Raised")
+
+                string eventname = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]")).Text;
+
+
+                //viewed events valdation
+
+                //
+                _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[1]/a")).Click();
+
+                //
+
+                //*[@id="t0_756"]/table/tbody/tr/td[1]/a
+                _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[9]/tbody/tr/td/a")).Click();
+
+
+                string events = _driver.FindElement(By.XPath("//html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[5]")).Text;
+
+
+                if ((ClaimpaymentStatus == "Claim Payment Raised") & (movement == "Claim Payment Raised	") &  (Incidents == "Death Claim") & (eventname == events))
                 {
-                    //Details sucessfully changed);
+                    //Sucessful Claim)
                     results = "Passed";
                 }
                 else
                 {
                     results = "Failed";
-                    TakeScreenshot("Manual Claim");
+                    TakeScreenshot(contractRef);
                     errMsg = "Claim  did not meet all validation criteria";
                 }
             }

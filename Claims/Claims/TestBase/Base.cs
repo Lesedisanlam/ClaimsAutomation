@@ -233,8 +233,8 @@ namespace TestBase
            
             public void writeResultsToDB(string results, int scenario_id, string comments)
             {
-
-                OpenDBConnection($"UPDATE PS_Scenarios SET Test_Results = @results, Test_Date =@testDate, Comments = @comments WHERE ID = {scenario_id}");
+              
+                OpenDBConnection($"UPDATE Claims_Scenarios SET Test_Results = @results, Test_Date =@testDate, Comments = @comments WHERE ID = {scenario_id}");
                 var testDate = DateTime.Now.ToString();
                 command.Parameters.AddWithValue("@results", results);
                 command.Parameters.AddWithValue("@testDate", testDate);
