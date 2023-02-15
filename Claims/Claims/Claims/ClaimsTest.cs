@@ -255,8 +255,7 @@ namespace Claims_Testsuite.Claims
                     Actions action = new Actions(_driver);
                     //Performing the mouse hover action on the target element.
                     action.MoveToElement(NewClaimElement).Perform();
-                    Delay(3);
-
+                    Delay(1);
 
                 }
                 else
@@ -271,15 +270,15 @@ namespace Claims_Testsuite.Claims
                     Actions action = new Actions(_driver);
                     //Performing the mouse hover action on the target element.
                     action.MoveToElement(ClaimsOptionElement).Perform();
-                    Delay(3);
+                    Delay(1);
 
 
                 }
 
-
+                Delay(2);
                 //Click on authorise
-                _driver.FindElement(By.XPath("//*[@id='m0t0']/tbody/tr[6]/td/div/div[3]/a/img")).Click();
-                Delay(5);
+                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[6]/td/div/div[3]/a/img")).Click();
+                Delay(3);
 
                 
                 //validate payout amount
@@ -455,9 +454,6 @@ namespace Claims_Testsuite.Claims
                         _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center[1]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[16]/td/table/tbody/tr/td[1]/table")).Click();
 
 
-
-
-
                     }
 
                 }
@@ -534,7 +530,7 @@ namespace Claims_Testsuite.Claims
 
 
 
-                string eventname = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]")).Text;
+                string eventname = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[5]")).Text;
 
 
                 //viewed events valdation
@@ -548,10 +544,10 @@ namespace Claims_Testsuite.Claims
                 _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[9]/tbody/tr/td/a")).Click();
 
 
-                string events = _driver.FindElement(By.XPath("//html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[5]")).Text;
+                string events = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/div/center/div[2]/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[1]")).Text;
 
 
-                if ((ClaimpaymentStatus == "Claim Payment Raised") & (movement == "Claim Payment Raised	") &  (Incidents == "Death Claim") & (eventname == events))
+                if ((ClaimpaymentStatus == "Claim Payment Raised") & (Incidents == "Claim Payment Raised") &  (movement == "Death Claim") & (eventname == events))
                 {
                     //Sucessful Claim)
                     results = "Passed";

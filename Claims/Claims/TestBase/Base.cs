@@ -217,9 +217,9 @@ namespace TestBase
 
                 System.Threading.Thread.Sleep(2000);
 
-                IWebElement loginTextBox = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td/div/center/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/input"));
-                IWebElement passwordTextBox = _driver.FindElement(By.CssSelector("#CntContentsDiv2 > table > tbody > tr:nth-child(3) > td:nth-child(2) > input[type=password]"));
-                IWebElement loginBtn = _driver.FindElement(By.CssSelector("#GBLbl-1 > span > a"));
+                IWebElement loginTextBox = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr/td/div/center/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/input"));
+                IWebElement passwordTextBox = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr/td/div/center/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td[2]/input"));
+                IWebElement loginBtn = _driver.FindElement(By.Name("btnLogin"));
                 loginTextBox.SendKeys(_userName);
                 System.Threading.Thread.Sleep(6000);
                 passwordTextBox.SendKeys(_password);
@@ -240,7 +240,6 @@ namespace TestBase
                 command.Parameters.AddWithValue("@testDate", testDate);
                 command.Parameters.AddWithValue("@comments", comments);
                 command.ExecuteNonQuery();
-
 
 
             }
