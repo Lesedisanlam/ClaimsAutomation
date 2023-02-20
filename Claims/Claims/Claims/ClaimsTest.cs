@@ -64,7 +64,7 @@ namespace Claims_Testsuite.Claims
             }
         }
 
-        [Test, TestCaseSource("GetTestData", new object[] { "Manual_Claim" })]
+        [Test, TestCaseSource("GetTestData", new object[] { "SSI_Claim" })]
         public void SSFP_Manual_Claim(string contractRef, string scenarioID)
         {
             if (String.IsNullOrEmpty(contractRef))
@@ -79,18 +79,17 @@ namespace Claims_Testsuite.Claims
             {
 
                 policySearch(contractRef);
-
-                var Arrears =_driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[2]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td[2]")).Text;
-                var SingleBenefit = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[6]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[9]")).Text;
-
-
-
                 Delay(2);
-                //SetproductName();
+                // var Arrears =_driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[2]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td[2]")).Text;
+                // var SingleBenefit = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[6]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[9]")).Text;
+                var NettInvestment = _driver.FindElement(By.XPath(" /html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[3]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]")).Text;
+
+              //  SetproductName();
+
                 string Role = String.Empty, Claimant = String.Empty, Cause_of_incident = String.Empty, BI_Number = String.Empty, Roleplayer = String.Empty, SubClaimType = String.Empty, ClaimType = String.Empty,
                 IdNum = String.Empty, Date_of_incident = String.Empty, Contact_Date = String.Empty, Email_Address = String.Empty, Mobile_Number = String.Empty, ClaimDescription = String.Empty, Gender = String.Empty, Title = String.Empty;
 
-                OpenDBConnection("SELECT * FROM SSLP_Data");
+                OpenDBConnection("SELECT * FROM ClaimDetails_Data WHERE Scenario_ID = '" + scenarioID + "' ");
                 reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -98,7 +97,7 @@ namespace Claims_Testsuite.Claims
                     ClaimType = reader["ClaimType"].ToString().Trim();
                     Claimant = reader["Claimant"].ToString().Trim();
                     Cause_of_incident = reader["Cause_of_incident"].ToString().Trim();
-                    BI_Number = reader["BI_Number"].ToString().Trim();
+               
                     Roleplayer = reader["Roleplayer"].ToString().Trim();
                     IdNum = reader["RolePlayer_idNum"].ToString().Trim();
                     Date_of_incident = reader["Date_of_incident"].ToString().Trim();
@@ -112,8 +111,20 @@ namespace Claims_Testsuite.Claims
                 }
                 connection.Close();
 
+                //clickOnMainMenu();
+                ////click contract summary dropdown
+                //_driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[1]/a/img[2]")).Click();
+                ////click on transactions
+                //_driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[7]/tbody/tr/td/a")).Click();
 
-                Delay(2);
+                //Delay(2);
+                ////select investment Account
+                //SelectElement iselect = new SelectElement(_driver.FindElement(By.Name("frmAccountTypeObj")));
+                //iselect.SelectByIndex(3);
+
+                //var closingBalance = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/center[1]/b")).Text;
+
+               
                 for (int i = 0; i < 24; i++)
                 {
                     IWebElement comp;
@@ -150,7 +161,7 @@ namespace Claims_Testsuite.Claims
                 _driver.FindElement(By.Name("btnAddNewClaim")).Click();
 
 
-                Delay(4);
+                Delay(2);
 
                 //Date of incident:
                 _driver.FindElement(By.Name("frmIncidentDate")).Clear();
@@ -168,7 +179,7 @@ namespace Claims_Testsuite.Claims
                 //ClaimType
                 SelectElement dropDown = new SelectElement(_driver.FindElement(By.Name("frmClaimType")));
                 dropDown.SelectByText(ClaimType);
-                Delay(5);
+                Delay(2);
 
 
 
@@ -182,63 +193,67 @@ namespace Claims_Testsuite.Claims
 
                 //Click next
                 _driver.FindElement(By.Name("btncbmin2")).Click();
-                Delay(4);
+                Delay(1);
+
+                _driver.FindElement(By.Name("btncbmin5")).Click();
+                Delay(1);
+
+              
 
 
+                //claim value 1,805.01 //policy value 1,855.01
+                //if cliam value < policy value click next else break
 
+                _driver.FindElement(By.Name("btncbmin9")).Click();
 
                 //go to incedent 
 
 
                 Delay(2);
-                _driver.FindElement(By.XPath("//*[@id='frmCbmin']/tbody/tr[9]/td[2]/nobr/input[2]")).SendKeys(Cause_of_incident);
-
-
-                Delay(2);
-                _driver.FindElement(By.XPath("//*[@id='frmCbmin']/tbody/tr[9]/td[2]/nobr/img")).Click();
-
-
-
-                //Mutimediad pop
-                String test_url_4_title = "SANLAM RM - Safrican Retail - Warpspeed Lookup Window";
-
-
-                Assert.AreEqual(2, _driver.WindowHandles.Count);
-                var newWindowHandle1 = _driver.WindowHandles[1];
-                Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle1));
-                /* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?); */
-                string expectedNewWindowTitle2 = test_url_4_title;
-                Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle1).Title, expectedNewWindowTitle2);
-
-
-                Delay(2);
-                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr/td/center[2]/table[2]/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]/td[2]")).Click();
-
-                /* Return to the window with handle = 0 */
-                _driver.SwitchTo().Window(_driver.WindowHandles[0]);
-
-                Delay(2);
-
-                //Click next
-                _driver.FindElement(By.Name("btncbmin5")).Click();
-                Delay(2);
-
-                //Select ARL-BI_Number
-                _driver.FindElement(By.Name("frmCriterionValue1_1")).SendKeys(BI_Number);
-                Delay(2);
-
-                //Select ID-Number	
-                _driver.FindElement(By.Name("frmCriterionValue1_2")).SendKeys(IdNum);
-                Delay(2);
-
-
-                //Click Next
-                _driver.FindElement(By.Name("btncbmin9")).Click();
-                Delay(2);
-
-                //Click Finish
+                //click finish
                 _driver.FindElement(By.Name("btncbmin12")).Click();
-                Delay(4);
+
+
+                Delay(2);
+             //   _driver.FindElement(By.XPath("//*[@id='frmCbmin']/tbody/tr[9]/td[2]/nobr/img")).Click();
+                //Mutimediad pop
+                //String test_url_4_title = "SANLAM RM - Safrican Retail - Warpspeed Lookup Window";
+
+                //Assert.AreEqual(2, _driver.WindowHandles.Count);
+                //var newWindowHandle1 = _driver.WindowHandles[1];
+                //Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle1));
+                ///* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?); */
+                //string expectedNewWindowTitle2 = test_url_4_title;
+                //Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle1).Title, expectedNewWindowTitle2);
+
+                //Delay(2);
+                //_driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr/td/center[2]/table[2]/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]/td[2]")).Click();
+
+                ///* Return to the window with handle = 0 */
+                //_driver.SwitchTo().Window(_driver.WindowHandles[0]);
+
+                //Delay(2);
+
+                ////Click next
+                //_driver.FindElement(By.Name("btncbmin5")).Click();
+                //Delay(2);
+
+                ////Select ARL-BI_Number
+                //_driver.FindElement(By.Name("frmCriterionValue1_1")).SendKeys(BI_Number);
+                //Delay(2);
+
+                ////Select ID-Number	
+                //_driver.FindElement(By.Name("frmCriterionValue1_2")).SendKeys(IdNum);
+                //Delay(2);
+
+
+                ////Click Next
+                //_driver.FindElement(By.Name("btncbmin9")).Click();
+                //Delay(2);
+
+                ////Click Finish
+                //_driver.FindElement(By.Name("btncbmin12")).Click();
+                //Delay(4);
 
 
                 //new Claim validation  
@@ -397,16 +412,16 @@ namespace Claims_Testsuite.Claims
                         _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td[2]/nobr/img")).Click();
 
 
-                        //Mutimediad pop
-                        String test_url_5_title = "SANLAM RM - Safrican Retail - Warpspeed Lookup Window";
+                        ////Mutimediad pop
+                        //String test_url_5_title = "SANLAM RM - Safrican Retail - Warpspeed Lookup Window";
 
 
-                        Assert.AreEqual(2, _driver.WindowHandles.Count);
-                        var newWindowHandle2 = _driver.WindowHandles[1];
-                        Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle1));
-                        /* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?); */
-                        string expectedNewWindowTitle3 = test_url_5_title;
-                        Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle2).Title, expectedNewWindowTitle3);
+                        //Assert.AreEqual(2, _driver.WindowHandles.Count);
+                        //var newWindowHandle2 = _driver.WindowHandles[1];
+                        //Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle1));
+                        ///* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?); */
+                        //string expectedNewWindowTitle3 = test_url_5_title;
+                        //Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle2).Title, expectedNewWindowTitle3);
 
 
                         Delay(2);

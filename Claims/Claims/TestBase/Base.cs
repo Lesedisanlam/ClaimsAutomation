@@ -83,7 +83,7 @@ namespace TestBase
 
                 try
                 {
-                    var cmd = $"UPDATE Cliams_Scenarios SET productName = @product WHERE FunctionI7D = {currentMethod}";
+                    var cmd = $"UPDATE Cliams_Scenarios SET productName = @product WHERE FunctionID = {currentMethod}";
                     OpenDBConnection(cmd);
                     command.Parameters.AddWithValue("@product", product);
                     command.ExecuteNonQuery();
@@ -225,10 +225,23 @@ namespace TestBase
                 passwordTextBox.SendKeys(_password);
 
                 System.Threading.Thread.Sleep(4000);
+            //Check if password field is empty
+            String textInsideInputBox = passwordTextBox.GetAttribute("value");
+            if (String.IsNullOrEmpty(textInsideInputBox))
+            {
+                passwordTextBox.SendKeys(_password);
+                System.Threading.Thread.Sleep(4000);
                 loginBtn.Click();
                 System.Threading.Thread.Sleep(2000);
                 return _driver;
             }
+            else
+            {
+                loginBtn.Click();
+                System.Threading.Thread.Sleep(2000);
+                return _driver;
+            }
+        }
 
            
             public void writeResultsToDB(string results, int scenario_id, string comments)
