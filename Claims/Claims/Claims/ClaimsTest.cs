@@ -282,7 +282,7 @@ namespace Claims_Testsuite.Claims
                     Actions action = new Actions(_driver);
                     //Performing the mouse hover action on the target element.
                     action.MoveToElement(NewClaimElement).Perform();
-                    Delay(1);
+                    
 
                 }
                 else
@@ -297,18 +297,28 @@ namespace Claims_Testsuite.Claims
                     Actions action = new Actions(_driver);
                     //Performing the mouse hover action on the target element.
                     action.MoveToElement(ClaimsOptionElement).Perform();
-                    Delay(1);
+                   
 
 
                 }
 
                 Delay(2);
                 //Click on authorise
-                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[6]/td/div/div[3]/a/img")).Click();
-                Delay(3);
+                for (int i = 0; i < 15; i++)
+                {
+                    try
+                    {
+                        _driver.FindElement(By.XPath($"/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[{i + 6}]/td/div/div[3]/a")).Click();
+                    }                                    
 
+                    catch (Exception ex)
+                    {
+                        _driver.FindElement(By.XPath($"/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[{i + 5}]/td/div/div[3]/a")).Click();
+                    }
+                    break;
+                }
 
-
+                Delay(2);
 
                 //validate payout amount
 
@@ -552,7 +562,7 @@ namespace Claims_Testsuite.Claims
                 Delay(3);
 
 
-
+                Policystatus2 = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[1]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/u/font")).Text;
 
 
                 // movement  valdation
@@ -580,31 +590,24 @@ namespace Claims_Testsuite.Claims
 
                 string events = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/div/center/div[2]/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[1]")).Text;
 
-                string AmountCalculation = (Convert.ToDecimal(SingleBenefit) + Convert.ToDecimal(Arrears)).ToString();
+                string AmountCalculation = (Convert.ToDecimal(SingleBenefit) - Convert.ToDecimal(Arrears)).ToString();
 
-
-
-
-              
             
 
                 if (LifeA == "Self" & Product == "Safrican Just Funeral (3000)")
                 {
                     //policy status
                     // PolicyStatus
-                    Policystatus2 = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[1]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/u/font")).Text;
-
-                    Assert.That(Policystatus2, Is.EqualTo("Out of Force"));
-
-
+\
+                    Assert.That(Policystatus2, Is.EqualTo("Out-of-Force"));
 
 
 
                 }
-                else if ((LifeA != "Self" & Product != "Safrican Just Funeral (3000)"))
+                else if ((LifeA == "Self" & Product == "Safrican Serenity Funeral Premium"))
                 {
 
-                    Policystatus2 = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[1]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/u/font")).Text;
+                   
 
                     Assert.That(Policystatus2, Is.EqualTo("Premium Waiver"));
 
@@ -612,6 +615,14 @@ namespace Claims_Testsuite.Claims
                 }
 
                 else
+
+                {
+
+
+                    Assert.That(Policystatus2, Is.EqualTo("In-Force"));
+
+
+                }
 
                 if ((ClaimpaymentStatus == "Claim Payment Raised") & (Incidents == "Claim Payment Raised") & (movement == "Death Claim") & (eventname == events) & (AmountCalculation == PayableAmount))
                 {
