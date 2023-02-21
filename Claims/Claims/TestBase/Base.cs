@@ -195,43 +195,42 @@ namespace TestBase
 
             }
 
-            public IWebDriver SiteConnection()
-
+        public IWebDriver SiteConnection()
+        {
+            _driver.Url = "http://ilr-tst.safrican.co.za/";
+           
+            _userName = "G992092"; //TODO add your user name and password
+            _password = "G992092saftst";
+            _driver.Manage().Window.Maximize();
+            System.Threading.Thread.Sleep(2000);
+            System.Threading.Thread.Sleep(2000);
+            IWebElement loginTextBox = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr/td/div/center/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/input"));
+            IWebElement passwordTextBox = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr/td/div/center/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td[2]/input"));
+            IWebElement loginBtn = _driver.FindElement(By.Name("btnLogin"));
+            loginTextBox.SendKeys(_userName);
+            System.Threading.Thread.Sleep(6000);
+            passwordTextBox.SendKeys(_password);
+            System.Threading.Thread.Sleep(4000);
+            //Check if password field is empty
+            String textInsideInputBox = passwordTextBox.GetAttribute("value");
+            if (String.IsNullOrEmpty(textInsideInputBox))
             {
-
-
-                _driver.Url = "http://ilr-tst.safrican.co.za/";
-
-                // IAlert alert = _driver.SwitchTo().Alert();
-                //  alert.Dismiss();
-
-                _userName = "G992092";//TODO add your user name and password
-
-
-                _password = "G992092saftst";
-
-                _driver.Manage().Window.Maximize();
-
-                System.Threading.Thread.Sleep(2000);
-
-
-                System.Threading.Thread.Sleep(2000);
-
-                IWebElement loginTextBox = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td/div/center/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/input"));
-                IWebElement passwordTextBox = _driver.FindElement(By.CssSelector("#CntContentsDiv2 > table > tbody > tr:nth-child(3) > td:nth-child(2) > input[type=password]"));
-                IWebElement loginBtn = _driver.FindElement(By.CssSelector("#GBLbl-1 > span > a"));
-                loginTextBox.SendKeys(_userName);
-                System.Threading.Thread.Sleep(6000);
                 passwordTextBox.SendKeys(_password);
-
                 System.Threading.Thread.Sleep(4000);
                 loginBtn.Click();
                 System.Threading.Thread.Sleep(2000);
                 return _driver;
             }
+            else
+            {
+                loginBtn.Click();
+                System.Threading.Thread.Sleep(2000);
+                return _driver;
+            }
+        }
 
-           
-            public void writeResultsToDB(string results, int scenario_id, string comments)
+
+        public void writeResultsToDB(string results, int scenario_id, string comments)
             {
               
                 OpenDBConnection($"UPDATE Claims_Scenarios SET Test_Results = @results, Test_Date =@testDate, Comments = @comments WHERE ID = {scenario_id}");
