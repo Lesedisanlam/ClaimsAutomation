@@ -598,7 +598,7 @@ namespace Claims_Testsuite.Claims
                 {
                     //policy status
                     // PolicyStatus
-\
+
                     Assert.That(Policystatus2, Is.EqualTo("Out-of-Force"));
 
 
