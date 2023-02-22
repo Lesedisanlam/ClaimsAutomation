@@ -1,4 +1,4 @@
-﻿using TestBase;
+﻿using Claims_Testsuite;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
@@ -10,7 +10,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using Actions = OpenQA.Selenium.Interactions.Actions;
-
+using DocumentFormat.OpenXml.Math;
 
 namespace Claims_Testsuite.Claims
 {
@@ -23,8 +23,9 @@ namespace Claims_Testsuite.Claims
         [OneTimeSetUp]
         public void startBrowser()
         {
+            createExclReportFile();
             _driver = SiteConnection();
-            sheet = "Claims";
+     
         }
         private void policySearch(string contractRef)
         {
@@ -598,7 +599,7 @@ namespace Claims_Testsuite.Claims
                 {
                     //policy status
                     // PolicyStatus
-\
+
                     Assert.That(Policystatus2, Is.EqualTo("Out-of-Force"));
 
 
@@ -1392,7 +1393,9 @@ namespace Claims_Testsuite.Claims
         [OneTimeTearDown]
         public void closeBrowser()
         {
+           EmailReport();
             DisconnectBrowser();
+          
         }
     }
 }
