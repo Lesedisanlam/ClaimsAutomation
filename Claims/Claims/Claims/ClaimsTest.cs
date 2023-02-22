@@ -187,12 +187,12 @@ namespace Claims_Testsuite.Claims
                 SelectElement dropDown1 = new SelectElement(_driver.FindElement(By.Name("frmClaimant")));
                 dropDown1.SelectByText(Claimant);
 
-                Delay(4);
+                Delay(2);
 
 
 
                 //Click next
-                _driver.FindElement(By.Name("btncbmin2")).Click();
+               _driver.FindElement(By.Name("btncbmin2")).Click();
                 Delay(1);
 
                 _driver.FindElement(By.Name("btncbmin5")).Click();
@@ -291,8 +291,28 @@ namespace Claims_Testsuite.Claims
                 }
 
                 Delay(2);
-                //Click on authorise
-                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[6]/td/div/div[3]/a/img")).Click();
+          
+
+
+
+
+                     //Click on authorise
+                for (int i = 0; i < 15; i++)
+                {
+
+
+                    try
+                    {
+                        _driver.FindElement(By.XPath($"/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[{i+5}]/td/div/div[3]/a/img")).Click();
+                        
+                    }
+                    catch (Exception ex)
+                    {
+                        _driver.FindElement(By.XPath($"/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[{i + 6}]/td/div/div[3]/a/img")).Click();
+
+                    }
+                    break;
+                }
                 Delay(3);
 
                 
