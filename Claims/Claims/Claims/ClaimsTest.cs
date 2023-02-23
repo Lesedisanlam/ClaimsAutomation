@@ -89,12 +89,13 @@ namespace Claims_Testsuite.Claims
 
 
                 Delay(2);
-                //SetproductName();
+               
                 string Role = String.Empty, Claimant = String.Empty, Cause_of_incident = String.Empty, BI_Number = String.Empty, Roleplayer = String.Empty, SubClaimType = String.Empty, ClaimType = String.Empty,
                 IdNum = String.Empty, Date_of_incident = String.Empty, Contact_Date = String.Empty, Email_Address = String.Empty, Mobile_Number = String.Empty, ClaimDescription = String.Empty, Gender = String.Empty, Title = String.Empty;
 
                 policySearch(contractRef);
-                Product = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[2]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td[2]")).Text;
+                SetproductName();
+                Product = _driver.FindElement(By.XPath("//html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[1]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td[2]")).Text;
 
                 Delay(2);
 
@@ -283,7 +284,7 @@ namespace Claims_Testsuite.Claims
                     Actions action = new Actions(_driver);
                     //Performing the mouse hover action on the target element.
                     action.MoveToElement(NewClaimElement).Perform();
-                    
+
 
                 }
                 else
@@ -298,7 +299,7 @@ namespace Claims_Testsuite.Claims
                     Actions action = new Actions(_driver);
                     //Performing the mouse hover action on the target element.
                     action.MoveToElement(ClaimsOptionElement).Perform();
-                   
+
 
 
                 }
@@ -310,7 +311,7 @@ namespace Claims_Testsuite.Claims
                     try
                     {
                         _driver.FindElement(By.XPath($"/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[{i + 6}]/td/div/div[3]/a")).Click();
-                    }                                    
+                    }
 
                     catch (Exception ex)
                     {
@@ -591,9 +592,10 @@ namespace Claims_Testsuite.Claims
 
                 string events = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/div/center/div[2]/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[1]")).Text;
 
-                string AmountCalculation = (Convert.ToDecimal(SingleBenefit) - Convert.ToDecimal(Arrears)).ToString();
+                string AmountCalculation = (Convert.ToDecimal(SingleBenefit) - Convert.ToDecimal(Arrears)).ToString("#,##0.00");
 
-            
+
+
 
                 if (LifeA == "Self" & Product == "Safrican Just Funeral (3000)")
                 {
@@ -607,8 +609,6 @@ namespace Claims_Testsuite.Claims
                 }
                 else if ((LifeA == "Self" & Product == "Safrican Serenity Funeral Premium"))
                 {
-
-                   
 
                     Assert.That(Policystatus2, Is.EqualTo("Premium Waiver"));
 

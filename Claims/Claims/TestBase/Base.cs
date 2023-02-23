@@ -109,7 +109,7 @@ namespace Claims_Testsuite
 
                 String separator = ",";
                 StringBuilder output = new StringBuilder();
-                String headings = "Policy_Number, ExpectedResults, Test_Results, Comments, Test_Date, Function_name, Created_at ";
+                String headings = "Policy_Number, ExpectedResults, Test_Results, Comments, Test_Date, Product_name, Created_at ";
                 //  output.AppendLine(string.Join(separator, headings));
                 fs.WriteLine(headings);
 
@@ -149,10 +149,10 @@ namespace Claims_Testsuite
         public string SetproductName()
         {
             var product = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv5']/table/tbody/tr[1]/td[2]")).Text;
-
+            
             try
             {
-                var cmd = $"UPDATE PS_Scenarios SET productName = @product WHERE FunctionID = {currentMethod}";
+                var cmd = $"UPDATE Claims_Scenarios SET productName = @product WHERE FunctionID = ID ";
                 OpenDBConnection(cmd);
                 command.Parameters.AddWithValue("@product", product);
                 command.ExecuteNonQuery();
@@ -388,7 +388,7 @@ namespace Claims_Testsuite
 
                 try
                 {
-                    OpenDBConnection("SELECT * FROM Claims_Scenarios WHERE  Created_at > DATEADD(D, 0, GETDATE());");
+                    OpenDBConnection("SELECT * FROM Claims_Scenarios WHERE  Created_at > DATEADD(D, -1, GETDATE());");
                     reader = command.ExecuteReader();
                     while (reader.Read())
                     {
@@ -400,7 +400,7 @@ namespace Claims_Testsuite
                         Test_Date = reader["Test_Date"].ToString();
                         FunctionID = reader["FunctionID"].ToString();
                         UserID = reader["UserID"].ToString();
-                        product_name = reader["productName"].ToString();
+                        product_name = reader["ProductName"].ToString();
                         Created_at = reader["Created_at"].ToString();
 
                         if (Comments.Length > 50)
@@ -425,7 +425,7 @@ namespace Claims_Testsuite
 
                             //  using (OleDbConnection conn = new OleDbConnection(excelConnectionString))
 
-                            var line = (item.policyNo, item.expectedResults, item.testResults, item.comment, item.test_Date, getFuncName(Int32.Parse(item.functionID)),
+                            var line = (item.policyNo, item.expectedResults, item.testResults, item.comment, item.test_Date, product_name,
                                    item.created_at);
                             file.WriteLine(line);
                             //// conn.Open();
@@ -550,6 +550,7 @@ namespace Claims_Testsuite
             command.Parameters.AddWithValue("@results", results);
             command.Parameters.AddWithValue("@testDate", testDate);
             command.Parameters.AddWithValue("@comments", comments);
+
             command.ExecuteNonQuery();
         }
 
