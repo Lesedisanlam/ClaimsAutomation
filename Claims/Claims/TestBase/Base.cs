@@ -56,13 +56,12 @@ namespace Claims_Testsuite
 
             //  _driver = new ChromeDriver("C:/Code/bin");
 
-            new WebDriverManager.DriverManager().SetUpDriver(new ChromeConfig(), VersionResolveStrategy.MatchingBrowser);
+           //new WebDriverManager.DriverManager().SetUpDriver(new ChromeConfig(), VersionResolveStrategy.MatchingBrowser);
 
             _chromeOptions = new ChromeOptions();
             _chromeOptions.AddArguments("--incognito");
             _chromeOptions.AddArguments("--ignore-certificate-errors");
-            _driver = new ChromeDriver();
-
+            _driver = new ChromeDriver("C:/Users/992107/Documents/Github/FE/ClaimsAutomation/Claims/Claims/bin/Debug/net6.0");
 
             //InternetExplorerOptions options = new InternetExplorerOptions();
             //options.IgnoreZoomLevel = true;
@@ -278,7 +277,7 @@ namespace Claims_Testsuite
 
 
             _password = "G992092saftst";
-
+            
             _driver.Manage().Window.Maximize();
 
             System.Threading.Thread.Sleep(2000);

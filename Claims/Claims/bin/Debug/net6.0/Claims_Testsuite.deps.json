@@ -21,8 +21,7 @@
           "NUnit.Analyzers": "3.5.0",
           "NUnit3TestAdapter": "4.2.1",
           "Selenium.Support": "4.5.1",
-          "Selenium.WebDriver": "4.5.1",
-          "Selenium.WebDriver.ChromeDriver": "107.0.5304.6200",
+          "Selenium.WebDriver": "4.8.1",
           "System.Data.OleDb": "7.0.0",
           "System.Data.SqlClient": "4.8.4",
           "WebDriverManager": "2.16.0",
@@ -446,7 +445,7 @@
       },
       "Selenium.Support/4.5.1": {
         "dependencies": {
-          "Selenium.WebDriver": "4.5.1"
+          "Selenium.WebDriver": "4.8.1"
         },
         "runtime": {
           "lib/net5.0/WebDriver.Support.dll": {
@@ -455,18 +454,17 @@
           }
         }
       },
-      "Selenium.WebDriver/4.5.1": {
+      "Selenium.WebDriver/4.8.1": {
         "dependencies": {
           "Newtonsoft.Json": "13.0.1"
         },
         "runtime": {
-          "lib/net5.0/WebDriver.dll": {
+          "lib/net6.0/WebDriver.dll": {
             "assemblyVersion": "4.0.0.0",
             "fileVersion": "4.0.0.0"
           }
         }
       },
-      "Selenium.WebDriver.ChromeDriver/107.0.5304.6200": {},
       "SharpZipLib/1.3.3": {
         "runtime": {
           "lib/netstandard2.1/ICSharpCode.SharpZipLib.dll": {
@@ -858,19 +856,12 @@
       "path": "selenium.support/4.5.1",
       "hashPath": "selenium.support.4.5.1.nupkg.sha512"
     },
-    "Selenium.WebDriver/4.5.1": {
+    "Selenium.WebDriver/4.8.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ztu9Qv2n5/NkqPs0MQ3nojMJuW2PVHrAKDukmT77HbYAGhZI370Hp0EJNqyucJuud937Lr/qvXsoOtLZ18VFnw==",
-      "path": "selenium.webdriver/4.5.1",
-      "hashPath": "selenium.webdriver.4.5.1.nupkg.sha512"
-    },
-    "Selenium.WebDriver.ChromeDriver/107.0.5304.6200": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-0xkXvzwRXVbduG62Z7+vhM4a85x3mWlfGUSQn+4PdeVJdkkssVe4rV80J+WBEOfUJAjga7L6YydFkbd9ONJqxQ==",
-      "path": "selenium.webdriver.chromedriver/107.0.5304.6200",
-      "hashPath": "selenium.webdriver.chromedriver.107.0.5304.6200.nupkg.sha512"
+      "sha512": "sha512-h4H7pEyr41Xf+IgmhNqrbF3I24SV02x2G1INS82pycNltg1q15/qVV/aRKu/MbMFKtqy1mVoNEE/4/p7T/4Ngw==",
+      "path": "selenium.webdriver/4.8.1",
+      "hashPath": "selenium.webdriver.4.8.1.nupkg.sha512"
     },
     "SharpZipLib/1.3.3": {
       "type": "package",

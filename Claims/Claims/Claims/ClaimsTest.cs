@@ -64,7 +64,6 @@ namespace Claims_Testsuite.Claims
                 _driver.FindElement(By.Name("CBWeb")).Click();
             }
         }
-
         [Test, TestCaseSource("GetTestData", new object[] { "SSF_Claim" })]
         public void SSF_Claim(string contractRef, string scenarioID)
         {
@@ -89,12 +88,11 @@ namespace Claims_Testsuite.Claims
 
 
                 Delay(2);
-               
+                //SetproductName();
                 string Role = String.Empty, Claimant = String.Empty, Cause_of_incident = String.Empty, BI_Number = String.Empty, Roleplayer = String.Empty, SubClaimType = String.Empty, ClaimType = String.Empty,
                 IdNum = String.Empty, Date_of_incident = String.Empty, Contact_Date = String.Empty, Email_Address = String.Empty, Mobile_Number = String.Empty, ClaimDescription = String.Empty, Gender = String.Empty, Title = String.Empty;
 
                 policySearch(contractRef);
-                SetproductName();
                 Product = _driver.FindElement(By.XPath("//html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[1]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td[2]")).Text;
 
                 Delay(2);
@@ -162,7 +160,6 @@ namespace Claims_Testsuite.Claims
                         }
                     }
                 }
-
 
 
 
@@ -519,7 +516,6 @@ namespace Claims_Testsuite.Claims
                 ClaimStatus.Contains("Payments Created");
 
                 //Process Payment
-
 
 
                 //Hover on claim options
