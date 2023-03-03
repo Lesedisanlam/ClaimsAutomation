@@ -591,7 +591,7 @@ namespace Claims_Testsuite.Claims
 
                 if (LifeA == "Self" & Product == "Safrican Just Funeral (3000)")
                 {
-                    //policy status
+                  
                     // PolicyStatus
 
                     Assert.That(Policystatus2, Is.EqualTo("Out-of-Force"));

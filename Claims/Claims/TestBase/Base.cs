@@ -54,7 +54,7 @@ namespace Claims_Testsuite
         public void StartBrowser()
         {
 
-            //  _driver = new ChromeDriver("C:/Code/bin");
+
 
            //new WebDriverManager.DriverManager().SetUpDriver(new ChromeConfig(), VersionResolveStrategy.MatchingBrowser);
 
@@ -63,10 +63,7 @@ namespace Claims_Testsuite
             _chromeOptions.AddArguments("--ignore-certificate-errors");
             _driver = new ChromeDriver("C:/Users/992107/Documents/Github/FE/ClaimsAutomation/Claims/Claims/bin/Debug/net6.0");
 
-            //InternetExplorerOptions options = new InternetExplorerOptions();
-            //options.IgnoreZoomLevel = true;
-            //options.IntroduceInstabilityByIgnoringProtectedModeSettings = true;
-            //_driver = new InternetExplorerDriver(options);
+
 
             _screenShotFolder = $@"{AppDomain.CurrentDomain.BaseDirectory}Failed_ScreenShots​{ScreenShotDailyFolderName()}​\";
 
@@ -79,20 +76,6 @@ namespace Claims_Testsuite
 
 
 
-
-
-
-            //// Create FileStream for output ZIP archive
-            //using (FileStream zipFile = File.Open("archive.zip", FileMode.Create))
-            //{
-            //    // Create archive
-            //    using (va archive = new Archive())
-            //    {
-            //        // Add file to ZIP archive
-            //        archive.CreateEntry("data.bin", "file.dat");
-            //        archive.Save(zipFile);
-            //    }
-            //}
 
 
         }
@@ -109,20 +92,11 @@ namespace Claims_Testsuite
                 String separator = ",";
                 StringBuilder output = new StringBuilder();
                 String headings = "Policy_Number, ExpectedResults, Test_Results, Comments, Test_Date, Product_name, Created_at ";
-                //  output.AppendLine(string.Join(separator, headings));
                 fs.WriteLine(headings);
 
             }
 
-            //using (OleDbConnection connection = new OleDbConnection(excelConnectionString))
-            //{
 
-            //    connection.Open();
-
-            //    execOleDbCommand(connection, $"create table PS_Results (Policy_Number varchar,ExpectedResults varchar ,Test_Results varchar ,Comments varchar,Test_Date varchar," +
-            //        $"Function_name varchar,ProductName varchar,Created_at varchar);");
-            //    connection.Close();
-            //}
         }
 
         static void execOleDbCommand(OleDbConnection conn, string sqlText)
@@ -422,18 +396,11 @@ namespace Claims_Testsuite
                         foreach (var item in results)
                         {
 
-                            //  using (OleDbConnection conn = new OleDbConnection(excelConnectionString))
 
                             var line = (item.policyNo, item.expectedResults, item.testResults, item.comment, item.test_Date, product_name,
                                    item.created_at);
                             file.WriteLine(line);
-                            //// conn.Open();
 
-                            //  execOleDbCommand(conn, $"Insert into [PS_Results$] (Policy_Number,ExpectedResults,Test_Results ,Comments ,Test_Date ,Function_name,ProductName ,Created_at ) " +
-                            //          $"values('{item.policyNo}','{item.expectedResults}'," +
-                            //          $"'{item.testResults}','{item.comment}','{item.test_Date}'," +
-                            //          $"'{getFuncName(Int32.Parse(item.functionID))}','{item.product_name}','{item.created_at}')");
-                            // // conn.Close();
 
 
                         }
@@ -444,31 +411,7 @@ namespace Claims_Testsuite
 
                     Console.WriteLine("Exception:" + ex.ToString());
                 }
-                //    MailMessage mail = new MailMessage();
-                //SmtpClient smtp = new SmtpClient("mail.sanlam.co.za");
-                //    mail.Subject = "Sanlam Report";
-                //    mail.Body = "Testing";
-
-                //mail.From = new MailAddress(mail.Subject, mail.Body);
-                //smtp.Port = 25;
-                //smtp.Credentials = new System.Net.NetworkCredential("AutoResult@sanlamsky.co.za","");
-                //smtp.EnableSsl = true;
-                //smtp.Send(mail);
-
-                //System.Net.Mail.Attachment attachment;
-                //attachment = new System.Net.Mail.Attachment("");
-
-                //if (File.Exists(_screenShotFolderOutput))
-                //{
-                //    File.Delete(_screenShotFolderOutput);
-                //}
-
-                //using (var archive = ZipFile.Open(_screenShotFolderOutput, ZipArchiveMode.Create))
-                //{
-                //    archive.CreateEntryFromFile(_screenShotFolder, Path.GetFileName(_screenShotFolder));
-
-                //}
-
+               
 
                 MailMessage mail = new MailMessage();
                 SmtpClient SmtpServer = new SmtpClient("mail.sanlam.co.za");
@@ -482,29 +425,11 @@ namespace Claims_Testsuite
         Kind Regards";
 
 
-                //var report = new byte[300];
-                //using (MemoryStream memoryStream = new MemoryStream())
-                //{
-                //    using (ZipArchive zipArchive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
-                //    {
-                //        ZipArchiveEntry zipArchiveEntry = zipArchive.CreateEntry(_screenShotFolder);
-                //        using (StreamWriter streamWriter = new StreamWriter(zipArchiveEntry.Open()))
-                //        {
-                //            streamWriter.Write(Encoding.Default.GetString(report));
-                //        }
-                //    }
 
-                //     MemoryStream attachmentStream = new MemoryStream(memoryStream.ToArray());
-
-                //    Attachment Zipattachment = new Attachment(attachmentStream, _screenShotFolder + ".zip", MediaTypeNames.Application.Zip);
-
-
-                //  Attachment Zipattachment = new Attachment(_screenShotFolder);
 
                 System.Net.Mail.Attachment attachment;
                 attachment = new System.Net.Mail.Attachment(excelReportFilePath);
                 mail.Attachments.Add(attachment);
-                //   mail.Attachments.Add(Zipattachment);
                 SmtpServer.Port = 587;
                 SmtpServer.Credentials = new System.Net.NetworkCredential("Autoresult@sanlamsky.co.za", "P@ssword987951");
                 SmtpServer.EnableSsl = true;
