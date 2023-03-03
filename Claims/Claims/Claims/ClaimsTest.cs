@@ -96,7 +96,6 @@ namespace Claims_Testsuite.Claims
                 Product = _driver.FindElement(By.XPath("//html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[1]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td[2]")).Text;
 
                 Delay(2);
-
                 Arrears = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[2]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td[2]")).Text;
 
                 OpenDBConnection("SELECT * FROM ClaimDetails_Data WHERE Scenario_ID = '" + scenarioID + "' ");
@@ -118,11 +117,8 @@ namespace Claims_Testsuite.Claims
                     Gender = reader["Gender"].ToString().Trim();
                     Title = reader["Title"].ToString().Trim();
 
-
                 }
                 connection.Close();
-
-
 
 
                 // PolicyStatus
@@ -587,7 +583,7 @@ namespace Claims_Testsuite.Claims
 
 
                 string events = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/div/center/div[2]/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[1]")).Text;
-
+                
                 string AmountCalculation = (Convert.ToDecimal(SingleBenefit) - Convert.ToDecimal(Arrears)).ToString("#,##0.00");
 
 
@@ -650,7 +646,7 @@ namespace Claims_Testsuite.Claims
         }
 
         //[Test, TestCaseSource("GetTestData", new object[] { "Workflow_Claim" })]
-        //public void SSFP_Claim(string contractRef, string scenarioID)
+        //public void Workflow_Claim(string contractRef, string scenarioID)
         //{
         //    if (String.IsNullOrEmpty(contractRef))
         //    {
