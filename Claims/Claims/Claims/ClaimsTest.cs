@@ -64,7 +64,8 @@ namespace Claims_Testsuite.Claims
                 _driver.FindElement(By.Name("CBWeb")).Click();
             }
         }
-        [Test, TestCaseSource("GetTestData", new object[] { "SSF_Claim" })]
+
+        [Test, TestCaseSource("GetTestData", new object[] { "SLS_Claim" })]
         public void SSF_Claim(string contractRef, string scenarioID)
         {
             if (String.IsNullOrEmpty(contractRef))
@@ -91,12 +92,10 @@ namespace Claims_Testsuite.Claims
                 //SetproductName();
                 string Role = String.Empty, Claimant = String.Empty, Cause_of_incident = String.Empty, BI_Number = String.Empty, Roleplayer = String.Empty, SubClaimType = String.Empty, ClaimType = String.Empty,
                 IdNum = String.Empty, Date_of_incident = String.Empty, Contact_Date = String.Empty, Email_Address = String.Empty, Mobile_Number = String.Empty, ClaimDescription = String.Empty, Gender = String.Empty, Title = String.Empty;
+                string Comp_check = String.Empty;
 
                 policySearch(contractRef);
                 Product = _driver.FindElement(By.XPath("//html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[1]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td[2]")).Text;
-
-                Delay(2);
-                Arrears = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[2]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td[2]")).Text;
 
                 OpenDBConnection("SELECT * FROM ClaimDetails_Data WHERE Scenario_ID = '" + scenarioID + "' ");
                 reader = command.ExecuteReader();
@@ -202,7 +201,7 @@ namespace Claims_Testsuite.Claims
                 Delay(4);
 
 
-                //go to incedent 
+                //go to incident 
                 Delay(2);
                 _driver.FindElement(By.XPath("//*[@id='frmCbmin']/tbody/tr[9]/td[2]/nobr/input[2]")).SendKeys(Cause_of_incident);
 
@@ -506,7 +505,7 @@ namespace Claims_Testsuite.Claims
 
                 // Authorise Claim validation
 
-                //Validate calim status
+                //Validate claim status
                 string ClaimStatus = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[5]/td[2]")).Text;
 
                 ClaimStatus.Contains("Payments Created");
@@ -558,6 +557,14 @@ namespace Claims_Testsuite.Claims
 
                 Policystatus2 = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[1]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/u/font")).Text;
 
+                //Check components
+                try
+                {
+                    Comp_check = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[6]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td")).Text;
+                }
+                catch
+                {
+                }
 
                 // movement  valdation
                 string movement = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[11]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[1]")).Text;
@@ -583,7 +590,32 @@ namespace Claims_Testsuite.Claims
 
 
                 string events = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/div/center/div[2]/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[1]")).Text;
-                
+
+                //Transactions navigation
+                try
+                {
+                    //click on transactions
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[7]/tbody/tr/td/a")).Click();
+                }
+                catch (Exception ex)
+                {
+                    //expand Main Menu
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/table[7]/tbody/tr/td/a")).Click();
+                    //expand contract sumary
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[1]/a")).Click();
+                    //click on transactions
+                    Delay(2);
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[7]/tbody/tr/td/a")).Click();
+                }
+                //Dropdown Selection
+                SelectElement dropDown3 = new SelectElement(_driver.FindElement(By.Name("frmAccountTypeObj")));
+                dropDown1.SelectByText("Payment Account (PMT)");
+                //Submit
+                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table/tbody/tr[4]/td[2]/span/table/tbody/tr[7]/td/table/tbody/tr/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td/span/a")).Click();
+                //Store Premium Debt amount
+                Delay(2);
+                Arrears = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[3]/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]/td[3]")).Text;
+
                 string AmountCalculation = (Convert.ToDecimal(SingleBenefit) - Convert.ToDecimal(Arrears)).ToString("#,##0.00");
 
 
@@ -591,7 +623,7 @@ namespace Claims_Testsuite.Claims
 
                 if (LifeA == "Self" & Product == "Safrican Just Funeral (3000)")
                 {
-                  
+
                     // PolicyStatus
 
                     Assert.That(Policystatus2, Is.EqualTo("Out-of-Force"));
@@ -603,6 +635,14 @@ namespace Claims_Testsuite.Claims
                 {
 
                     Assert.That(Policystatus2, Is.EqualTo("Premium Waiver"));
+
+
+                }
+
+                else if (Comp_check == "There are no Active (as at TODAY) components for this policy." & Product == "Safrican Just Funeral (3000)")
+                {
+
+                    Assert.That(Policystatus2, Is.EqualTo("Out-of-Force"));
 
 
                 }
