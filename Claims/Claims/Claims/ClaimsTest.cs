@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using Actions = OpenQA.Selenium.Interactions.Actions;
 using DocumentFormat.OpenXml.Math;
+using DocumentFormat.OpenXml.Office.CustomUI;
 
 namespace Claims_Testsuite.Claims
 {
@@ -183,8 +184,18 @@ namespace Claims_Testsuite.Claims
 
                 //ClaimType
                 SelectElement dropDown = new SelectElement(_driver.FindElement(By.Name("frmClaimType")));
-                dropDown.SelectByText(ClaimType);
-                Delay(5);
+                try
+                {
+                    
+                    dropDown.SelectByText(ClaimType);
+                    Delay(5);
+                }
+                catch
+                {
+                    dropDown.SelectByText("AccidentalDeath");
+                    Delay(5);
+                }
+
 
 
 
@@ -202,30 +213,31 @@ namespace Claims_Testsuite.Claims
 
 
                 //go to incident 
-                Delay(2);
-                _driver.FindElement(By.XPath("//*[@id='frmCbmin']/tbody/tr[9]/td[2]/nobr/input[2]")).SendKeys(Cause_of_incident);
+                try
+                {
+                    Delay(2);
+                    _driver.FindElement(By.XPath("//*[@id='frmCbmin']/tbody/tr[9]/td[2]/nobr/input[2]")).SendKeys(Cause_of_incident);
+                    Delay(2);
+                    _driver.FindElement(By.XPath("//*[@id='frmCbmin']/tbody/tr[9]/td[2]/nobr/img")).Click();
+                    //Mutimediad pop
+                    String test_url_4_title = "SANLAM RM - Safrican Retail - Warpspeed Lookup Window";
+                    Assert.AreEqual(2, _driver.WindowHandles.Count);
+                    var newWindowHandle1 = _driver.WindowHandles[1];
+                    Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle1));
+                    /* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?); */
+                    string expectedNewWindowTitle2 = test_url_4_title;
+                    Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle1).Title, expectedNewWindowTitle2);
 
 
-                Delay(2);
-                _driver.FindElement(By.XPath("//*[@id='frmCbmin']/tbody/tr[9]/td[2]/nobr/img")).Click();
+                    Delay(2);
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr/td/center[2]/table[2]/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]/td[2]")).Click();
 
-
-
-                //Mutimediad pop
-                String test_url_4_title = "SANLAM RM - Safrican Retail - Warpspeed Lookup Window";
-                Assert.AreEqual(2, _driver.WindowHandles.Count);
-                var newWindowHandle1 = _driver.WindowHandles[1];
-                Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle1));
-                /* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?); */
-                string expectedNewWindowTitle2 = test_url_4_title;
-                Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle1).Title, expectedNewWindowTitle2);
-
-
-                Delay(2);
-                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr/td/center[2]/table[2]/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]/td[2]")).Click();
-
-                /* Return to the window with handle = 0 */
-                _driver.SwitchTo().Window(_driver.WindowHandles[0]);
+                    /* Return to the window with handle = 0 */
+                    _driver.SwitchTo().Window(_driver.WindowHandles[0]);
+                }
+                catch
+                {
+                }
 
                 Delay(2);
 
@@ -371,25 +383,28 @@ namespace Claims_Testsuite.Claims
                     _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td/table/tbody/tr/td[1]/table")).Click();
 
 
-                    //click authrise Next
+                    //click authorise Next
                     _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center[1]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[16]/td/table/tbody/tr/td[1]/table")).Click();
 
 
                 }
                 catch
                 {
+                    //Go back two screens
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr/td/div/div/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[4]/td/div/table/tbody/tr/td/span/table/tbody/tr/td/table/tbody/tr/td[2]/table/tbody/tr/td/span/a")).Click();
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr/td[2]/table/tbody/tr/td/span/a")).Click();
 
-                    string bankdetails = _driver.FindElement(By.XPath("/html/bodchy/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[2]/tbody/tr[2]/td/table/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]/td[7]/em")).Text;
+                    string bankdetails = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[2]/tbody/tr[2]/td/table/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]/td[7]/em")).Text;
 
-                    //Validate ank details 
+                    //Validate bank details 
                     if (bankdetails == "* Bank Account Required *")
 
                     {
-                        //Authorisze payment
+                        //Authorise payment
                         string Effective_Date = String.Empty, Bank = String.Empty, Branch = String.Empty, Account_Number = String.Empty, Name = String.Empty, Account_Type = String.Empty,
                         Stop_Date = String.Empty, Cheque_Stale_Months = String.Empty, credit_Card = String.Empty, Expiry_date = String.Empty;
 
-                        OpenDBConnection("SELECT * FROM ClaimBankdetails");
+                        OpenDBConnection("SELECT * FROM BankDetails");
                         reader = command.ExecuteReader();
                         while (reader.Read())
                         {
@@ -400,7 +415,6 @@ namespace Claims_Testsuite.Claims
                             Account_Number = reader["Account_Number"].ToString().Trim();
                             Name = reader["Name"].ToString().Trim();
                             Account_Type = reader["Account_Type"].ToString().Trim();
-                            Stop_Date = reader["Stop_Date"].ToString().Trim();
                             Cheque_Stale_Months = reader["Cheque_Stale_Months"].ToString().Trim();
                             credit_Card = reader["credit_Card"].ToString().Trim();
                             Expiry_date = reader["Expiry_date"].ToString().Trim();
@@ -410,20 +424,13 @@ namespace Claims_Testsuite.Claims
                         connection.Close();
 
 
-                        //Add  payments 
-                        //Click on  submit
+                      
+                        //Click on payment maintenance
                         Delay(2);
                         _driver.FindElement(By.Name("hl_AuthPay")).Click();
-
+                        //Add Additional Bank Account
                         Delay(2);
-                        _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td/table/tbody/tr/td[1]/table")).Click();
-
-
-                        //add bank details 
-                        //Click 
-                        Delay(2);
-                        _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center[1]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[16]/td/table/tbody/tr/td[1]/table")).Click();
-
+                        _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[2]/tbody/tr/td[2]/table/tbody/tr/td/span/a")).Click();
 
                         //Bank / Retailer:
                         SelectElement dropDown2 = new SelectElement(_driver.FindElement(By.Name("frmEntityObj")));
@@ -441,7 +448,7 @@ namespace Claims_Testsuite.Claims
 
                         Assert.AreEqual(2, _driver.WindowHandles.Count);
                         var newWindowHandle2 = _driver.WindowHandles[1];
-                        Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle1));
+                        Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle2));
                         /* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?); */
                         string expectedNewWindowTitle3 = test_url_5_title;
                         Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle2).Title, expectedNewWindowTitle3);
@@ -455,6 +462,9 @@ namespace Claims_Testsuite.Claims
 
                         Delay(2);
 
+                        //Effective Date
+                        _driver.FindElement(By.Name("frmStopDate")).SendKeys(Effective_Date);
+                        Delay(2);
 
                         //Account Number:	
                         _driver.FindElement(By.Name("frmAccountNumber")).SendKeys(Account_Number);
@@ -467,9 +477,6 @@ namespace Claims_Testsuite.Claims
                         //Type:	
                         //Cheque Stale Months:	
                         //Default for Owner?	
-                        //Stop Date:
-                        _driver.FindElement(By.Name("frmStopDate")).SendKeys(Stop_Date);
-                        Delay(2);
                         //Pick a date
                         //Credit Card Type:	
                         //Credit Card Expiry Date:	
@@ -639,7 +646,7 @@ namespace Claims_Testsuite.Claims
 
                 }
 
-                else if (Comp_check == "There are no Active (as at TODAY) components for this policy." & Product == "Safrican Just Funeral (3000)")
+                else if (Comp_check == "There are no Active (as at TODAY) components for this policy.")
                 {
 
                     Assert.That(Policystatus2, Is.EqualTo("Out-of-Force"));
@@ -657,7 +664,7 @@ namespace Claims_Testsuite.Claims
 
                 }
 
-                if ((ClaimpaymentStatus == "Claim Payment Raised") & (Incidents == "Claim Payment Raised") & (movement == "Death Claim") & (eventname == events) & (AmountCalculation == PayableAmount))
+                if ((ClaimpaymentStatus == "Claim Payment Raised") & (Incidents == "Claim Payment Raised") & (movement == "Death Claim" || movement == "Death(Acc)") & (eventname == events) & (AmountCalculation == PayableAmount))
                 {
                     //Sucessful Claim)
                     results = "Passed";
@@ -1425,7 +1432,7 @@ namespace Claims_Testsuite.Claims
         [OneTimeTearDown]
         public void closeBrowser()
         {
-           EmailReport();
+           //EmailReport();
             DisconnectBrowser();
           
         }

@@ -348,122 +348,122 @@ namespace Claims_Testsuite
             return Convert.ToDecimal(premium);
         }
 
-        public void EmailReport()
-        {
-            try
-            {
+       // public void EmailReport()
+       // {
+       //     try
+       //     {
 
-                string funcName, PolicyNo, ExpectedResults, TestResults, Comments, Test_Date, FunctionID, UserID, product_name, Created_at; int ID;
-                funcName = String.Empty; PolicyNo = String.Empty; ExpectedResults = String.Empty; TestResults = String.Empty; Comments = String.Empty; Test_Date = String.Empty;
-                product_name = String.Empty; UserID = String.Empty; FunctionID = String.Empty; Created_at = String.Empty;
+       //         string funcName, PolicyNo, ExpectedResults, TestResults, Comments, Test_Date, FunctionID, UserID, product_name, Created_at; int ID;
+       //         funcName = String.Empty; PolicyNo = String.Empty; ExpectedResults = String.Empty; TestResults = String.Empty; Comments = String.Empty; Test_Date = String.Empty;
+       //         product_name = String.Empty; UserID = String.Empty; FunctionID = String.Empty; Created_at = String.Empty;
 
-                List<TestResultObject> results = new List<TestResultObject>();
+       //         List<TestResultObject> results = new List<TestResultObject>();
 
-                try
-                {
-                    OpenDBConnection("SELECT * FROM Claims_Scenarios WHERE  Created_at > DATEADD(D, -1, GETDATE());");
-                    reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
+       //         try
+       //         {
+       //             OpenDBConnection("SELECT * FROM Claims_Scenarios WHERE  Created_at > DATEADD(D, -1, GETDATE());");
+       //             reader = command.ExecuteReader();
+       //             while (reader.Read())
+       //             {
 
-                        PolicyNo = reader["PolicyNo"].ToString();
-                        ExpectedResults = reader["ExpectedResults"].ToString();
-                        TestResults = reader["Test_Results"].ToString();
-                        Comments = reader["Comments"].ToString();
-                        Test_Date = reader["Test_Date"].ToString();
-                        FunctionID = reader["FunctionID"].ToString();
-                        UserID = reader["UserID"].ToString();
-                        product_name = reader["ProductName"].ToString();
-                        Created_at = reader["Created_at"].ToString();
+       //                 PolicyNo = reader["PolicyNo"].ToString();
+       //                 ExpectedResults = reader["ExpectedResults"].ToString();
+       //                 TestResults = reader["Test_Results"].ToString();
+       //                 Comments = reader["Comments"].ToString();
+       //                 Test_Date = reader["Test_Date"].ToString();
+       //                 FunctionID = reader["FunctionID"].ToString();
+       //                 UserID = reader["UserID"].ToString();
+       //                 product_name = reader["ProductName"].ToString();
+       //                 Created_at = reader["Created_at"].ToString();
 
-                        if (Comments.Length > 50)
-                        {
+       //                 if (Comments.Length > 50)
+       //                 {
 
-                            Comments = Comments.Substring(0, 50);
-                        }
+       //                     Comments = Comments.Substring(0, 50);
+       //                 }
 
-                        TestResultObject tstResult = new TestResultObject(PolicyNo, ExpectedResults, TestResults, Comments, Test_Date, FunctionID,
-                            UserID, product_name, Created_at);
-                        results.Add(tstResult);
+       //                 TestResultObject tstResult = new TestResultObject(PolicyNo, ExpectedResults, TestResults, Comments, Test_Date, FunctionID,
+       //                     UserID, product_name, Created_at);
+       //                 results.Add(tstResult);
 
-                    }
-                    connection.Close();
-                    StringBuilder strBldr = new StringBuilder();
+       //             }
+       //             connection.Close();
+       //             StringBuilder strBldr = new StringBuilder();
 
-                    using (StreamWriter file = new StreamWriter(excelReportFilePath, true))
-                    {
+       //             using (StreamWriter file = new StreamWriter(excelReportFilePath, true))
+       //             {
 
-                        foreach (var item in results)
-                        {
-
-
-                            var line = (item.policyNo, item.expectedResults, item.testResults, item.comment, item.test_Date, product_name,
-                                   item.created_at);
-                            file.WriteLine(line);
+       //                 foreach (var item in results)
+       //                 {
 
 
+       //                     var line = (item.policyNo, item.expectedResults, item.testResults, item.comment, item.test_Date, product_name,
+       //                            item.created_at);
+       //                     file.WriteLine(line);
 
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
 
-                    Console.WriteLine("Exception:" + ex.ToString());
-                }
+
+       //                 }
+       //             }
+       //         }
+       //         catch (Exception ex)
+       //         {
+
+       //             Console.WriteLine("Exception:" + ex.ToString());
+       //         }
                
 
-                MailMessage mail = new MailMessage();
-                SmtpClient SmtpServer = new SmtpClient("mail.sanlam.co.za");
-                mail.From = new MailAddress("Autoresult@sanlamsky.co.za");
-                mail.To.Add("napeb@sanlamsky.co.za");
-                //,kamogelomo@sanlamsky.co.za,lesedima@sanlamsky.co.za,linda.zondi@sanlamsky.co.za,Shaquille.Bandura@sanlamsky.co.za
-                //,kamogelomo@sanlamsky.co.za,lesedima@sanlamsky.co.za
-                mail.Subject = "PolicyServicing Auto Test Results";
-                mail.Body = @"Please see the attached Policy Servicing Automation Test Results.
+       //         MailMessage mail = new MailMessage();
+       //         SmtpClient SmtpServer = new SmtpClient("mail.sanlam.co.za");
+       //         mail.From = new MailAddress("Autoresult@sanlamsky.co.za");
+       //         mail.To.Add("napeb@sanlamsky.co.za");
+       //         //,kamogelomo@sanlamsky.co.za,lesedima@sanlamsky.co.za,linda.zondi@sanlamsky.co.za,Shaquille.Bandura@sanlamsky.co.za
+       //         //,kamogelomo@sanlamsky.co.za,lesedima@sanlamsky.co.za
+       //         mail.Subject = "PolicyServicing Auto Test Results";
+       //         mail.Body = @"Please see the attached Policy Servicing Automation Test Results.
 
-        Kind Regards";
-
-
-
-
-                System.Net.Mail.Attachment attachment;
-                attachment = new System.Net.Mail.Attachment(excelReportFilePath);
-                mail.Attachments.Add(attachment);
-                SmtpServer.Port = 587;
-                SmtpServer.Credentials = new System.Net.NetworkCredential("Autoresult@sanlamsky.co.za", "P@ssword987951");
-                SmtpServer.EnableSsl = true;
-
-                ServicePointManager.ServerCertificateValidationCallback =
-                  delegate (
-                  object s,
-                  X509Certificate certificate,
-                  X509Chain chain,
-                  SslPolicyErrors sslPolicyErrors
-       )
-                  {
-                      return true;
-                  };
-                SmtpServer.Send(mail);
-                attachment.Dispose();
-
-                // }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Exception:" + ex.ToString());
-
-
-            }
-
-            if (File.Exists(excelReportFilePath))
-            {
-                File.Delete(excelReportFilePath);
-            }
+       // Kind Regards";
 
 
 
-        }
+
+       //         System.Net.Mail.Attachment attachment;
+       //         attachment = new System.Net.Mail.Attachment(excelReportFilePath);
+       //         mail.Attachments.Add(attachment);
+       //         SmtpServer.Port = 587;
+       //         SmtpServer.Credentials = new System.Net.NetworkCredential("Autoresult@sanlamsky.co.za", "P@ssword987951");
+       //         SmtpServer.EnableSsl = true;
+
+       //         ServicePointManager.ServerCertificateValidationCallback =
+       //           delegate (
+       //           object s,
+       //           X509Certificate certificate,
+       //           X509Chain chain,
+       //           SslPolicyErrors sslPolicyErrors
+       //)
+       //           {
+       //               return true;
+       //           };
+       //         SmtpServer.Send(mail);
+       //         attachment.Dispose();
+
+       //         // }
+       //     }
+       //     catch (Exception ex)
+       //     {
+       //         Console.WriteLine("Exception:" + ex.ToString());
+
+
+       //     }
+
+       //     if (File.Exists(excelReportFilePath))
+       //     {
+       //         File.Delete(excelReportFilePath);
+       //     }
+
+
+
+       // }
 
 
 
