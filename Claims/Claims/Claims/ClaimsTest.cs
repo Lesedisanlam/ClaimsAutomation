@@ -84,14 +84,14 @@ namespace Claims_Testsuite.Claims
                 Delay(2);
                 // var Arrears =_driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[2]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td[2]")).Text;
                 // var SingleBenefit = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[6]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[9]")).Text;
-                string NettInvestment = _driver.FindElement(By.XPath(" /html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[3]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]")).Text;
+               // string NettInvestment = _driver.FindElement(By.XPath(" /html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[3]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]")).Text;
 
 
 
-                //  SetproductName();
+                 SetproductName();
 
                 string Role = String.Empty, Claimant = String.Empty, Cause_of_incident = String.Empty, BI_Number = String.Empty, Roleplayer = String.Empty, SubClaimType = String.Empty, ClaimType = String.Empty,
-                 IdNum = String.Empty, Date_of_incident = String.Empty, Contact_Date = String.Empty, Email_Address = String.Empty, Mobile_Number = String.Empty, ClaimDescription = String.Empty, Gender = String.Empty, Title = String.Empty;
+                 IdNum = String.Empty, Date_of_incident = String.Empty, Contact_Date = String.Empty, Email_Address = String.Empty, Mobile_Number = String.Empty, ClaimDescription = String.Empty, Gender = String.Empty, Title = String.Empty, Claim_Amount = String.Empty;
 
                 OpenDBConnection("SELECT * FROM ClaimDetails_Data WHERE Scenario_ID = '" + scenarioID + "' ");
                 reader = command.ExecuteReader();
@@ -101,7 +101,6 @@ namespace Claims_Testsuite.Claims
                     ClaimType = reader["ClaimType"].ToString().Trim();
                     Claimant = reader["Claimant"].ToString().Trim();
                     Cause_of_incident = reader["Cause_of_incident"].ToString().Trim();
-
                     Roleplayer = reader["Roleplayer"].ToString().Trim();
                     IdNum = reader["RolePlayer_idNum"].ToString().Trim();
                     Date_of_incident = reader["Date_of_incident"].ToString().Trim();
@@ -111,15 +110,12 @@ namespace Claims_Testsuite.Claims
                     ClaimDescription = reader["ClaimDescription"].ToString().Trim();
                     Gender = reader["Gender"].ToString().Trim();
                     Title = reader["Title"].ToString().Trim();
+                    Claim_Amount = reader["Claim_Amount"].ToString().Trim();
 
                 }
                 connection.Close();
 
 
-
-            
-
-              
 
                 for (int i = 0; i < 24; i++)
                 {
@@ -177,8 +173,11 @@ namespace Claims_Testsuite.Claims
                 dropDown.SelectByText(ClaimType);
                 Delay(2);
 
+                if (ClaimType == "PartSurrender") 
+                {
+                    _driver.FindElement(By.Name("frmDisinvestAmount")).SendKeys(Claim_Amount);
 
-
+                }
                 //Select claimant
                 SelectElement dropDown1 = new SelectElement(_driver.FindElement(By.Name("frmClaimant")));
                 dropDown1.SelectByText(Claimant);
@@ -560,9 +559,10 @@ namespace Claims_Testsuite.Claims
                 string ContractStatus = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[1]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/u/font")).Text;
                 // Incidents  valdation
                 string Incidents = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[5]")).Text;
+                string NettInvestment = _driver.FindElement(By.XPath(" /html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[3]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]")).Text;
 
                 //expand contract sumary
-                _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[6]/table[5]/tbody/tr/td/table/tbody/tr/td[1]/a/img[2]")).Click();
+                //_driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[6]/table[5]/tbody/tr/td/table/tbody/tr/td[1]/a/img[2]")).Click();
                 //click on transaction
                 Delay(2);
                 _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[6]/div[1]/table[5]/tbody/tr/td/a")).Click();
@@ -578,7 +578,7 @@ namespace Claims_Testsuite.Claims
 
                 Delay(1);
                 string ClosingBalance = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/center[1]/b")).Text;
-
+                string ClosingBalanc = ClosingBalance.Substring(1);
 
                 //if (decimal.TryParse(elementText, out elementValue) && elementValue != 0.00m)
                 //{
@@ -617,12 +617,12 @@ namespace Claims_Testsuite.Claims
                 decimal closingBalanceDecimal;
 
 
-                if ((ClaimpaymentStatus == "Surrender") && (Incidents == "Surrender") && (movement == "Surrender") && (ClosingBalance == NettInvestment))
+                if ((ContractStatus == "Surrendered") && (Incidents == "Surrender") && (movement == "Surrender") && (ClosingBalanc == NettInvestment))
                 {
                     //Sucessful Claim)
                     results = "Passed";
                 }
-                else if ((ClaimpaymentStatus == "PartSurrender") && (Incidents == "PartSurrender") && (movement == "PartSurrender") && (decimal.TryParse(ClosingBalance, out closingBalanceDecimal) && closingBalanceDecimal !< 1000.00m))
+                else if ((ContractStatus == "PartSurrender") && (Incidents == "PartSurrender") && (movement == "PartSurrender") && (decimal.TryParse(ClosingBalance, out closingBalanceDecimal) && closingBalanceDecimal !< 1000.00m))
                 {
 
                     //Sucessful Claim)
