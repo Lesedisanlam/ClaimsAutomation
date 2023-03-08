@@ -44,6 +44,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "DatabaseConnections.OleDb": {
+              "target": "Package",
+              "version": "[2.0.0, )"
+            },
             "DocumentFormat.OpenXml": {
               "target": "Package",
               "version": "[2.18.0, )"
@@ -105,6 +109,10 @@
             "Selenium.WebDriver.ChromeDriver": {
               "target": "Package",
               "version": "[107.0.5304.6200, )"
+            },
+            "System.Data.OleDb": {
+              "target": "Package",
+              "version": "[7.0.0, )"
             },
             "System.Data.SqlClient": {
               "target": "Package",
