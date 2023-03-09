@@ -28,7 +28,6 @@ namespace Claims_Testsuite
 
         public string _screenShotFolder, _screenShotFolderOutput;
 
-        public string sheet = "Policy-Servicing";
         public static int currentMethod { get; set; }
 
         public static string connectionxls = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:/Users/e697642/Documents/GitHub/new/new/ilrsafricanautopolicyservicing/Policy Servicing/TestResults.xlsx;Extended Properties=""Excel 12.0 Xml;HDR=YES""";
@@ -125,7 +124,7 @@ namespace Claims_Testsuite
             
             try
             {
-                var cmd = $"UPDATE Claims_Scenarios SET productName = @product WHERE FunctionID = ID ";
+                var cmd = $"UPDATE TestScenarios SET productName = @product WHERE FunctionID = ID ";
                 OpenDBConnection(cmd);
                 command.Parameters.AddWithValue("@product", product);
                 command.ExecuteNonQuery();
@@ -157,7 +156,7 @@ namespace Claims_Testsuite
             int id = 0;
             try
             {
-                OpenDBConnection("SELECT ID FROM ClaimsFunction WHERE function_name = '" + funcName + "'");
+                OpenDBConnection("SELECT ID FROM Function WHERE function_name = '" + funcName + "'");
                 reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -182,7 +181,7 @@ namespace Claims_Testsuite
 
             try
             {
-                OpenDBConnection("SELECT function_name FROM ClaimsFunction WHERE ID =" + id);
+                OpenDBConnection("SELECT function_name FROM Function WHERE ID =" + id);
                 reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -469,7 +468,7 @@ namespace Claims_Testsuite
 
         public void writeResultsToDB(string results, int scenario_id, string comments)
         {
-            OpenDBConnection($"UPDATE Claims_Scenarios SET Test_Results = @results, Test_Date =@testDate, Comments = @comments WHERE ID = {scenario_id}");
+            OpenDBConnection($"UPDATE TestScenarios SET Test_Results = @results, Test_Date =@testDate, Comments = @comments WHERE ID = {scenario_id}");
             var testDate = DateTime.Now.ToString();
             command.Parameters.AddWithValue("@results", results);
             command.Parameters.AddWithValue("@testDate", testDate);
@@ -516,7 +515,7 @@ namespace Claims_Testsuite
             var conractRef = String.Empty;
             var scenarioID = String.Empty;
             int id = getFuctionID(methodName);
-            OpenDBConnection($"SELECT PolicyNo,ID FROM Claims_Scenarios WHERE FunctionID = {id}");
+            OpenDBConnection($"SELECT PolicyNo,ID FROM TestScenarios WHERE FunctionID = {id}");
             reader = command.ExecuteReader(); while (reader.Read())
             {
                 scenarioID = reader["ID"].ToString();

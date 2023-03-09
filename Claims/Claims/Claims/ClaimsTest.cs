@@ -951,7 +951,7 @@ namespace Claims_Testsuite.Claims
                         string Effective_Date = String.Empty, Bank = String.Empty, Branch = String.Empty, Account_Number = String.Empty, Name = String.Empty, Account_Type = String.Empty,
                         Stop_Date = String.Empty, Cheque_Stale_Months = String.Empty, credit_Card = String.Empty, Expiry_date = String.Empty;
 
-                        OpenDBConnection("SELECT * FROM ClaimBankdetails");
+                        OpenDBConnection("SELECT * FROM Bankdetails");
                         reader = command.ExecuteReader();
                         while (reader.Read())
                         {
