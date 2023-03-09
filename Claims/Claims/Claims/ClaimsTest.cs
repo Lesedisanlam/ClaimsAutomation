@@ -3920,7 +3920,7 @@ namespace Claims_Testsuite.Claims
         [OneTimeTearDown]
         public void closeBrowser()
         {
-           //EmailReport();
+           EmailReport();
             DisconnectBrowser();
           
         }
