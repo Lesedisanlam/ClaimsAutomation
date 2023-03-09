@@ -60,7 +60,7 @@ namespace Claims_Testsuite
             _chromeOptions = new ChromeOptions();
             _chromeOptions.AddArguments("--incognito");
             _chromeOptions.AddArguments("--ignore-certificate-errors");
-            _driver = new ChromeDriver("C:/Users/992107/Documents/Github/FE/ClaimsAutomation/Claims/Claims/bin/Debug/net6.0");
+            _driver = new ChromeDriver("C:/Users/G992107/Documents/Github/FE/ClaimsAutomation/Claims/Claims/bin/Debug/net6.0");
 
 
 
@@ -156,7 +156,7 @@ namespace Claims_Testsuite
             int id = 0;
             try
             {
-                OpenDBConnection("SELECT ID FROM Function WHERE function_name = '" + funcName + "'");
+                OpenDBConnection("SELECT ID FROM Functions WHERE function_name = '" + funcName + "'");
                 reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -181,7 +181,7 @@ namespace Claims_Testsuite
 
             try
             {
-                OpenDBConnection("SELECT function_name FROM Function WHERE ID =" + id);
+                OpenDBConnection("SELECT function_name FROM Functions WHERE ID =" + id);
                 reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -468,7 +468,7 @@ namespace Claims_Testsuite
 
         public void writeResultsToDB(string results, int scenario_id, string comments)
         {
-            OpenDBConnection($"UPDATE TestScenarios SET Test_Results = @results, Test_Date =@testDate, Comments = @comments WHERE ID = {scenario_id}");
+            OpenDBConnection($"UPDATE TestScenarios SET Test_Results = @results,Run_Status = 1,Test_Date =@testDate, Comments = @comments WHERE ID = {scenario_id}");
             var testDate = DateTime.Now.ToString();
             command.Parameters.AddWithValue("@results", results);
             command.Parameters.AddWithValue("@testDate", testDate);
@@ -515,7 +515,7 @@ namespace Claims_Testsuite
             var conractRef = String.Empty;
             var scenarioID = String.Empty;
             int id = getFuctionID(methodName);
-            OpenDBConnection($"SELECT PolicyNo,ID FROM TestScenarios WHERE FunctionID = {id}");
+            OpenDBConnection($"SELECT PolicyNo,ID FROM TestScenarios WHERE Run_Status = 0 AND  FunctionID = {id} AND ProjectID = 2");
             reader = command.ExecuteReader(); while (reader.Read())
             {
                 scenarioID = reader["ID"].ToString();

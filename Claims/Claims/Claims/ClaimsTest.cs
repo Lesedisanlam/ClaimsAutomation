@@ -691,7 +691,630 @@ namespace Claims_Testsuite.Claims
             writeResultsToDB(results, Int32.Parse(scenarioID), errMsg);
             Assert.IsTrue(results.Equals("Passed"));
         }
+        [Test, TestCaseSource("GetTestData", new object[] { "SJF_Claim" })]
+        public void SJF_Claim(string contractRef, string scenarioID)
+        {
+            if (String.IsNullOrEmpty(contractRef))
+            {
+                Assert.Ignore();
+            }
 
+
+            string errMsg = String.Empty;
+            string results = String.Empty;
+            try
+            {
+
+                var Arrears = String.Empty;
+                var SingleBenefit = String.Empty;
+                var PayableAmount = String.Empty;
+                var Policystatus1 = String.Empty;
+                var Policystatus2 = String.Empty;
+                var Product = String.Empty;
+                var amountCalculation = String.Empty;
+
+
+                Delay(2);
+                //SetproductName();
+                string Role = String.Empty, Claimant = String.Empty, Cause_of_incident = String.Empty, BI_Number = String.Empty, Roleplayer = String.Empty, SubClaimType = String.Empty, ClaimType = String.Empty,
+                IdNum = String.Empty, Date_of_incident = String.Empty, Contact_Date = String.Empty, Email_Address = String.Empty, Mobile_Number = String.Empty, ClaimDescription = String.Empty, Gender = String.Empty, Title = String.Empty;
+                string Comp_check = String.Empty;
+
+                policySearch(contractRef);
+                Product = _driver.FindElement(By.XPath("//html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[1]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td[2]")).Text;
+
+                OpenDBConnection("SELECT * FROM ClaimDetails_Data WHERE Scenario_ID = '" + scenarioID + "' ");
+                reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+
+                    Role = reader["Role"].ToString().Trim();
+                    ClaimType = reader["ClaimType"].ToString().Trim();
+                    Claimant = reader["Claimant"].ToString().Trim();
+                    Cause_of_incident = reader["Cause_of_incident"].ToString().Trim();
+                    IdNum = reader["RolePlayer_idNum"].ToString().Trim();
+                    Date_of_incident = reader["Date_of_incident"].ToString().Trim();
+                    Contact_Date = reader["Contact_Date"].ToString().Trim();
+                    Email_Address = reader["Email_Address"].ToString().Trim();
+                    Mobile_Number = reader["Mobile_Number"].ToString().Trim();
+                    ClaimDescription = reader["ClaimDescription"].ToString().Trim();
+                    Gender = reader["Gender"].ToString().Trim();
+                    Title = reader["Title"].ToString().Trim();
+
+                }
+                connection.Close();
+
+
+                // PolicyStatus
+                Policystatus1 = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[1]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/u/font")).Text;
+
+
+                Delay(2);
+                for (int i = 0; i < 24; i++)
+                {
+                    IWebElement comp;
+                    var xPath = "";
+                    try
+                    {
+                        xPath = $"/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[5]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[{i + 2}]/td[1]/span/big/b/a";
+                        comp = _driver.FindElement(By.XPath(xPath));
+                    }
+                    catch (Exception ex)
+                    {
+                        xPath = $"/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[5]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[{i + 2}]/td[1]/span/a";
+                        comp = _driver.FindElement(By.XPath(xPath));
+                    }
+                    var compTxt = comp.Text;
+                    if (compTxt.Contains(Role))
+                    {
+                        Delay(2);
+                        comp.Click();
+                        var idComp = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[16]/td/center/table/tbody/tr[4]/td[2]/span/table/tbody/tr[4]/td[4]")).Text;
+                        if (!(idComp.Contains(IdNum)))
+                        {
+                            _driver.Navigate().Back();
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+
+
+
+                // Life  valdation
+                string LifeA = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[8]/td[2]")).Text;
+
+                Delay(2);
+                //click on add new claim
+                _driver.FindElement(By.Name("btnAddNewClaim")).Click();
+
+
+                Delay(4);
+
+                //Date of incident:
+                _driver.FindElement(By.Name("frmIncidentDate")).Clear();
+                Delay(2);
+                _driver.FindElement(By.Name("frmIncidentDate")).SendKeys(Date_of_incident);
+                Delay(2);
+
+
+                //First Contact Date:
+                _driver.FindElement(By.Name("frmReceivedDate")).Clear();
+                Delay(2);
+                _driver.FindElement(By.Name("frmReceivedDate")).SendKeys(Contact_Date);
+                Delay(2);
+
+                //ClaimType
+                SelectElement dropDown = new SelectElement(_driver.FindElement(By.Name("frmClaimType")));
+                try
+                {
+
+                    dropDown.SelectByText(ClaimType);
+                    Delay(5);
+                }
+                catch
+                {
+                    dropDown.SelectByText("AccidentalDeath");
+                    Delay(5);
+                }
+
+
+
+
+                //Select claimant
+                SelectElement dropDown1 = new SelectElement(_driver.FindElement(By.Name("frmClaimant")));
+                dropDown1.SelectByText(Claimant);
+
+                Delay(4);
+
+
+
+                //Click next
+                _driver.FindElement(By.Name("btncbmin2")).Click();
+                Delay(4);
+
+
+                //go to incident 
+                try
+                {
+                    Delay(2);
+                    _driver.FindElement(By.XPath("//*[@id='frmCbmin']/tbody/tr[9]/td[2]/nobr/input[2]")).SendKeys(Cause_of_incident);
+                    Delay(2);
+                    _driver.FindElement(By.XPath("//*[@id='frmCbmin']/tbody/tr[9]/td[2]/nobr/img")).Click();
+                    //Mutimediad pop
+                    String test_url_4_title = "SANLAM RM - Safrican Retail - Warpspeed Lookup Window";
+                    Assert.AreEqual(2, _driver.WindowHandles.Count);
+                    var newWindowHandle1 = _driver.WindowHandles[1];
+                    Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle1));
+                    /* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?); */
+                    string expectedNewWindowTitle2 = test_url_4_title;
+                    Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle1).Title, expectedNewWindowTitle2);
+
+
+                    Delay(2);
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr/td/center[2]/table[2]/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]/td[2]")).Click();
+
+                    /* Return to the window with handle = 0 */
+                    _driver.SwitchTo().Window(_driver.WindowHandles[0]);
+                }
+                catch
+                {
+                }
+
+                Delay(2);
+
+                //Click next
+                _driver.FindElement(By.Name("btncbmin5")).Click();
+                Delay(2);
+
+
+
+
+
+
+                //Select ARL-BI_Number
+                Random rnd = new Random();
+                int myRandomNo = rnd.Next(1000, 9999); // creates a 8 digit random no.
+                myRandomNo.ToString();
+                _driver.FindElement(By.Name("frmCriterionValue1_1")).SendKeys("BI-1663" + myRandomNo.ToString());
+                Delay(2);
+
+                //Select ID-Number	
+                _driver.FindElement(By.Name("frmCriterionValue1_2")).SendKeys(IdNum);
+                Delay(2);
+
+
+                //Click Next
+                _driver.FindElement(By.Name("btncbmin9")).Click();
+                Delay(2);
+
+                SingleBenefit = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[4]/tbody/tr[2]/td/table/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]/td[2]")).Text;
+
+
+                //Click Finish
+                _driver.FindElement(By.Name("btncbmin12")).Click();
+                Delay(4);
+
+
+                //new Claim validation  
+
+
+                String claimstatus = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[5]/td[2]")).Text;
+
+                if (claimstatus == "New Claim")
+                {
+
+                    //Hover on claim options
+                    IWebElement NewClaimElement = _driver.FindElement(By.XPath("//*[@id='m0i0o1']"));
+                    //Creating object of an Actions class
+                    Actions action = new Actions(_driver);
+                    //Performing the mouse hover action on the target element.
+                    action.MoveToElement(NewClaimElement).Perform();
+
+
+                }
+                else
+                {
+
+
+                    Delay(30);
+                    _driver.Navigate().Refresh();
+                    //Hover on claim options
+                    IWebElement ClaimsOptionElement = _driver.FindElement(By.XPath("//*[@id='m0i0o1']"));
+                    //Creating object of an Actions class
+                    Actions action = new Actions(_driver);
+                    //Performing the mouse hover action on the target element.
+                    action.MoveToElement(ClaimsOptionElement).Perform();
+
+
+
+                }
+
+                Delay(2);
+                //Click on authorise
+                for (int i = 0; i < 15; i++)
+                {
+                    try
+                    {
+                        _driver.FindElement(By.XPath($"/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[{i + 6}]/td/div/div[3]/a")).Click();
+                    }
+
+                    catch (Exception ex)
+                    {
+                        _driver.FindElement(By.XPath($"/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[{i + 5}]/td/div/div[3]/a")).Click();
+                    }
+                    break;
+                }
+
+                Delay(2);
+
+                //validate payout amount
+
+
+                //Click on authorise
+                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table/tbody/tr[4]/td[2]/span/table/tbody/tr[16]/td/table/tbody/tr/td/table")).Click();
+                Delay(5);
+
+
+
+                // Authorise Claim authorization
+
+                //Validate Claim status
+                string actualvalue2 = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[5]/td[2]")).Text;
+
+                actualvalue2.Contains("Authorised Claim");
+
+
+
+                //Aurthorize papyment 
+                //Hover on claim options
+                IWebElement PaymentOptionElement = _driver.FindElement(By.XPath("//*[@id='m0i0o1']"));
+                //Creating object of an Actions class
+                Actions action3 = new Actions(_driver);
+                //Performing the mouse hover action on the target element.
+                action3.MoveToElement(PaymentOptionElement).Perform();
+                Delay(1);
+
+
+                //click authrise payment
+                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[7]/td/div/div[3]/a")).Click();
+                Delay(1);
+
+
+
+                //click authrise Next
+                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[16]/td/table/tbody/tr/td[1]/table")).Click();
+
+                Delay(2);
+
+                PayableAmount = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[13]/td[2]")).Text;
+
+
+
+
+                try
+
+                {
+
+
+                    //Click on  submit
+                    Delay(2);
+                    _driver.FindElement(By.Name("hl_AuthPay")).Click();
+
+                    Delay(2);
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td/table/tbody/tr/td[1]/table")).Click();
+
+
+                    //click authorise Next
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center[1]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[16]/td/table/tbody/tr/td[1]/table")).Click();
+
+
+                }
+                catch
+                {
+                    //Go back two screens
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr/td/div/div/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[4]/td/div/table/tbody/tr/td/span/table/tbody/tr/td/table/tbody/tr/td[2]/table/tbody/tr/td/span/a")).Click();
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr/td[2]/table/tbody/tr/td/span/a")).Click();
+
+                    string bankdetails = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[2]/tbody/tr[2]/td/table/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]/td[7]/em")).Text;
+
+                    //Validate bank details 
+                    if (bankdetails == "* Bank Account Required *")
+
+                    {
+                        //Authorise payment
+                        string Effective_Date = String.Empty, Bank = String.Empty, Branch = String.Empty, Account_Number = String.Empty, Name = String.Empty, Account_Type = String.Empty,
+                        Stop_Date = String.Empty, Cheque_Stale_Months = String.Empty, credit_Card = String.Empty, Expiry_date = String.Empty;
+
+                        OpenDBConnection("SELECT * FROM BankDetails");
+                        reader = command.ExecuteReader();
+                        while (reader.Read())
+                        {
+
+                            Effective_Date = reader["Effective_Date"].ToString().Trim();
+                            Bank = reader["Bank"].ToString().Trim();
+                            Branch = reader["Branch"].ToString().Trim();
+                            Account_Number = reader["Account_Number"].ToString().Trim();
+                            Name = reader["Name"].ToString().Trim();
+                            Account_Type = reader["Account_Type"].ToString().Trim();
+                            Cheque_Stale_Months = reader["Cheque_Stale_Months"].ToString().Trim();
+                            credit_Card = reader["credit_Card"].ToString().Trim();
+                            Expiry_date = reader["Expiry_date"].ToString().Trim();
+
+                        }
+
+                        connection.Close();
+
+
+
+                        //Click on payment maintenance
+                        Delay(2);
+                        _driver.FindElement(By.Name("hl_AuthPay")).Click();
+                        //Add Additional Bank Account
+                        Delay(2);
+                        _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[2]/tbody/tr/td[2]/table/tbody/tr/td/span/a")).Click();
+
+                        //Bank / Retailer:
+                        SelectElement dropDown2 = new SelectElement(_driver.FindElement(By.Name("frmEntityObj")));
+                        dropDown2.SelectByText(bankdetails);
+                        Delay(5);
+
+                        //Branch:
+                        Delay(2);
+                        _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td[2]/nobr/img")).Click();
+
+
+                        //Mutimediad pop
+                        String test_url_5_title = "SANLAM RM - Safrican Retail - Warpspeed Lookup Window";
+
+
+                        Assert.AreEqual(2, _driver.WindowHandles.Count);
+                        var newWindowHandle2 = _driver.WindowHandles[1];
+                        Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle2));
+                        /* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?); */
+                        string expectedNewWindowTitle3 = test_url_5_title;
+                        Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle2).Title, expectedNewWindowTitle3);
+
+
+                        Delay(2);
+                        _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr/td/center[2]/table[2]/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[1]")).Click();
+
+                        /* Return to the window with handle = 0 */
+                        _driver.SwitchTo().Window(_driver.WindowHandles[0]);
+
+                        Delay(2);
+
+                        //Effective Date
+                        _driver.FindElement(By.Name("frmStopDate")).SendKeys(Effective_Date);
+                        Delay(2);
+
+                        //Account Number:	
+                        _driver.FindElement(By.Name("frmAccountNumber")).SendKeys(Account_Number);
+                        Delay(2);
+
+                        //Name:	
+                        _driver.FindElement(By.Name("frmAccountName")).SendKeys(Name);
+                        Delay(2);
+
+                        //Type:	
+                        //Cheque Stale Months:	
+                        //Default for Owner?	
+                        //Pick a date
+                        //Credit Card Type:	
+                        //Credit Card Expiry Date:	
+
+                        //Click on  submit
+                        Delay(2);
+                        _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table/tbody/tr[4]/td[2]/span/table/tbody/tr[13]/td/table/tbody/tr/td/table")).Click();
+
+
+                        //Click on  submit
+                        Delay(2);
+                        _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center[1]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[16]/td/table/tbody/tr/td[1]/table")).Click();
+                    }
+                    else
+                    {
+
+
+                        //Click on  submit
+                        Delay(2);
+                        _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center[1]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[16]/td/table/tbody/tr/td[1]/table")).Click();
+
+
+                    }
+
+                }
+
+                //Click on  Authorize
+                Delay(2);
+                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[16]/td/table/tbody/tr/td[2]/table")).Click();
+                Delay(1);
+
+
+
+                // Authorise Claim validation
+
+                //Validate claim status
+                string ClaimStatus = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[5]/td[2]")).Text;
+
+                ClaimStatus.Contains("Payments Created");
+
+                //Process Payment
+
+
+                //Hover on claim options
+                IWebElement AuthoriseElement = _driver.FindElement(By.XPath("//*[@id='m0i0o1']"));
+                //Creating object of an Actions class
+                Actions action2 = new Actions(_driver);
+                //Performing the mouse hover action on the target element.
+                action2.MoveToElement(AuthoriseElement).Perform();
+
+
+
+
+                //Click on process payment
+                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[10]/td/div/div[3]/a/img")).Click();
+                Delay(4);
+
+
+                //Click on Confirm Payment textbox
+
+                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[2]/tbody/tr[2]/td/table/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]/td[5]/input")).Click();
+                Delay(3);
+
+                //Click on process payment button
+                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[2]/tbody/tr[1]/td[3]/table")).Click();
+                Delay(3);
+
+
+
+
+                //Validate claim status
+                string ClaimpaymentStatus = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[5]/td[2]")).Text;
+
+                ClaimpaymentStatus.Contains("Claim Payment Raised");
+
+
+                clickOnMainMenu();
+
+
+
+                //Click on contract summary
+                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[1]/table/tbody/tr/td/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[3]")).Click();
+                Delay(3);
+
+
+                Policystatus2 = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[1]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/u/font")).Text;
+
+                //Check components
+                try
+                {
+                    Comp_check = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[6]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td")).Text;
+                }
+                catch
+                {
+                }
+
+                // movement  valdation
+                string movement = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[11]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[1]")).Text;
+
+
+                // Incidents  valdation
+                string Incidents = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]")).Text;
+
+
+
+                string eventname = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[5]")).Text;
+
+
+                //viewed events valdation
+
+                //
+                _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[1]/a")).Click();
+
+                //
+
+                //*[@id="t0_756"]/table/tbody/tr/td[1]/a
+                _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[9]/tbody/tr/td/a")).Click();
+
+
+                string events = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/div/center/div[2]/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[1]")).Text;
+
+                //Transactions navigation
+                try
+                {
+                    //click on transactions
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[7]/tbody/tr/td/a")).Click();
+                }
+                catch (Exception ex)
+                {
+                    //expand Main Menu
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/table[7]/tbody/tr/td/a")).Click();
+                    //expand contract sumary
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[1]/a")).Click();
+                    //click on transactions
+                    Delay(2);
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[7]/tbody/tr/td/a")).Click();
+                }
+                //Dropdown Selection
+                SelectElement dropDown3 = new SelectElement(_driver.FindElement(By.Name("frmAccountTypeObj")));
+                dropDown1.SelectByText("Payment Account (PMT)");
+                //Submit
+                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table/tbody/tr[4]/td[2]/span/table/tbody/tr[7]/td/table/tbody/tr/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td/span/a")).Click();
+                //Store Premium Debt amount
+                Delay(2);
+                Arrears = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[3]/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]/td[3]")).Text;
+
+                string AmountCalculation = (Convert.ToDecimal(SingleBenefit) - Convert.ToDecimal(Arrears)).ToString("#,##0.00");
+
+
+
+
+                if (LifeA == "Self" & Product == "Safrican Just Funeral (3000)")
+                {
+
+                    // PolicyStatus
+
+                    Assert.That(Policystatus2, Is.EqualTo("Out-of-Force"));
+
+
+
+                }
+                else if ((LifeA == "Self" & Product == "Safrican Serenity Funeral Premium"))
+                {
+
+                    Assert.That(Policystatus2, Is.EqualTo("Premium Waiver"));
+
+
+                }
+
+                else if (Comp_check == "There are no Active (as at TODAY) components for this policy.")
+                {
+
+                    Assert.That(Policystatus2, Is.EqualTo("Out-of-Force"));
+
+
+                }
+
+                else
+
+                {
+
+
+                    Assert.That(Policystatus2, Is.EqualTo("In-Force"));
+
+
+                }
+
+                if ((ClaimpaymentStatus == "Claim Payment Raised") & (Incidents == "Claim Payment Raised") & (movement == "Death Claim" || movement == "Death(Acc)") & (eventname == events) & (AmountCalculation == PayableAmount))
+                {
+                    //Sucessful Claim)
+                    results = "Passed";
+                }
+                else
+                {
+                    results = "Failed";
+                    TakeScreenshot(contractRef);
+                    errMsg = "Claim  did not meet all validation criteria";
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Length > 255)
+                {
+                    errMsg = ex.Message.Substring(0, 255);
+                }
+                else
+                {
+                    errMsg = ex.Message;
+                }
+                results = "Failed";
+            }
+            writeResultsToDB(results, Int32.Parse(scenarioID), errMsg);
+            Assert.IsTrue(results.Equals("Passed"));
+        }
         [Test, TestCaseSource("GetTestData", new object[] { "SSI_Claim" })]
         public void SSFP_Manual_Claim(string contractRef, string scenarioID)
         {
