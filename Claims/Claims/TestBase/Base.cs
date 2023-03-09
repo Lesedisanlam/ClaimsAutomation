@@ -55,12 +55,12 @@ namespace Claims_Testsuite
 
 
 
-           //new WebDriverManager.DriverManager().SetUpDriver(new ChromeConfig(), VersionResolveStrategy.MatchingBrowser);
+           new WebDriverManager.DriverManager().SetUpDriver(new ChromeConfig(), VersionResolveStrategy.MatchingBrowser);
 
             _chromeOptions = new ChromeOptions();
             _chromeOptions.AddArguments("--incognito");
             _chromeOptions.AddArguments("--ignore-certificate-errors");
-            _driver = new ChromeDriver("C:/Users/G992107/Documents/Github/FE/ClaimsAutomation/Claims/Claims/bin/Debug/net6.0");
+            _driver = new ChromeDriver();
 
 
 
@@ -360,7 +360,7 @@ namespace Claims_Testsuite
 
                 try
                 {
-                    OpenDBConnection("SELECT * FROM TestScenarios WHERE  Created_at > DATEADD(HOUR, -2, GETDATE());");
+                    OpenDBConnection("SELECT * FROM TestScenarios WHERE  Created_at > DATEADD(HOUR, -3, GETDATE());");
                     reader = command.ExecuteReader();
                     while (reader.Read())
                     {
