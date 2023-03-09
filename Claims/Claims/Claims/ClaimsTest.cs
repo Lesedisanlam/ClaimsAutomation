@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using Actions = OpenQA.Selenium.Interactions.Actions;
 using DocumentFormat.OpenXml.Math;
+using System.Globalization;
 
 namespace Claims
 {
@@ -96,7 +97,7 @@ namespace Claims
                     ClaimType = reader["ClaimType"].ToString().Trim();
                     Claimant = reader["Claimant"].ToString().Trim();
                     Cause_of_incident = reader["Cause_of_incident"].ToString().Trim();
-                    Roleplayer = reader["Roleplayer"].ToString().Trim();
+                   // Roleplayer = reader["Roleplayer"].ToString().Trim();
                     IdNum = reader["RolePlayer_idNum"].ToString().Trim();
                     Date_of_incident = reader["Date_of_incident"].ToString().Trim();
                     Contact_Date = reader["Contact_Date"].ToString().Trim();
@@ -267,9 +268,7 @@ namespace Claims
                 }
                 Delay(2);
 
-                
             
-
                 //Click on authorise
                 _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table/tbody/tr[4]/td[2]/span/table/tbody/tr[16]/td/table/tbody/tr/td/table")).Click();
                 Delay(2);
@@ -530,8 +529,8 @@ namespace Claims
                 Delay(1);
                 string ClosingBalance = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/center[1]/b")).Text;
                 string ClosingBalanc = ClosingBalance.Substring(1);
-
-                decimal closingBalanceDecimal;
+                decimal closingBalanceValue = decimal.Parse(ClosingBalanc, CultureInfo.InvariantCulture);
+                
 
 
                 if ((ContractStatus == "Surrendered") && (Incidents == "Surrender") && (movement == "Surrender") && (ClosingBalanc == NettInvestment))
@@ -539,7 +538,7 @@ namespace Claims
                     //Sucessful Claim)
                     results = "Passed";
                 }
-                else if ((ContractStatus == "In-force") && (Incidents == "PartSurrender") && (movement == "Part Surrender") && (decimal.TryParse(ClosingBalanc, out closingBalanceDecimal) && closingBalanceDecimal !< 1000.00m))
+                else if ((ContractStatus == "In-Force") && (Incidents == "PartSurrender") && (movement == "Part Surrender") &&( closingBalanceValue >= 1000.00m))
                 {
 
                     //Sucessful Claim)

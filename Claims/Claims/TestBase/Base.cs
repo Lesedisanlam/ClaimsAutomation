@@ -481,8 +481,7 @@ namespace ILR_TestSuite
                 MailMessage mail = new MailMessage();
                 SmtpClient SmtpServer = new SmtpClient("mail.sanlam.co.za");
                 mail.From = new MailAddress("Autoresult@sanlamsky.co.za");
-                mail.To.Add("napeb@sanlamsky.co.za,kamogelomo@sanlamsky.co.za,lesedima@sanlamsky.co.za,linda.zondi@sanlamsky.co.za,Shaquille.Bandura@sanlamsky.co.za,Nomathemba.Memela@sanlam.co.za,Greg.Nates@sanlamsky.co.za" +
-                    "Nomahlubi.Mngomezulu@sanlamsky.co.za,Deshani.Padayachee@sanlam.co.za,Ayesha.Sathabridge@sanlamsky.co.za,Lizel.Rousseau@sanlamsky.co.za,Deshani.Padayachee@sanlam.co.za");
+                mail.To.Add("napeb@sanlamsky.co.za");
                 //,kamogelomo@sanlamsky.co.za,lesedima@sanlamsky.co.za,linda.zondi@sanlamsky.co.za,Shaquille.Bandura@sanlamsky.co.za
                 //,kamogelomo@sanlamsky.co.za,lesedima@sanlamsky.co.za
                 mail.Subject = "Claims Auto Test Results";
