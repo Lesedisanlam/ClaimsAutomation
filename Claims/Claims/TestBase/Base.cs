@@ -360,7 +360,7 @@ namespace Claims_Testsuite
 
                 try
                 {
-                    OpenDBConnection("SELECT * FROM Claims_Scenarios WHERE  Created_at > DATEADD(D, -1, GETDATE());");
+                    OpenDBConnection("SELECT * FROM TestScenarios WHERE  Created_at > DATEADD(HOUR, -2, GETDATE());");
                     reader = command.ExecuteReader();
                     while (reader.Read())
                     {
