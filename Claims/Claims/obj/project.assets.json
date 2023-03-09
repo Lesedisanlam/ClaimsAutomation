@@ -3343,23 +3343,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\g994487\\.nuget\\packages\\": {},
+    "C:\\Users\\e697642\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\g994487\\OneDrive - Sanlam Life Insurance Limited\\Documents\\GitHub\\ILR_TestSuite\\ClaimsAutomation\\Claims\\Claims\\Claims_Testsuite.csproj",
+      "projectUniqueName": "C:\\Users\\e697642\\Documents\\GitHub\\new\\new\\ClaimsAutomation\\Claims\\Claims\\Claims_Testsuite.csproj",
       "projectName": "Claims_Testsuite",
-      "projectPath": "C:\\Users\\g994487\\OneDrive - Sanlam Life Insurance Limited\\Documents\\GitHub\\ILR_TestSuite\\ClaimsAutomation\\Claims\\Claims\\Claims_Testsuite.csproj",
-      "packagesPath": "C:\\Users\\g994487\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\g994487\\OneDrive - Sanlam Life Insurance Limited\\Documents\\GitHub\\ILR_TestSuite\\ClaimsAutomation\\Claims\\Claims\\obj\\",
+      "projectPath": "C:\\Users\\e697642\\Documents\\GitHub\\new\\new\\ClaimsAutomation\\Claims\\Claims\\Claims_Testsuite.csproj",
+      "packagesPath": "C:\\Users\\e697642\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\e697642\\Documents\\GitHub\\new\\new\\ClaimsAutomation\\Claims\\Claims\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\g994487\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\e697642\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -3477,7 +3477,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   },
