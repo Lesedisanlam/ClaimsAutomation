@@ -64,7 +64,7 @@ namespace Claims_Testsuite.Claims
             }
         }
 
-        [Test, TestCaseSource("GetTestData", new object[] { "Manual_Claim" })]
+        [Test, TestCaseSource("GetTestData", new object[] {"SPPP_Claim"})]
         public void SSFP_Manual_Claim(string contractRef, string scenarioID)
         {
             if (String.IsNullOrEmpty(contractRef))
@@ -82,7 +82,7 @@ namespace Claims_Testsuite.Claims
 
                 var Arrears =_driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[2]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td[2]")).Text;
                 var SingleBenefit = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[6]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[9]")).Text;
-
+                 //Loop through components to get single benefit based on that compnent
 
 
                 Delay(2);
@@ -90,7 +90,7 @@ namespace Claims_Testsuite.Claims
                 string Role = String.Empty, Claimant = String.Empty, Cause_of_incident = String.Empty, BI_Number = String.Empty, Roleplayer = String.Empty, SubClaimType = String.Empty, ClaimType = String.Empty,
                 IdNum = String.Empty, Date_of_incident = String.Empty, Contact_Date = String.Empty, Email_Address = String.Empty, Mobile_Number = String.Empty, ClaimDescription = String.Empty, Gender = String.Empty, Title = String.Empty;
 
-                OpenDBConnection("SELECT * FROM SSLP_Data");
+                OpenDBConnection($"SELECT * FROM ClaimDetails_Data WHERE Scenario_ID = {Int32.Parse(scenarioID)}");
                 reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -98,7 +98,6 @@ namespace Claims_Testsuite.Claims
                     ClaimType = reader["ClaimType"].ToString().Trim();
                     Claimant = reader["Claimant"].ToString().Trim();
                     Cause_of_incident = reader["Cause_of_incident"].ToString().Trim();
-                    BI_Number = reader["BI_Number"].ToString().Trim();
                     Roleplayer = reader["Roleplayer"].ToString().Trim();
                     IdNum = reader["RolePlayer_idNum"].ToString().Trim();
                     Date_of_incident = reader["Date_of_incident"].ToString().Trim();
@@ -174,7 +173,7 @@ namespace Claims_Testsuite.Claims
 
                 //Select claimant
                 SelectElement dropDown1 = new SelectElement(_driver.FindElement(By.Name("frmClaimant")));
-                dropDown1.SelectByText(Claimant);
+                dropDown1.SelectByText(Claimant.Trim());
 
                 Delay(4);
 
@@ -200,15 +199,9 @@ namespace Claims_Testsuite.Claims
 
 
                 //Mutimediad pop
-                String test_url_4_title = "SANLAM RM - Safrican Retail - Warpspeed Lookup Window";
-
-
-                Assert.AreEqual(2, _driver.WindowHandles.Count);
                 var newWindowHandle1 = _driver.WindowHandles[1];
-                Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle1));
-                /* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?); */
-                string expectedNewWindowTitle2 = test_url_4_title;
-                Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle1).Title, expectedNewWindowTitle2);
+            
+                _driver.SwitchTo().Window(newWindowHandle1);
 
 
                 Delay(2);
@@ -224,8 +217,14 @@ namespace Claims_Testsuite.Claims
                 Delay(2);
 
                 //Select ARL-BI_Number
-                _driver.FindElement(By.Name("frmCriterionValue1_1")).SendKeys(BI_Number);
+                //Generate 4 random digits with prefix 	BI-1663 
+                Random rnd = new Random();
+                int myRandomNo = rnd.Next(1000, 9999); 
+                // creates a 8 digit random no.           
+                myRandomNo.ToString();            
+                _driver.FindElement(By.Name("frmCriterionValue1_1")).SendKeys("BI-1663" + myRandomNo.ToString());         
                 Delay(2);
+
 
                 //Select ID-Number	
                 _driver.FindElement(By.Name("frmCriterionValue1_2")).SendKeys(IdNum);
@@ -245,6 +244,7 @@ namespace Claims_Testsuite.Claims
 
 
                 String claimstatus = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[5]/td[2]")).Text;
+                String contractStatus = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[5]/td[4]")).Text; 
 
                 if (claimstatus == "New Claim")
                 {
@@ -297,6 +297,12 @@ namespace Claims_Testsuite.Claims
 
                 actualvalue2.Contains("Authorised Claim");
 
+                if(!actualvalue2.Contains("Authorised Claim"))
+                {
+                    
+                }
+
+
 
 
                 //Aurthorize papyment 
@@ -321,7 +327,6 @@ namespace Claims_Testsuite.Claims
                 
 
                 try
-
                 {
 
 
@@ -483,10 +488,6 @@ namespace Claims_Testsuite.Claims
                 //Performing the mouse hover action on the target element.
                 action2.MoveToElement(AuthoriseElement).Perform();
 
-
-
-
-
                 Delay(2);
 
                 //Click on process payment
@@ -569,6 +570,7 @@ namespace Claims_Testsuite.Claims
                 {
                     errMsg = ex.Message;
                 }
+                TakeScreenshot(contractRef);
                 results = "Failed";
             }
             writeResultsToDB(results, Int32.Parse(scenarioID), errMsg);

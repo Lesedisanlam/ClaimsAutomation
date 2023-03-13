@@ -51,6 +51,8 @@ namespace TestBase
             public void StartBrowser()
             {
 
+            try
+            {
                 //  _driver = new ChromeDriver("C:/Code/bin");
 
                 new WebDriverManager.DriverManager().SetUpDriver(new ChromeConfig(), VersionResolveStrategy.MatchingBrowser);
@@ -65,6 +67,12 @@ namespace TestBase
                 _screenShotFolder = $@"{AppDomain.CurrentDomain.BaseDirectory}Failed_ScreenShots​{ScreenShotDailyFolderName()}​\";
 
                 new DirectoryInfo(_screenShotFolder).Create();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
 
 
             }
@@ -214,16 +222,13 @@ namespace TestBase
 
                 System.Threading.Thread.Sleep(2000);
 
-
                 System.Threading.Thread.Sleep(2000);
-
                 IWebElement loginTextBox = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr/td/div/center/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/input"));
                 IWebElement passwordTextBox = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr/td/div/center/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td[2]/input"));
                 IWebElement loginBtn = _driver.FindElement(By.Name("btnLogin"));
                 loginTextBox.SendKeys(_userName);
                 System.Threading.Thread.Sleep(6000);
                 passwordTextBox.SendKeys(_password);
-
                 System.Threading.Thread.Sleep(4000);
                 loginBtn.Click();
                 System.Threading.Thread.Sleep(2000);
