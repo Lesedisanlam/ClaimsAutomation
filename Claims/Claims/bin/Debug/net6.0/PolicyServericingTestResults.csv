@@ -1,5 +1,1 @@
 Policy_Number, ExpectedResults, Test_Results, Comments, Test_Date, Product_name, Created_at 
-(SF00002119, Pass, Failed, no such element: Unable to locate element: {"metho, 09/03/2023 13:30:58, , 09/03/2023 10:54:53)
-(WP00245023, Pass, Failed, no such element: Unable to locate element: {"metho, 09/03/2023 13:26:35, , 09/03/2023 13:23:32)
-(SF00000128, Pass, , , , , 09/03/2023 13:23:32)
-(SF00001147, Pass, Failed, no such element: Unable to locate element: {"metho, 09/03/2023 13:28:44, , 09/03/2023 13:23:32)
