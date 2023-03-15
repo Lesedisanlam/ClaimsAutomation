@@ -246,10 +246,10 @@ namespace Claims_Testsuite
             // IAlert alert = _driver.SwitchTo().Alert();
             //  alert.Dismiss();
 
-            _userName = "G992092";//TODO add your user name and password
+            _userName = "G992107";//TODO add your user name and password
 
 
-            _password = "Gg992092@";
+            _password = "Mip@1234";
             
             _driver.Manage().Window.Maximize();
 
