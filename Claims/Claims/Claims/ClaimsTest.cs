@@ -96,6 +96,9 @@ namespace Claims_Testsuite.Claims
                 IdNum = String.Empty, Date_of_incident = String.Empty, Contact_Date = String.Empty, Email_Address = String.Empty, Mobile_Number = String.Empty, ClaimDescription = String.Empty, Gender = String.Empty, Title = String.Empty;
                 string Comp_check = String.Empty;
                 string Description_check = String.Empty;
+                string bankdetails = String.Empty;
+                string Effective_Date = String.Empty, Bank = String.Empty, Branch = String.Empty, Account_Number = String.Empty, Name = String.Empty, Account_Type = String.Empty,
+                credit_Card = String.Empty, DebitOrderDay = String.Empty, Expiry_date = String.Empty;
 
                 policySearch(contractRef);
                 Product = _driver.FindElement(By.XPath("//html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[1]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td[2]")).Text;
@@ -357,117 +360,123 @@ namespace Claims_Testsuite.Claims
                 catch
                 {
                     //Go back two screens
-                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr/td/div/div/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[4]/td/div/table/tbody/tr/td/span/table/tbody/tr/td/table/tbody/tr/td[2]/table/tbody/tr/td/span/a")).Click();
+                    //Check here
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/div/div/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[7]/td/div/table/tbody/tr/td/span/table/tbody/tr/td/table/tbody/tr/td[2]/table/tbody/tr/td/span/a")).Click();
                     _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr/td[2]/table/tbody/tr/td/span/a")).Click();
 
-                    string bankdetails = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[2]/tbody/tr[2]/td/table/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]/td[7]/em")).Text;
-
-                    //Validate bank details 
-                    if (bankdetails == "* Bank Account Required *")
-
+                    OpenDBConnection("SELECT * FROM BankDetails");
+                    reader = command.ExecuteReader();
+                    while (reader.Read())
                     {
-                        //Authorise payment
-                        string Effective_Date = String.Empty, Bank = String.Empty, Branch = String.Empty, Account_Number = String.Empty, Name = String.Empty, Account_Type = String.Empty,
-                        credit_Card = String.Empty, DebitOrderDay = String.Empty, Expiry_date = String.Empty;
 
-                        OpenDBConnection("SELECT * FROM BankDetails");
-                        reader = command.ExecuteReader();
-                        while (reader.Read())
+                        Effective_Date = reader["Effective_Date"].ToString().Trim();
+                        Bank = reader["Bank"].ToString().Trim();
+                        Branch = reader["Branch"].ToString().Trim();
+                        Account_Number = reader["Account_Number"].ToString().Trim();
+                        Name = reader["Name"].ToString().Trim();
+                        Account_Type = reader["Account_Type"].ToString().Trim();
+                        Expiry_date = reader["Expiry_date"].ToString().Trim();
+                        DebitOrderDay = reader["Debit_Order_Day"].ToString().Trim();
+
+                    }
+                    connection.Close();
+
+                    //For LOOOOOOOP
+                    try
+                    {
+                        for (int i = 2; i < 23; i++)
                         {
+                            bankdetails = _driver.FindElement(By.XPath($"/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[2]/tbody/tr[2]/td/table/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[{i.ToString()}]/td[7]/em")).Text;
+                            if (bankdetails == "* Bank Account Required *")
+                            {
+                                    //Click on payment maintenance
+                                    Delay(2);
+                                    _driver.FindElement(By.XPath($"/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[2]/tbody/tr[2]/td/table/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[{i.ToString()}]/td[14]/a")).Click();
+                                    //Add Additional Bank Account
+                                    Delay(2);
+                                    _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[2]/tbody/tr/td[2]/table/tbody/tr/td/span/a")).Click();
 
-                            Effective_Date = reader["Effective_Date"].ToString().Trim();
-                            Bank = reader["Bank"].ToString().Trim();
-                            Branch = reader["Branch"].ToString().Trim();
-                            Account_Number = reader["Account_Number"].ToString().Trim();
-                            Name = reader["Name"].ToString().Trim();
-                            Account_Type = reader["Account_Type"].ToString().Trim();
-                            Expiry_date = reader["Expiry_date"].ToString().Trim();
-                            DebitOrderDay = reader["Debit_Order_Day"].ToString().Trim();
+                                    //Bank / Retailer:
+                                    SelectElement dropDown2 = new SelectElement(_driver.FindElement(By.Name("frmEntityObj")));
+                                    dropDown2.SelectByText(Bank);
+                                    Delay(5);
 
+                                    //Branch:
+                                    _driver.FindElement(By.Name("frmBranchCode")).SendKeys(Branch);
+                                    Delay(2);
+                                    try
+                                    {
+                                        _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td[2]/nobr/img")).Click();
+                                        //Mutimediad pop
+                                        String test_url_4_title = "SANLAM RM - Safrican Retail - Warpspeed Lookup Window";
+                                        Assert.AreEqual(2, _driver.WindowHandles.Count);
+                                        var newWindowHandle2 = _driver.WindowHandles[1];
+                                        Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle2));
+                                        /* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?); */
+                                        string expectedNewWindowTitle2 = test_url_4_title;
+                                        Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle2).Title, expectedNewWindowTitle2);
+
+
+                                        Delay(2);
+                                        _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr/td/center[2]/table[2]/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]")).Click();
+
+                                        /* Return to the window with handle = 0 */
+                                        _driver.SwitchTo().Window(_driver.WindowHandles[0]);
+                                    }
+                                    catch
+                                    {
+                                    }
+
+                                    //Effective Date
+                                    _driver.FindElement(By.Name("frmStopDate")).SendKeys(Effective_Date);
+                                    Delay(2);
+
+                                    //Account Number
+                                    _driver.FindElement(By.Name("frmAccountNumber")).SendKeys(Account_Number);
+                                    Delay(2);
+
+                                    //Name
+                                    _driver.FindElement(By.Name("frmAccountName")).SendKeys(Name);
+                                    Delay(2);
+
+                                    //Account Type
+                                    SelectElement dropDown3 = new SelectElement(_driver.FindElement(By.Name("frmBankAccountType")));
+                                    dropDown2.SelectByText(Account_Type);
+                                    Delay(2);
+
+                                    //Clear Stop Date
+                                    _driver.FindElement(By.Name("frmStopDate")).Clear();
+                                    Delay(2);
+
+                                    //Click on submit
+                                    Delay(2);
+                                    _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table/tbody/tr[4]/td[2]/span/table/tbody/tr[13]/td/table/tbody/tr/td/table")).Click();
+
+
+                                    //Click on submit
+                                    Delay(2);
+                                    _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td/table/tbody/tr/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td/span/a")).Click();
+                                }
+                                else
+                                {
+
+
+                                    //Click on  submit
+                                    Delay(2);
+                                    _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center[1]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[16]/td/table/tbody/tr/td[1]/table")).Click();
+
+
+                                }
                         }
-                        connection.Close();
-
-                        //Click on payment maintenance
-                        Delay(2);
-                        _driver.FindElement(By.Name("hl_AuthPay")).Click();
-                        //Add Additional Bank Account
-                        Delay(2);
-                        _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[2]/tbody/tr/td[2]/table/tbody/tr/td/span/a")).Click();
-
-                        //Bank / Retailer:
-                        SelectElement dropDown2 = new SelectElement(_driver.FindElement(By.Name("frmEntityObj")));
-                        dropDown2.SelectByText(Bank);
-                        Delay(5);
-
-                        //Branch:
-                        _driver.FindElement(By.Name("frmBranchCode")).SendKeys(Branch);
-                        Delay(2);
-                        try
-                        {
-                            _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td[2]/nobr/img")).Click();
-                            //Mutimediad pop
-                            String test_url_4_title = "SANLAM RM - Safrican Retail - Warpspeed Lookup Window";
-                            Assert.AreEqual(2, _driver.WindowHandles.Count);
-                            var newWindowHandle2 = _driver.WindowHandles[1];
-                            Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle2));
-                            /* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?); */
-                            string expectedNewWindowTitle2 = test_url_4_title;
-                            Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle2).Title, expectedNewWindowTitle2);
-
-
-                            Delay(2);
-                            _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr/td/center[2]/table[2]/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]")).Click();
-
-                            /* Return to the window with handle = 0 */
-                            _driver.SwitchTo().Window(_driver.WindowHandles[0]);
-                        }
-                        catch
-                        {
-                        } 
-
-                        //Effective Date
-                        _driver.FindElement(By.Name("frmStopDate")).SendKeys(Effective_Date);
-                        Delay(2);
-
-                        //Account Number:	
-                        _driver.FindElement(By.Name("frmAccountNumber")).SendKeys(Account_Number);
-                        Delay(2);
-
-                        //Name:	
-                        _driver.FindElement(By.Name("frmAccountName")).SendKeys(Name);
-                        Delay(2);
-
-                        //Clear Stop Date
-                        _driver.FindElement(By.Name("frmStopDate")).Clear();
-                        Delay(2);
-
-                        //Click on submit
-                        Delay(2);
-                        _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table/tbody/tr[4]/td[2]/span/table/tbody/tr[13]/td/table/tbody/tr/td/table")).Click();
-
-
-                        //Click on submit
-                        Delay(2);
-                        _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[3]/td/table/tbody/tr/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td/span/a")).Click();
-
                         //Click next
                         _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[16]/td/table/tbody/tr/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td/span/a")).Click();
-
                     }
-                    else
+                    catch
                     {
-
-
-                        //Click on  submit
-                        Delay(2);
-                        _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center[1]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[16]/td/table/tbody/tr/td[1]/table")).Click();
-
-
                     }
-
                 }
 
-                //Click on  Authorize
+                //Click on Authorize
                 Delay(2);
                 _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[16]/td/table/tbody/tr/td[2]/table")).Click();
                 Delay(1);
