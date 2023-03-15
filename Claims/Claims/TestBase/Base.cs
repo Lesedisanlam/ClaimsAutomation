@@ -468,7 +468,7 @@ namespace Claims_Testsuite
 
         public void writeResultsToDB(string results, int scenario_id, string comments)
         {
-            OpenDBConnection($"UPDATE TestScenarios SET Test_Results = @results,Run_Status = 1,Test_Date =@testDate, Comments = @comments WHERE ID = {scenario_id}");
+            eOpenDBConnection($"UPDATE TestScenarios SET Test_Results = @results,Run_Status = 1,Test_Date =@testDate, Comments = @comments WHERE ID = {scenario_id}");
             var testDate = DateTime.Now.ToString();
             command.Parameters.AddWithValue("@results", results);
             command.Parameters.AddWithValue("@testDate", testDate);
@@ -520,10 +520,10 @@ namespace Claims_Testsuite
             {
                 scenarioID = reader["ID"].ToString();
                 conractRef = reader["PolicyNo"].ToString();
-                break;
+                yield return new[] { conractRef, scenarioID };
             }
             connection.Close();
-            yield return new[] { conractRef, scenarioID };
+            
         }
 
 
