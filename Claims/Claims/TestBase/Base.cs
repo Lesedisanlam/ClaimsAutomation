@@ -599,7 +599,7 @@ namespace ILR_TestSuite
             var conractRef = String.Empty;
             var scenarioID = String.Empty;
             int id = getFuctionID(methodName);
-            OpenDBConnection($"SELECT PolicyNo,ID FROM Claims_Scenarios WHERE FunctionID = {id}");
+            OpenDBConnection($"SELECT PolicyNo,ID FROM TestScenarios WHERE FunctionID = {id}");
             reader = command.ExecuteReader(); while (reader.Read())
             {
                 scenarioID = reader["ID"].ToString();
