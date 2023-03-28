@@ -241,15 +241,15 @@ namespace Claims_Testsuite
         {
 
 
-            _driver.Url = "http://skycomparativetest.sanlam.co.za/tst/wspd_cgi.sh/WService=wsb_tst/run.w?";
+            _driver.Url = "http://ilr-tst.safrican.co.za/web/v1/WService=wsb_ilrtst/run.w?";
 
             // IAlert alert = _driver.SwitchTo().Alert();
             //  alert.Dismiss();
 
-            _userName = "G992107";//TODO add your user name and password
+            _userName = "G992092";//TODO add your user name and password
 
 
-            _password = "Mip@1234";
+            _password = "G992092saftst";
             
             _driver.Manage().Window.Maximize();
 
