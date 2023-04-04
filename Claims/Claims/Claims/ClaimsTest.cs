@@ -67,6 +67,119 @@ namespace Claims_Testsuite.Claims
             }
         }
 
+        private void Nav_ContractSummary()
+        {
+            try
+            {
+                //Click Contract Summary
+                _driver.FindElement(By.Name("2000175333.8")).Click();
+                Delay(2);
+            }
+            catch
+            {
+                //Click Main Menu then Contract Summary
+                _driver.FindElement(By.Name("CBWeb")).Click();
+                Delay(2);
+                _driver.FindElement(By.Name("2000175333.8")).Click();
+                Delay(2);
+            }
+        }
+        private void Nav_Components()
+        {
+            try
+            {
+                //Click Components
+                _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[3]/tbody/tr/td/a")).Click();
+                Delay(2);
+            }
+            catch
+            {
+                try
+                {
+                    //Expand Contract Summary then click on Components
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[1]/a")).Click();
+                    Delay(2);
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[3]/tbody/tr/td/a")).Click();
+                    Delay(2);
+                }
+                catch
+                {
+                    //Click Main Menu then expand Contract Summary then click Components
+                    _driver.FindElement(By.Name("CBWeb")).Click();
+                    Delay(2);
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[1]/a")).Click();
+                    Delay(2);
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[3]/tbody/tr/td/a")).Click();
+                    Delay(2);
+                }
+            }
+        }
+        private void Nav_Events()
+        {
+            try
+            {
+                //Click Events
+                _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[9]/tbody/tr/td/a")).Click();
+                Delay(2);
+            }
+            catch
+            {
+                try
+                {
+                    //Expand Contract Summary then click on Events
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[1]/a")).Click();
+                    Delay(2);
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[9]/tbody/tr/td/a")).Click();
+                    Delay(2);
+                }
+                catch
+                {
+                    //Click Main Menu then expand Contract Summary then click Events
+                    _driver.FindElement(By.Name("CBWeb")).Click();
+                    Delay(2);
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[1]/a")).Click();
+                    Delay(2);
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[9]/tbody/tr/td/a")).Click();
+                    Delay(2);
+                }
+            }
+        }
+        private void Nav_Transactions()
+        {
+            try
+            {
+                //click on transactions
+                _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[7]/tbody/tr/td/a")).Click();
+                Delay(3);
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    //Expand Contract Summary then click on Transactions
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[1]/a")).Click();
+                    Delay(2);
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[7]/tbody/tr/td/a")).Click();
+                    Delay(2);
+                }
+                catch
+                {
+                    //Click Main Menu then expand Contract Summary then click Events
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/table[7]/tbody/tr/td/a")).Click();
+                    Delay(2);
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[1]/a")).Click();
+                    Delay(2);
+                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[7]/tbody/tr/td/a")).Click();
+
+                }
+            }
+        }
+        private void Nav_AddNewClaim()
+        {
+            
+        }
+
+
         //Shaq method - works
         [Test, TestCaseSource("GetTestData", new object[] { "SSFP_Claim" })]
         public void SSFP_Claim(string contractRef, string scenarioID)
@@ -81,7 +194,6 @@ namespace Claims_Testsuite.Claims
             string results = String.Empty;
             try
             {
-
                 var Arrears = String.Empty;
                 var SingleBenefit = String.Empty;
                 var PayableAmount = String.Empty;
@@ -92,17 +204,20 @@ namespace Claims_Testsuite.Claims
                 decimal ClosingBalanceValue = decimal.Zero;
 
                 Delay(2);
-                //SetproductName();
                 string Role = String.Empty, Claimant = String.Empty, Cause_of_incident = String.Empty, BI_Number = String.Empty, Roleplayer = String.Empty, SubClaimType = String.Empty, ClaimType = String.Empty,
                 IdNum = String.Empty, Date_of_incident = String.Empty, Contact_Date = String.Empty, Email_Address = String.Empty, Mobile_Number = String.Empty, ClaimDescription = String.Empty, Gender = String.Empty, Title = String.Empty;
                 string Comp_check = String.Empty;
                 string Description_check = String.Empty;
                 string bankdetails = String.Empty;
+                string Incidents = String.Empty;
+                string NettInvestment = String.Empty;
+                string eventname = String.Empty;
                 string Effective_Date = String.Empty, Bank = String.Empty, Branch = String.Empty, Account_Number = String.Empty, Name = String.Empty, Account_Type = String.Empty,
                 credit_Card = String.Empty, DebitOrderDay = String.Empty, Claim_Amount = String.Empty, Expiry_date = String.Empty, ClosingBalance = String.Empty, ClosingBalance_short = String.Empty, AmountCalculation = String.Empty;
 
-
                 policySearch(contractRef);
+
+                //Get Product Name
                 Product = _driver.FindElement(By.XPath("//html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[1]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td[2]")).Text;
 
                 OpenDBConnection("SELECT * FROM ClaimDetails_Data WHERE Scenario_ID = '" + scenarioID + "' ");
@@ -125,13 +240,12 @@ namespace Claims_Testsuite.Claims
                 }
                 connection.Close();
 
-
-                // PolicyStatus
+                //PolicyStatus
                 Policystatus1 = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[1]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/u/font")).Text;
-
 
                 Delay(2);
 
+                //Search through list of role players
                 for (int i = 0; i < 24; i++)
                 {
                     IWebElement comp;
@@ -169,8 +283,6 @@ namespace Claims_Testsuite.Claims
                 Delay(2);
                 //click on add new claim
                 _driver.FindElement(By.Name("btnAddNewClaim")).Click();
-
-
                 Delay(4);
 
                 //Date of incident:
@@ -179,19 +291,18 @@ namespace Claims_Testsuite.Claims
                 _driver.FindElement(By.Name("frmIncidentDate")).SendKeys(Date_of_incident);
                 Delay(2);
 
-
                 //First Contact Date:
                 _driver.FindElement(By.Name("frmReceivedDate")).Clear();
                 Delay(2);
                 _driver.FindElement(By.Name("frmReceivedDate")).SendKeys(Contact_Date);
-                Delay(2);
+                Delay(6);
 
                 //ClaimType
                 SelectElement dropDown = new SelectElement(_driver.FindElement(By.Name("frmClaimType")));
                 dropDown.SelectByText(ClaimType);
                 Delay(3);
 
-                ///added this
+                ///Product (5000) Accommodation
                 if (ClaimType == "PartSurrender")
                 {
                     _driver.FindElement(By.Name("frmDisinvestAmount")).SendKeys(Claim_Amount);
@@ -206,7 +317,6 @@ namespace Claims_Testsuite.Claims
                 //Click next
                 _driver.FindElement(By.Name("btncbmin2")).Click();
                 Delay(2);
-
 
                 //Select cause incident 
                 try
@@ -224,27 +334,20 @@ namespace Claims_Testsuite.Claims
                     string expectedNewWindowTitle2 = test_url_4_title;
                     Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle1).Title, expectedNewWindowTitle2);
 
-
                     Delay(2);
                     _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr/td/center[2]/table[2]/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]/td[2]")).Click();
 
                     /* Return to the window with handle = 0 */
                     _driver.SwitchTo().Window(_driver.WindowHandles[0]);
+                    Delay(2);
                 }
                 catch
                 {
                 }
 
-                Delay(2);
-
                 //Click next
                 _driver.FindElement(By.Name("btncbmin5")).Click();
                 Delay(2);
-
-
-
-
-
 
                 //Select ARL-BI_Number
                 Random rnd = new Random();
@@ -256,7 +359,6 @@ namespace Claims_Testsuite.Claims
                 //Select ID-Number	
                 _driver.FindElement(By.Name("frmCriterionValue1_2")).SendKeys(IdNum);
                 Delay(2);
-
 
                 //Click Next
                 _driver.FindElement(By.Name("btncbmin9")).Click();
@@ -285,8 +387,6 @@ namespace Claims_Testsuite.Claims
                 }
                 else
                 {
-
-
                     Delay(30);
                     _driver.Navigate().Refresh();
                     //Hover on claim options
@@ -295,9 +395,6 @@ namespace Claims_Testsuite.Claims
                     Actions action = new Actions(_driver);
                     //Performing the mouse hover action on the target element.
                     action.MoveToElement(ClaimsOptionElement).Perform();
-
-
-
                 }
 
                 Delay(2);
@@ -326,8 +423,6 @@ namespace Claims_Testsuite.Claims
 
                 actualvalue2.Contains("Authorised Claim");
 
-
-
                 //Authorize payment 
                 //Hover on claim options
                 IWebElement PaymentOptionElement = _driver.FindElement(By.XPath("//*[@id='m0i0o1']"));
@@ -336,7 +431,6 @@ namespace Claims_Testsuite.Claims
                 //Performing the mouse hover action on the target element.
                 action3.MoveToElement(PaymentOptionElement).Perform();
                 Delay(1);
-
 
                 //click authorise payment
                 _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[7]/td/div/div[3]/a")).Click();
@@ -411,7 +505,7 @@ namespace Claims_Testsuite.Claims
                             catch
                             {
                             }
-
+                            Delay(8);
                             //Effective Date
                             _driver.FindElement(By.Name("frmEffectiveDate")).SendKeys(Effective_Date);
                             Delay(2);
@@ -451,7 +545,7 @@ namespace Claims_Testsuite.Claims
                 //Click on Authorize
                 Delay(2);
                 _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[16]/td/table/tbody/tr/td[2]/table")).Click();
-                Delay(1);
+                Delay(7);
 
                 //Validate claim status
                 string ClaimStatus = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[5]/td[2]")).Text;
@@ -494,11 +588,10 @@ namespace Claims_Testsuite.Claims
                 ClaimpaymentStatus.Contains("Claim Payment Raised");
 
 
-                //Click on contract summary
-                clickOnMainMenu();
-                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[1]/table/tbody/tr/td/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[3]")).Click();
-                Delay(3);
+                //Navigate to contract summary screen
+                Nav_ContractSummary();
 
+                //Store current Policy Status
                 Policystatus2 = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[1]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/u/font")).Text;
 
                 //Check components
@@ -510,46 +603,31 @@ namespace Claims_Testsuite.Claims
                 catch
                 {
                     //Navigate to components screen
-                    try
-                    {
-                        //click on components
-                        _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[3]/tbody/tr/td/a")).Click();
-                        Delay(3);
-                    }
-                    catch (Exception ex)
-                    {
-                        //expand contract sumary
-                        _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[1]/a")).Click();
-                        //click on components
-                        Delay(2);
-                        _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[3]/tbody/tr/td/a")).Click();
-                    }
+                    Nav_Components();
+
+                    //Check if there are still components
                     Comp_check = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/div/center/div/table/tbody/tr/td/span/table/tbody/tr[1]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td")).Text;
+                    
                     //Navigate back to contract summary
-                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[3]/a")).Click();
+                    Nav_ContractSummary();
                 }
 
                 // movement  valdation
                 string movement = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[11]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[1]")).Text;
 
                 // Incidents  valdation
-                string Incidents = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]")).Text;
-                string NettInvestment = _driver.FindElement(By.XPath(" /html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[3]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]")).Text;
-                string eventname = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[5]")).Text;
+                Incidents = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]")).Text;
+                eventname = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[5]")).Text;
+
+                //Product (5000) Accommodation
+                if (Product == "Safrican Siyakhula Invest (5000)")
+                {
+                    NettInvestment = _driver.FindElement(By.XPath(" /html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[3]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]")).Text;
+                }
 
                 //Navigate to Events screen
-                try
-                {
-                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[9]/tbody/tr/td/a")).Click();
+                Nav_Events();
 
-                }
-                catch
-                {
-                    //Expand Contract Summary
-                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[1]/a/img[2]")).Click();
-                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[9]/tbody/tr/td/a")).Click();
-
-                }
                 //Get today's date for events
                 DateTime today = DateTime.Today;
                 string Date_check = String.Empty;
@@ -574,22 +652,7 @@ namespace Claims_Testsuite.Claims
                 }
 
                 //Transactions navigation
-                try
-                {
-                    //click on transactions
-                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[7]/tbody/tr/td/a")).Click();
-                    Delay(3);
-                }
-                catch (Exception ex)
-                {
-                    //expand Main Menu
-                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/table[7]/tbody/tr/td/a")).Click();
-                    //expand contract sumary
-                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/table[5]/tbody/tr/td/table/tbody/tr/td[1]/a")).Click();
-                    //click on transactions
-                    Delay(2);
-                    _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/div[7]/div[1]/table[7]/tbody/tr/td/a")).Click();
-                }
+                Nav_Transactions();
 
                 if (ClaimType == "PartSurrender")
                 {

@@ -515,7 +515,7 @@ namespace Claims_Testsuite
             var conractRef = String.Empty;
             var scenarioID = String.Empty;
             int id = getFuctionID(methodName);
-            OpenDBConnection($"SELECT PolicyNo,ID FROM TestScenarios WHERE Run_Status = 0 AND  FunctionID = {id} AND ProjectID = 2");
+            OpenDBConnection($"SELECT PolicyNo,ID FROM TestScenarios WHERE Run_Status = 3 AND  FunctionID = {id} AND ProjectID = 2");
             reader = command.ExecuteReader(); while (reader.Read())
             {
                 scenarioID = reader["ID"].ToString();
