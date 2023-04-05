@@ -14,6 +14,7 @@ using DocumentFormat.OpenXml.Math;
 using DocumentFormat.OpenXml.Office.CustomUI;
 using System.Globalization;
 using System.Net.Mail;
+using OpenQA.Selenium.DevTools.V108.Debugger;
 
 namespace Claims_Testsuite.Claims
 {
@@ -27,7 +28,7 @@ namespace Claims_Testsuite.Claims
         //Banking Details
         public static string Effective_Date, Bank, Branch, Account_Number, Name, Account_Type, Expiry_date, DebitOrderDay;
         //Method Variables
-        public static string errMsg, results, Product, PolicyStatus1, Policystatus2, LifeA_Relationship, SingleBenefit, PayableAmount, BankDetails_check, Comp_check, Incidents, EventName, NettInvestment, ClosingBalance, ClosingBalance_short, Transaction_check, Arrears, AmountCalculation, Movement, ClaimpaymentStatus;
+        public static string errMsg, results, Product, PolicyStatus1, PolicyStatus2, LifeA_Relationship, SingleBenefit, PayableAmount, BankDetails_check, Comp_check, Incidents, EventName, NettInvestment, ClosingBalance, ClosingBalance_short, Transaction_check, Arrears, AmountCalculation, Movement, ClaimStatus, ClaimpaymentStatus, ListedEvent;
         public static decimal ClosingBalance_value;
     
     [OneTimeSetUp]
@@ -74,7 +75,6 @@ namespace Claims_Testsuite.Claims
                 _driver.FindElement(By.Name("CBWeb")).Click();
             }
         }
-
         private void Nav_ContractSummary()
         {
             try
@@ -251,8 +251,66 @@ namespace Claims_Testsuite.Claims
             //click on add new claim
             _driver.FindElement(By.Name("btnAddNewClaim")).Click();
             Delay(4);
+
+            //FILL IN CLAIM DETAILS
+            //Date of incident:
+            _driver.FindElement(By.Name("frmIncidentDate")).Clear();
+            Delay(2);
+            _driver.FindElement(By.Name("frmIncidentDate")).SendKeys(Date_of_incident);
+            Delay(2);
+
+            //First Contact Date:
+            _driver.FindElement(By.Name("frmReceivedDate")).Clear();
+            Delay(2);
+            _driver.FindElement(By.Name("frmReceivedDate")).SendKeys(Contact_Date);
+            Delay(6);
+
+            //ClaimType
+            SelectElement dropDown = new SelectElement(_driver.FindElement(By.Name("frmClaimType")));
+            dropDown.SelectByText(ClaimType);
+            Delay(3);
+
+            //Select claimant
+            SelectElement dropDown1 = new SelectElement(_driver.FindElement(By.Name("frmClaimant")));
+            dropDown1.SelectByText(Claimant);
+            Delay(2);
+
+            //Click next
+            _driver.FindElement(By.Name("btncbmin2")).Click();
+            Delay(2);
+
+            //Select cause incident 
+            try
+            {
+                Delay(2);
+                _driver.FindElement(By.XPath("//*[@id='frmCbmin']/tbody/tr[9]/td[2]/nobr/input[2]")).SendKeys(Cause_of_incident);
+                Delay(2);
+                _driver.FindElement(By.XPath("//*[@id='frmCbmin']/tbody/tr[9]/td[2]/nobr/img")).Click();
+                //Mutimediad pop
+                String test_url_4_title = "SANLAM RM - Safrican Retail - Warpspeed Lookup Window";
+                Assert.AreEqual(2, _driver.WindowHandles.Count);
+                var newWindowHandle1 = _driver.WindowHandles[1];
+                Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle1));
+                /* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?); */
+                string expectedNewWindowTitle2 = test_url_4_title;
+                Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle1).Title, expectedNewWindowTitle2);
+
+                Delay(2);
+                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr/td/center[2]/table[2]/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]/td[2]")).Click();
+
+                /* Return to the window with handle = 0 */
+                _driver.SwitchTo().Window(_driver.WindowHandles[0]);
+                Delay(2);
+            }
+            catch
+            {
+            }
+
+            //Click next
+            _driver.FindElement(By.Name("btncbmin5")).Click();
+            Delay(2);
         }
-        private void Nav_PayClaim()
+        private void Nav_PayClaim(string scenarioID)
         {
             Delay(4);
 
@@ -282,23 +340,35 @@ namespace Claims_Testsuite.Claims
                 //Performing the mouse hover action on the target element.
                 action.MoveToElement(ClaimsOptionElement).Perform();
             }
-
-            Delay(2);
-            //Click on authorise
-            for (int i = 0; i < 15; i++)
+            if (Product == "Safrican Siyakhula Invest (5000)")
             {
-                try
-                {
-                    _driver.FindElement(By.XPath($"/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[{i + 6}]/td/div/div[3]/a")).Click();
-                }
-
-                catch (Exception ex)
-                {
-                    _driver.FindElement(By.XPath($"/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[{i + 5}]/td/div/div[3]/a")).Click();
-                }
-                break;
+                //Click authorise claim
+                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[5]/td/div/div[3]/a/img")).Click();
+                Delay(1);
+            }
+            else
+            {
+                //Click authorise claim
+                _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[6]/td/div/div[3]/a/img")).Click();
+                Delay(1);
             }
             Delay(2);
+
+            ////Click on authorise
+            //for (int i = 0; i < 15; i++)
+            //{
+            //    try
+            //    {
+            //        _driver.FindElement(By.XPath($"/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[{i + 6}]/td/div/div[3]/a")).Click();
+            //    }
+
+            //    catch (Exception ex)
+            //    {
+            //        _driver.FindElement(By.XPath($"/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[2]/table/tbody/tr[{i + 5}]/td/div/div[3]/a")).Click();
+            //    }
+            //    break;
+            //}
+            //Delay(2);
 
             //Click on authorise button
             _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table/tbody/tr[4]/td[2]/span/table/tbody/tr[16]/td/table/tbody/tr/td/table")).Click();
@@ -334,14 +404,14 @@ namespace Claims_Testsuite.Claims
             while (reader.Read())
             {
 
-                Globals.Effective_Date = reader["Effective_Date"].ToString().Trim();
-                Globals.Bank = reader["Bank"].ToString().Trim();
-                Globals.Branch = reader["Branch"].ToString().Trim();
-                Globals.Account_Number = reader["Account_Number"].ToString().Trim();
-                Globals.Name = reader["Name"].ToString().Trim();
-                Globals.Account_Type = reader["Account_Type"].ToString().Trim();
-                Globals.Expiry_date = reader["Expiry_date"].ToString().Trim();
-                Globals.DebitOrderDay = reader["Debit_Order_Day"].ToString().Trim();
+                Effective_Date = reader["Effective_Date"].ToString().Trim();
+                Bank = reader["Bank"].ToString().Trim();
+                Branch = reader["Branch"].ToString().Trim();
+                Account_Number = reader["Account_Number"].ToString().Trim();
+                Name = reader["Name"].ToString().Trim();
+                Account_Type = reader["Account_Type"].ToString().Trim();
+                Expiry_date = reader["Expiry_date"].ToString().Trim();
+                DebitOrderDay = reader["Debit_Order_Day"].ToString().Trim();
 
             }
             connection.Close();
@@ -351,8 +421,8 @@ namespace Claims_Testsuite.Claims
             {
                 for (int i = 2; i < 23; i++)
                 {
-                    Globals.BankDetails_check = _driver.FindElement(By.XPath($"/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[2]/tbody/tr[2]/td/table/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[{i.ToString()}]/td[7]/em")).Text;
-                    if (Globals.BankDetails_check == "* Bank Account Required *")
+                    BankDetails_check = _driver.FindElement(By.XPath($"/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[2]/tbody/tr[2]/td/table/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[{i.ToString()}]/td[7]/em")).Text;
+                    if (BankDetails_check == "* Bank Account Required *")
                     {
                         //Click on payment maintenance
                         Delay(2);
@@ -363,11 +433,11 @@ namespace Claims_Testsuite.Claims
 
                         //Bank / Retailer:
                         SelectElement dropDown2 = new SelectElement(_driver.FindElement(By.Name("frmEntityObj")));
-                        dropDown2.SelectByText(Globals.Bank);
+                        dropDown2.SelectByText(Bank);
                         Delay(2);
 
                         //Branch:
-                        _driver.FindElement(By.Name("frmBranchCode")).SendKeys(Globals.Branch);
+                        _driver.FindElement(By.Name("frmBranchCode")).SendKeys(Branch);
                         Delay(2);
                         try
                         {
@@ -393,20 +463,20 @@ namespace Claims_Testsuite.Claims
                         }
                         Delay(8);
                         //Effective Date
-                        _driver.FindElement(By.Name("frmEffectiveDate")).SendKeys(Globals.Effective_Date);
+                        _driver.FindElement(By.Name("frmEffectiveDate")).SendKeys(Effective_Date);
                         Delay(2);
 
                         //Account Number
-                        _driver.FindElement(By.Name("frmAccountNumber")).SendKeys(Globals.Account_Number);
+                        _driver.FindElement(By.Name("frmAccountNumber")).SendKeys(Account_Number);
                         Delay(2);
 
                         //Name
-                        _driver.FindElement(By.Name("frmAccountName")).SendKeys(Globals.Name);
+                        _driver.FindElement(By.Name("frmAccountName")).SendKeys(Name);
                         Delay(2);
 
                         //Account Type
                         SelectElement dropDown3 = new SelectElement(_driver.FindElement(By.Name("frmBankAccountType")));
-                        dropDown3.SelectByText(Globals.Account_Type);
+                        dropDown3.SelectByText(Account_Type);
                         Delay(2);
 
                         //Click on submit (The Form page)
@@ -434,7 +504,7 @@ namespace Claims_Testsuite.Claims
             Delay(7);
 
             //Validate claim status
-            string ClaimStatus = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[5]/td[2]")).Text;
+            ClaimStatus = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[5]/td[2]")).Text;
 
             ClaimStatus.Contains("Payments Created");
 
@@ -470,7 +540,7 @@ namespace Claims_Testsuite.Claims
 
 
             //Validate claim status
-            string ClaimpaymentStatus = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[5]/td[2]")).Text;
+            ClaimpaymentStatus = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[5]/td[2]")).Text;
             ClaimpaymentStatus.Contains("Claim Payment Raised");
 
 
@@ -480,13 +550,22 @@ namespace Claims_Testsuite.Claims
         private void Nav_DataCollection()
         {
             //Store current Policy Status
-            Globals.Policystatus2 = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[1]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/u/font")).Text;
+            PolicyStatus2 = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[1]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/u/font")).Text;
+
+            //Product 5000 Accommodation
+            try
+            {
+                NettInvestment = _driver.FindElement(By.XPath(" /html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[3]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]")).Text;
+            }
+            catch
+            {
+            }
 
             //Check components
             try
             {
-                Globals.Comp_check = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[6]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td")).Text;
-                Assert.That(Globals.Comp_check, Is.EqualTo("There are no Active (as at TODAY) components for this policy."));
+                Comp_check = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[6]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td")).Text;
+                Assert.That(Comp_check, Is.EqualTo("There are no Active (as at TODAY) components for this policy."));
             }
             catch
             {
@@ -494,18 +573,18 @@ namespace Claims_Testsuite.Claims
                 Nav_Components();
 
                 //Check if there are still components
-                Globals.Comp_check = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/div/center/div/table/tbody/tr/td/span/table/tbody/tr[1]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td")).Text;
+                Comp_check = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/div/center/div/table/tbody/tr/td/span/table/tbody/tr[1]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td")).Text;
 
                 //Navigate back to contract summary
                 Nav_ContractSummary();
             }
 
-            // movement  valdation
-            Globals.Movement = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[11]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[1]")).Text;
+            //Movement  valdation
+            Movement = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[11]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[1]")).Text;
 
-            // Incidents  valdation
-            Globals.Incidents = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]")).Text;
-            Globals.EventName = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[5]")).Text;
+            //Incidents  valdation
+            Incidents = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]")).Text;
+            EventName = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[7]/td/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[5]")).Text;
 
             //Navigate to Events screen
             Nav_Events();
@@ -513,14 +592,13 @@ namespace Claims_Testsuite.Claims
             //Get today's date for events
             DateTime today = DateTime.Today;
             string Date_check = String.Empty;
-            string events = String.Empty;
             try
             {
                 for (int i = 2; i < 23; i++)
                 {
-                    events = _driver.FindElement(By.XPath($"/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/div/center/div[2]/table/tbody/tr[4]/td[2]/span/table/tbody/tr[{i.ToString()}]/td[1]")).Text;
+                    ListedEvent = _driver.FindElement(By.XPath($"/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/div/center/div[2]/table/tbody/tr[4]/td[2]/span/table/tbody/tr[{i.ToString()}]/td[1]")).Text;
                     Date_check = _driver.FindElement(By.XPath($"/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/div/center/div[2]/table/tbody/tr[4]/td[2]/span/table/tbody/tr[{i.ToString()}]/td[2]")).Text;
-                    if (events == "Death(Acc)" && Date_check == today.ToString("yyyy/MM/dd"))
+                    if (ListedEvent == "Death(Acc)" && Date_check == today.ToString("yyyy/MM/dd"))
                     {
                         break;
                     }
@@ -528,15 +606,15 @@ namespace Claims_Testsuite.Claims
             }
             catch
             {
-                Globals.results = "Failed";
+                results = "Failed";
                 TakeScreenshot("Claim_EventValidation");
-                Globals.errMsg = "Correct event was not found";
+                errMsg = "Correct event was not found";
             }
 
             //Transactions navigation
             Nav_Transactions();
 
-            if (Globals.ClaimType == "PartSurrender")
+            if (ClaimType == "PartSurrender" || ClaimType == "Surrender")
             {
                 // Select investment Account Type
                 Delay(1);
@@ -547,9 +625,12 @@ namespace Claims_Testsuite.Claims
                 _driver.FindElement(By.Name("btncbta20")).Click();
 
                 Delay(1);
-                Globals.ClosingBalance = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/center[1]/b")).Text;
-                Globals.ClosingBalance_short = Globals.ClosingBalance.Substring(1);
-                Globals.ClosingBalance_value = decimal.Parse(Globals.ClosingBalance_short, CultureInfo.InvariantCulture);
+                //Get CB
+                ClosingBalance = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/center[1]/b")).Text;
+                //Remove "R" from CB
+                ClosingBalance_short = ClosingBalance.Substring(1);
+                //Remove "," from CB
+                ClosingBalance_value = decimal.Parse(ClosingBalance_short, CultureInfo.InvariantCulture);
             }
             else
             {
@@ -563,31 +644,110 @@ namespace Claims_Testsuite.Claims
                 {
                     for (int i = 2; i < 23; i++)
                     {
-                        Globals.Transaction_check = _driver.FindElement(By.XPath($"/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[3]/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[{i.ToString()}]/td[2]")).Text;
+                        Transaction_check = _driver.FindElement(By.XPath($"/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[3]/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[{i.ToString()}]/td[2]")).Text;
 
-                        if (Globals.Transaction_check == "Premium Debt/Balance")
+                        if (Transaction_check == "Premium Debt/Balance")
                         {
                             //Store Premium Debt amount for calculation
-                            Globals.Arrears = _driver.FindElement(By.XPath($"/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[3]/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[{i.ToString()}]/td[3]")).Text;
+                            Arrears = _driver.FindElement(By.XPath($"/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[3]/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[{i.ToString()}]/td[3]")).Text;
                             break;
                         }
                     }
                 }
                 catch
                 {
-                    Globals.results = "Failed";
+                    results = "Failed";
                     TakeScreenshot("Claim_Calculation");
-                    Globals.errMsg = "Premium Debt/Balance was not found";
+                    errMsg = "Premium Debt/Balance was not found";
                 }
 
                 //Calculation
-                Globals.AmountCalculation = (Convert.ToDecimal(Globals.SingleBenefit) - Convert.ToDecimal(Globals.Arrears)).ToString("#,##0.00");
+                AmountCalculation = (Convert.ToDecimal(SingleBenefit) - Convert.ToDecimal(Arrears)).ToString("#,##0.00");
 
             }
         }
+        private void Validations(string scenarioID, string contractRef)
+        {
+            //VALIDATIONS!!!!
+            //Check if status is correct
+            switch (PolicyStatus2)
+            {
+                case "In-Force":
+                    //In-Force + Components Present = Passed
+                    if (Comp_check != "There are no Active (as at TODAY) components for this policy." || Comp_check != "There are no components for this policy.")
+                    {
+                        results = "Passed";
+                    }
+                    else
+                    {
+                        results = "Failed";
+                        TakeScreenshot(contractRef);
+                        errMsg = "Incorrect Policy Status";
+                    }
+                    break;
+                case "Out-of-Force":
+                    //Out-of-Force + No Components = Passed
+                    if (Comp_check == "There are no Active (as at TODAY) components for this policy." || Comp_check == "There are no components for this policy.")
+                    {
+                        results = "Passed";
+                    }
+                    else
+                    {
+                        results = "Failed";
+                        TakeScreenshot(contractRef);
+                        errMsg = "Incorrect Policy Status";
+                    }
+                    break;
+                case "Premium Waiver":
+                    //Premium Waiver + Components Present = Passed
+                    if (Comp_check != "There are no Active (as at TODAY) components for this policy." || Comp_check != "There are no components for this policy.")
+                    {
+                        results = "Passed";
+                    }
+                    else
+                    {
+                        results = "Failed";
+                        TakeScreenshot(contractRef);
+                        errMsg = "Incorrect Policy Status";
+                    }
+                    break;
+                case "Surrendered":
+                    //Surrendered + Components Present = Passed
+                    if (Comp_check == "There are no Active (as at TODAY) components for this policy." || Comp_check == "There are no components for this policy.")
+                    {
+                        results = "Passed";
+                    }
+                    else
+                    {
+                        results = "Failed";
+                        TakeScreenshot(contractRef);
+                        errMsg = "Incorrect Policy Status";
+                    }
+                    break;
+            }
 
-        //Shaq method - works
-        [Test, TestCaseSource("GetTestData", new object[] { "SSFP_Claim" })]
+            //Check if claim was succesfully done
+            //Funeral Products
+            switch (Product)
+            {
+                case "":
+                    //In-Force + Components Present = Passed
+                    if (Comp_check != "There are no Active (as at TODAY) components for this policy." || Comp_check != "There are no components for this policy.")
+                    {
+                        results = "Passed";
+                    }
+                    else
+                    {
+                        results = "Failed";
+                        TakeScreenshot(contractRef);
+                        errMsg = "Incorrect Policy Status";
+                    }
+                    break;
+            }
+        }
+
+            //Shaq method - works
+            [Test, TestCaseSource("GetTestData", new object[] { "SSFP_Claim" })]
         public void SSFP_Claim(string contractRef, string scenarioID)
         {
             if (String.IsNullOrEmpty(contractRef))
@@ -601,66 +761,9 @@ namespace Claims_Testsuite.Claims
                 policySearch(contractRef);
                 
                 //Navigate to Add New Claim screen
-                Nav_AddNewClaim(scenarioID);
+                Nav_AddNewClaim(scenarioID); 
 
-                //FILL IN CLAIM DETAILS
-                //Date of incident:
-                _driver.FindElement(By.Name("frmIncidentDate")).Clear();
-                Delay(2);
-                _driver.FindElement(By.Name("frmIncidentDate")).SendKeys(Date_of_incident);
-                Delay(2);
-
-                //First Contact Date:
-                _driver.FindElement(By.Name("frmReceivedDate")).Clear();
-                Delay(2);
-                _driver.FindElement(By.Name("frmReceivedDate")).SendKeys(Contact_Date);
-                Delay(6);
-
-                //ClaimType
-                SelectElement dropDown = new SelectElement(_driver.FindElement(By.Name("frmClaimType")));
-                dropDown.SelectByText(ClaimType);
-                Delay(3);
-
-                //Select claimant
-                SelectElement dropDown1 = new SelectElement(_driver.FindElement(By.Name("frmClaimant")));
-                dropDown1.SelectByText(Claimant);
-                Delay(2);
-
-                //Click next
-                _driver.FindElement(By.Name("btncbmin2")).Click();
-                Delay(2);
-
-                //Select cause incident 
-                try
-                {
-                    Delay(2);
-                    _driver.FindElement(By.XPath("//*[@id='frmCbmin']/tbody/tr[9]/td[2]/nobr/input[2]")).SendKeys(Cause_of_incident);
-                    Delay(2);
-                    _driver.FindElement(By.XPath("//*[@id='frmCbmin']/tbody/tr[9]/td[2]/nobr/img")).Click();
-                    //Mutimediad pop
-                    String test_url_4_title = "SANLAM RM - Safrican Retail - Warpspeed Lookup Window";
-                    Assert.AreEqual(2, _driver.WindowHandles.Count);
-                    var newWindowHandle1 = _driver.WindowHandles[1];
-                    Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle1));
-                    /* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?); */
-                    string expectedNewWindowTitle2 = test_url_4_title;
-                    Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle1).Title, expectedNewWindowTitle2);
-
-                    Delay(2);
-                    _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr/td/center[2]/table[2]/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]/td[2]")).Click();
-
-                    /* Return to the window with handle = 0 */
-                    _driver.SwitchTo().Window(_driver.WindowHandles[0]);
-                    Delay(2);
-                }
-                catch
-                {
-                }
-
-                //Click next
-                _driver.FindElement(By.Name("btncbmin5")).Click();
-                Delay(2);
-
+                //Code Input unique to SSFP
                 //Select ARL-BI_Number
                 Random rnd = new Random();
                 int myRandomNo = rnd.Next(1000, 9999); // creates a 8 digit random no.
@@ -683,85 +786,27 @@ namespace Claims_Testsuite.Claims
                 Delay(4);
 
                 //Navigation through claim payment
-                Nav_PayClaim();
+                Nav_PayClaim(scenarioID);
 
                 //Navigation through data collection for validations
                 Nav_DataCollection();
 
-                //VALIDATIONS!
-                //PRODUCT 1000 VALIDATIONS (SSFP)
-                //Prod 1000, Self, with other components
-                if ((Globals.LifeA_Relationship == "Self" & Globals.Product == "Safrican Serenity Funeral Premium (1000)") && (Globals.Comp_check != "There are no Active (as at TODAY) components for this policy." & Globals.Comp_check != "There are no components for this policy."))
-                {
-                    if (Globals.ClaimType == "PremWaiver-Death")
-                    {
-                        Assert.That(Globals.Policystatus2, Is.EqualTo("Premium Waiver"));
-                    }
-                    else
-                    {
-                        Assert.That(Globals.Policystatus2, Is.EqualTo("Out-of-Force"));
-                    }
-                }
-
-                //PRODUCT 3000 VALIDATIONS (SJF)
-                else if (Globals.LifeA_Relationship == "Self" & Globals.Product == "Safrican Just Funeral (3000)")
-                {
-
-                    Assert.That(Globals.Policystatus2, Is.EqualTo("Out-of-Force"));
-
-                }
-
-                //PRODUCT 5000 VALIDATIONS (SSI)
-                else if ((Globals.Policystatus2 == "Surrendered") && (Globals.Incidents == "Surrender") && (Globals.Movement == "Surrender") && (Globals.ClosingBalance_short == Globals.NettInvestment))
-                {
-                    //Successful Claim)
-                    Globals.results = "Passed";
-                }
-                else if ((Globals.Policystatus2 == "In-Force") && (Globals.Incidents == "PartSurrender") && (Globals.Movement == "Part Surrender") && (Globals.ClosingBalance_value >= 1000.00m))
-                {
-
-                    //Successful Claim)
-                    Globals.results = "Passed";
-
-                }
-
-                //VALIDATION THAT APPLIES FOR ALL PRODUCTS
-                else if (Globals.Comp_check == "There are no Active (as at TODAY) components for this policy." || Globals.Comp_check == "There are no components for this policy.")
-                {
-                    Assert.That(Globals.Policystatus2, Is.EqualTo("Out-of-Force"));
-                }
-
-                else
-                {
-                    Assert.That(Globals.Policystatus2, Is.EqualTo("In-Force"));
-                }
-
-                if ((Globals.ClaimpaymentStatus == "Claim Payment Raised" || Globals.ClaimpaymentStatus == "Authorised Claim") & (Globals.Incidents == "Claim Payment Raised" || Globals.Incidents == "Authorised Claim") & (Globals.Movement == "Death Claim" || Globals.Movement == "Death(Acc)") & (Globals.EventName == events) & (Globals.AmountCalculation == Globals.PayableAmount))
-                {
-                    //Successful Claim
-                    Globals.results = "Passed";
-                }
-                else
-                {
-                    Globals.results = "Failed";
-                    TakeScreenshot(contractRef);
-                    Globals.errMsg = "Claim  did not meet all validation criteria";
-                }
+                Validations(scenarioID, contractRef);
             }
             catch (Exception ex)
             {
                 if (ex.Message.Length > 255)
                 {
-                    Globals.errMsg = ex.Message.Substring(0, 255);
+                    errMsg = ex.Message.Substring(0, 255);
                 }
                 else
                 {
-                    Globals.errMsg = ex.Message;
+                    errMsg = ex.Message;
                 }
-                Globals.results = "Failed";
+                results = "Failed";
             }
-            writeResultsToDB(Globals.results, Int32.Parse(scenarioID), Globals.errMsg);
-            Assert.IsTrue(Globals.results.Equals("Passed"));
+            writeResultsToDB(results, Int32.Parse(scenarioID), errMsg);
+            Assert.IsTrue(results.Equals("Passed"));
         }
 
         //Shaq method - works
@@ -2606,6 +2651,7 @@ namespace Claims_Testsuite.Claims
         }
 
         //Nape method - think it works
+        //Minimum Part Surrender amount is 1000!
         [Test, TestCaseSource("GetTestData", new object[] { "SSI_Claim" })]
         public void SSI_Manual_Claim(string contractRef, string scenarioID)
         {
@@ -2621,63 +2667,14 @@ namespace Claims_Testsuite.Claims
                 //Navigate to Add New Claim screen
                 Nav_AddNewClaim(scenarioID);
 
-                //FILL IN CLAIM DETAILS
-                //Date of incident:
-                _driver.FindElement(By.Name("frmIncidentDate")).Clear();
-                Delay(2);
-                _driver.FindElement(By.Name("frmIncidentDate")).SendKeys(Globals.Date_of_incident);
-                Delay(2);
-
-                //First Contact Date:
-                _driver.FindElement(By.Name("frmReceivedDate")).Clear();
-                Delay(2);
-                _driver.FindElement(By.Name("frmReceivedDate")).SendKeys(Globals.Contact_Date);
-                Delay(6);
-
-                //ClaimType
-                SelectElement dropDown = new SelectElement(_driver.FindElement(By.Name("frmClaimType")));
-                dropDown.SelectByText(Globals.ClaimType);
-                Delay(3);
-
-                //Select claimant
-                SelectElement dropDown1 = new SelectElement(_driver.FindElement(By.Name("frmClaimant")));
-                dropDown1.SelectByText(Globals.Claimant);
-                Delay(2);
-
-                //Click next
-                _driver.FindElement(By.Name("btncbmin2")).Click();
-                Delay(2);
-
-                //Select cause incident 
-                try
+                //IF statement accomodating PartSurrender
+                if (ClaimType == "PartSurrender")
                 {
+                    _driver.FindElement(By.Name("frmDisinvestAmount")).Clear();
                     Delay(2);
-                    _driver.FindElement(By.XPath("//*[@id='frmCbmin']/tbody/tr[9]/td[2]/nobr/input[2]")).SendKeys(Globals.Cause_of_incident);
-                    Delay(2);
-                    _driver.FindElement(By.XPath("//*[@id='frmCbmin']/tbody/tr[9]/td[2]/nobr/img")).Click();
-                    //Mutimediad pop
-                    String test_url_4_title = "SANLAM RM - Safrican Retail - Warpspeed Lookup Window";
-                    Assert.AreEqual(2, _driver.WindowHandles.Count);
-                    var newWindowHandle1 = _driver.WindowHandles[1];
-                    Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle1));
-                    /* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?); */
-                    string expectedNewWindowTitle2 = test_url_4_title;
-                    Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle1).Title, expectedNewWindowTitle2);
-
-                    Delay(2);
-                    _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr/td/center[2]/table[2]/tbody/tr[4]/td[2]/span/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]/td[2]")).Click();
-
-                    /* Return to the window with handle = 0 */
-                    _driver.SwitchTo().Window(_driver.WindowHandles[0]);
+                    _driver.FindElement(By.Name("frmDisinvestAmount")).SendKeys(Claim_Amount);
                     Delay(2);
                 }
-                catch
-                {
-                }
-
-                //Click next
-                _driver.FindElement(By.Name("btncbmin5")).Click();
-                Delay(2);
 
                 //Click next on screen showing surrender amount
                 _driver.FindElement(By.Name("btncbmin9")).Click();
@@ -2688,51 +2685,43 @@ namespace Claims_Testsuite.Claims
                 Delay(2);
 
                 //Authorise and Pay
-                Nav_PayClaim();
-
-                //Product (5000) Accommodation
-                if (Globals.Product == "Safrican Siyakhula Invest (5000)")
-                {
-                    Globals.NettInvestment = _driver.FindElement(By.XPath(" /html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td[3]/center/div/table/tbody/tr/td/span/table/tbody/tr[3]/td/div/table/tbody/tr/td/span/table/tbody/tr/td[3]/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]")).Text;
-                }
+                Nav_PayClaim(scenarioID);
 
                 //Navigation through data collection for validation
                 Nav_DataCollection();
 
-                if ((ContractStatus == "Surrendered") && (Incidents == "Surrender") && (movement == "Surrender") && (ClosingBalanc == NettInvestment))
+                //PRODUCT 5000 VALIDATIONS (SSI)
+                if ((PolicyStatus2 == "Surrendered") && (Incidents == "Surrender") && (Movement == "Surrender") && (ClosingBalance_short == NettInvestment))
                 {
                     //Successful Claim)
-                    Globals.results = "Passed";
+                    results = "Passed";
                 }
-                else if ((ContractStatus == "In-Force") && (Incidents == "PartSurrender") && (movement == "Part Surrender") && (closingBalanceValue >= 1000.00m))
+                else if ((PolicyStatus2 == "In-Force") && (Incidents == "PartSurrender") && (Movement == "Part Surrender") && (ClosingBalance_value >= 1000.00m))
                 {
-
                     //Successful Claim)
-                    Globals.results = "Passed";
-
+                    results = "Passed";
                 }
                 else
-
                 {
-                    Globals.results = "Failed";
+                    results = "Failed";
                     TakeScreenshot(contractRef);
-                    Globals.errMsg = "Claim  did not meet all validation criteria";
+                    errMsg = "Claim was not successfull (Product 5000)";
                 }
             }
             catch (Exception ex)
             {
                 if (ex.Message.Length > 255)
                 {
-                    Globals.errMsg = ex.Message.Substring(0, 255);
+                    errMsg = ex.Message.Substring(0, 255);
                 }
                 else
                 {
-                    Globals.errMsg = ex.Message;
+                    errMsg = ex.Message;
                 }
-                Globals.results = "Failed";
+                results = "Failed";
             }
-            writeResultsToDB(Globals.results, Int32.Parse(scenarioID), Globals.errMsg);
-            Assert.IsTrue(Globals.results.Equals("Passed"));
+            writeResultsToDB(results, Int32.Parse(scenarioID), errMsg);
+            Assert.IsTrue(results.Equals("Passed"));
         }
 
         [OneTimeTearDown]
