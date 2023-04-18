@@ -464,8 +464,6 @@ namespace Claims_Testsuite
 
         }
 
-
-
         public void writeResultsToDB(string results, int scenario_id, string comments)
         {
             OpenDBConnection($"UPDATE TestScenarios SET Test_Results = @results,Run_Status = 1,Test_Date =@testDate, Comments = @comments WHERE ID = {scenario_id}");
@@ -477,8 +475,6 @@ namespace Claims_Testsuite
             command.ExecuteNonQuery();
         }
 
-
-
         public void DisconnectBrowser()
 
         {
@@ -488,8 +484,6 @@ namespace Claims_Testsuite
                 _driver.Quit();
 
         }
-
-
 
         public string GetSeleniumFormatTag(string inputControlName)
 
@@ -501,8 +495,6 @@ namespace Claims_Testsuite
 
         }
 
-
-
         public void Delay(int delaySeconds)
 
         {
@@ -510,12 +502,13 @@ namespace Claims_Testsuite
             Thread.Sleep(delaySeconds * 1000);
 
         }
+
         public static IEnumerable<string[]> GetTestData(string methodName)
         {
             var conractRef = String.Empty;
             var scenarioID = String.Empty;
             int id = getFuctionID(methodName);
-            OpenDBConnection($"SELECT PolicyNo,ID FROM TestScenarios WHERE Run_Status = 3 AND  FunctionID = {id} AND ProjectID = 2");
+            OpenDBConnection($"SELECT PolicyNo,ID FROM TestScenarios WHERE Run_Status = 0 AND  FunctionID = {id} AND ProjectID = 2");
             reader = command.ExecuteReader(); while (reader.Read())
             {
                 scenarioID = reader["ID"].ToString();
